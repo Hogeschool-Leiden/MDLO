@@ -5,25 +5,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Demo.Api.Test
 {
     [TestClass]
     public class WeatherForecastControllerTest
     {
-        private ILogger<WeatherForecastController> _logger;
+        private ILogger<WeatherForecastController> _loggerStub;
+        private Mock<IDateTimeProvider> _dateTimeProviderFake;
         
         [TestInitialize]
         public void TestInitialize()
         {
-            _logger = new NullLogger<WeatherForecastController>();
+            _loggerStub = new NullLogger<WeatherForecastController>();
+            _dateTimeProviderFake = new Mock<IDateTimeProvider>();
         }
         
         [TestMethod]
         public void Get_Should_Return_Typeof_IEnumerable_Of_WeatherForecast()
         {
             // Arrange
-            var controller = new WeatherForecastController(_logger);
+            var controller = new WeatherForecastController(_loggerStub, _dateTimeProviderFake.Object);
             
             // Act
             var result = controller.Get();
