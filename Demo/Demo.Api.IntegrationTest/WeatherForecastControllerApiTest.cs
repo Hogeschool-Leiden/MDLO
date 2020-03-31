@@ -11,6 +11,7 @@ namespace Demo.Api.IntegrationTest
     [TestClass]
     public class WeatherForecastControllerApiTest
     {
+        private const string DefaultUrl = "http://localhost:5000/weatherforecast";
         private const string AppUrlEnvironmentName = "APP_URL";
 
         private static string _baseUrl;
@@ -18,7 +19,8 @@ namespace Demo.Api.IntegrationTest
         private HttpClient _httpClient;
 
         [ClassInitialize]
-        public static void ClassInitialize(TestContext context) => _baseUrl = Environment.GetEnvironmentVariable(AppUrlEnvironmentName) ?? "http://localhost:5000/weatherforecast";
+        public static void ClassInitialize(TestContext context) =>
+            _baseUrl = Environment.GetEnvironmentVariable(AppUrlEnvironmentName) ?? DefaultUrl;
 
         [TestInitialize]
         public void TestInitialize() => _httpClient = new HttpClient();
@@ -41,10 +43,10 @@ namespace Demo.Api.IntegrationTest
         {
             // Arrange
             var response = await _httpClient.GetAsync(_baseUrl);
-            
+
             // Act
             var result = await response.Content.ReadAsStringAsync();
-            
+
             // Assert
             Assert.IsNotNull(JsonConvert.DeserializeObject<IEnumerable<WeatherForecast>>(result));
         }
