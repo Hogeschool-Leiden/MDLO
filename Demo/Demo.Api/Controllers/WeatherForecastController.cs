@@ -18,24 +18,24 @@ namespace Demo.Api.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly IRandomProvider _randomProvider;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IDateTimeProvider dateTimeProvider)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IDateTimeProvider dateTimeProvider,
+            IRandomProvider randomProvider)
         {
             _logger = logger;
             _dateTimeProvider = dateTimeProvider;
+            _randomProvider = randomProvider;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            var random = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        public IEnumerable<WeatherForecast> Get() =>
+            Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {
                     Date = _dateTimeProvider.Now.AddDays(index),
-                    TemperatureC = random.Next(-20, 55),
-                    Summary = Summaries[random.Next(Summaries.Length)]
+                    TemperatureC = _randomProvider.Next(-20, 55),
+                    Summary = Summaries[_randomProvider.Next(Summaries.Length)]
                 })
                 .ToArray();
-        }
     }
 }
