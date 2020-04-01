@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  demo:
+    build: "../Demo/Demo.Deployment"
+    ports:
+      - 80:80
