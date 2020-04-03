@@ -1,11 +1,11 @@
 {
-  "name": "demofrontend",
+  "name": "demofrontend.api",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:ssr": "ng run DemoFrontend:server:dev",
+    "build:ssr": "ng run DemoFrontend.Api:server:dev",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

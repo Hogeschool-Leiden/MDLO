@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Integration
+namespace DemoFrontend.Api.ComponentTest
 {
     [TestClass]
     public class UnitTest1

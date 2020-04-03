@@ -1,6 +1,6 @@
 using System;
 
-namespace DemoFrontend
+namespace DemoFrontend.Api
 {
     public class WeatherForecast
     {

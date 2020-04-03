@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace DemoFrontend
+namespace DemoFrontend.Api
 {
     public class Program
     {
