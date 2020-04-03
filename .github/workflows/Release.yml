@@ -20,7 +20,7 @@ jobs:
       matrix:
         testtype: ['IntegrationTest', 'Test']
         services: ['DemoFrontend', 'Demo']
-    name: Run ${{ matrix.testtype }} tests
+    name: Running ${{ matrix.services }} ${{ matrix.testtype }}s
     steps:
     - uses: actions/checkout@v2
     - name: Setup dotnet install
