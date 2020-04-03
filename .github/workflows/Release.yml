@@ -39,11 +39,13 @@ jobs:
     services:
       database:
         image: mysql
-        ports: 3306:3306
+        ports: 
+         - 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: root
       service-bus:
-        ports: 5672:5672
+        ports: 
+          - 5672:5672
         image: rabbitmq:3-alpine
     steps:
       - uses: actions/checkout@v2
