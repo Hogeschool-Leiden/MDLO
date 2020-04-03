@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy: 
       matrix:
-        testtype: ['Integration', 'Unit', 'Component']
+        testtype: ['Integration', 'Unit']
         services: ['DemoFrontend']
     name: Run ${{ matrix.testtype }} tests
     steps:
@@ -30,3 +30,38 @@ jobs:
 
     - name: Run tests
       run: dotnet test ${{ matrix.services }}/${{matrix.testtype}}/${{matrix.testtype}}.csproj
+
+  component-test:
+    runs-on: ubuntu-latest
+    strategy: 
+      matrix:
+        services: ['DemoFrontend']
+    services:
+      database:
+        image: mysql
+        ports: 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+      service-bus:
+        ports: 5672:5672
+        image: rabbitmq:3-alpine
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup dotnet install
+        uses: actions/setup-dotnet@v1
+        with: 
+          dotnet-version: '3.1.100'
+      - name: ${{ matrix.services }} component tests
+        env:
+          DB_HOST: localhost
+          DB_PORT: 3306
+          DB_PASS: root
+          SERVICE_BUS_HOST: localhost
+          SERVICE_BUS_PORT: 5672
+          SERVICE_BUS_PASS: guest
+          SERVICE_BUS_USER: guest
+
+        run: dotnet test ${{ matrix.services }}/Component/Component.csproj
+        
+
+
