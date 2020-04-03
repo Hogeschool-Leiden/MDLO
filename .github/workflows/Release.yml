@@ -18,8 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy: 
       matrix:
-        testtype: ['Integration', 'Unit']
-        services: ['DemoFrontend']
+        testtype: ['IntegrationTest', 'Test']
+        services: ['DemoFrontend', 'Demo']
     name: Run ${{ matrix.testtype }} tests
     steps:
     - uses: actions/checkout@v2
@@ -29,16 +29,16 @@ jobs:
         dotnet-version: '3.1.100'
 
     - name: Run tests
-      run: dotnet test ${{ matrix.services }}/${{matrix.testtype}}/${{matrix.testtype}}.csproj
+      run: dotnet test ${{ matrix.services }}/${{ matrix.services }}.Api.${{matrix.testtype}}/${{ matrix.services }}.Api.${{matrix.testtype}}.csproj
 
   component-test:
     runs-on: ubuntu-latest
     strategy: 
       matrix:
-        services: ['DemoFrontend']
+        services: ['DemoFrontend', 'Demo']
     services:
       database:
-        image: mysql
+        image: alpine-mysql
         ports: 
          - 3306:3306
         env:
@@ -63,7 +63,7 @@ jobs:
           SERVICE_BUS_PASS: guest
           SERVICE_BUS_USER: guest
 
-        run: dotnet test ${{ matrix.services }}/Component/Component.csproj
+        run: dotnet test ${{ matrix.services }}/${{ matrix.services }}.Api.ComponentTest/${{ matrix.services }}.Api.ComponentTest.csproj
         
 
 
