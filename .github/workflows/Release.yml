@@ -23,8 +23,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with: 
           dotnet-version: '2.1.3'
-      - name: Preparing environment
-        run: dotnet tool install --global dotnet-sonarscanner --version 4.7.1
+      - name: Install SonarCloud scanner
+        run: |
+          dotnet tool install --global dotnet-sonarscanner --version 4.8.0
+          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
       - name: Attaching SonarQube to dotnet
         run: dotnet sonarscanner begin /k:"mdlo" /d:sonar.host.url="http://145.97.16.187:9000" /d:sonar.login="e1c6fe605dadbb095b9b9b37ebba481a201993eb"
       - name: Running tests, building solution
