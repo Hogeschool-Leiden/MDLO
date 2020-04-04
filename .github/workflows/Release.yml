@@ -15,7 +15,7 @@ env:
 
 jobs:
   sonarqube-analyze:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Analyzing code
     steps:
       - uses: actions/checkout@v2
