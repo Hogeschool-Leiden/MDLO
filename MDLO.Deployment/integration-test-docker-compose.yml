@@ -6,12 +6,10 @@ services:
       context: "./../Demo"
       dockerfile: "./Demo.Deployment/Dockerfile"
     ports:
-      - 80:80
+      - 8081:80
   demo-frontend-service:
     build:
       context: "./../DemoFrontend"
-      dockerfile: "./DemoFrontend.Deployment/Dockerfile"
-      args: 
-        source: ../DemoFrontend/DemoFrontend.Api
+      dockerfile: "./Dockerfile"
     ports: 
       - 8080:80
