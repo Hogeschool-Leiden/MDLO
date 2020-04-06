@@ -1,5 +1,37 @@
 name: Release
 
+# on:
+#   push:
+#     branches:
+#       - component-testing-pipeline-feature
+
+#     # Publish `v1.2.3` tags as releases.
+#     tags:
+#       - v*
+
+# env:
+#   # TODO: Change variable to your image's name.
+#   IMAGE_NAME: demo
+
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     strategy: 
+#       matrix:
+#         testtype: ['ComponentTest', 'Test']
+#         services: ['DemoFrontend', 'Demo']
+#     name: Running ${{ matrix.services }} ${{ matrix.testtype }}s
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Setup dotnet install
+#       uses: actions/setup-dotnet@v1
+#       with: 
+#         dotnet-version: '3.1.100'
+
+#     - name: Run tests
+#       run: dotnet test ${{ matrix.services }}/${{ matrix.services }}.Api.${{matrix.testtype}}/${{ matrix.services }}.Api.${{matrix.testtype}}.csproj
+# name: Release
+
 on:
   push:
     branches:
@@ -14,19 +46,40 @@ env:
   IMAGE_NAME: demo
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy: 
-      matrix:
-        testtype: ['ComponentTest', 'Test']
-        services: ['DemoFrontend', 'Demo']
-    name: Running ${{ matrix.services }} ${{ matrix.testtype }}s
+  sonarqube-analyze:
+    runs-on: [linux, self-hosted]
+    name: Analyzing code
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup dotnet install
-      uses: actions/setup-dotnet@v1
-      with: 
-        dotnet-version: '3.1.100'
+      - uses: actions/checkout@v2
+      - name: Setup dotnet install
+        uses: actions/setup-dotnet@v1
+        with: 
+          dotnet-version: '3.1.100'
+      - name: Install SonarCloud scannerr
+        run: |
+          dotnet tool install --global dotnet-sonarscanner --version 4.8.0
+          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
+      - name: Attaching SonarQube to dotnet
+        run: dotnet sonarscanner begin /k:"mdlo" /d:sonar.host.url="http://145.97.16.187:9000" /d:sonar.login="e1c6fe605dadbb095b9b9b37ebba481a201993eb"
+      - name: Running tests, building solution
+        run: dotnet build Demo/Demo.Api/Demo.Api.sln
+      - name: Finishing SonarQube scan
+        run: dotnet sonarscanner end 
+        
+        
+#   test:
+#     runs-on: ubuntu-latest
+#     strategy: 
+#       matrix:
+#         testtype: ['ComponentTest', 'Test']
+#         services: ['DemoFrontend', 'Demo']
+#     name: Running ${{ matrix.services }} ${{ matrix.testtype }}s
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Setup dotnet install
+#       uses: actions/setup-dotnet@v1
+#       with: 
+#         dotnet-version: '3.1.100'
 
-    - name: Run tests
-      run: dotnet test ${{ matrix.services }}/${{ matrix.services }}.Api.${{matrix.testtype}}/${{ matrix.services }}.Api.${{matrix.testtype}}.csproj
+#     - name: Run tests
+#       run: dotnet test ${{ matrix.services }}/${{ matrix.services }}.Api.${{matrix.testtype}}/${{ matrix.services }}.Api.${{matrix.testtype}}.csproj
