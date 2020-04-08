@@ -59,7 +59,7 @@ jobs:
 #           dotnet tool install --global dotnet-sonarscanner --version 4.8.0
 #           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
       - name: Attaching SonarQube to dotnet
-        run: dotnet sonarscanner begin /k:"mdlo" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="e1c6fe605dadbb095b9b9b37ebba481a201993eb"
+        run: dotnet sonarscanner begin /k:"mdlo" /d:sonar.host.url="http://145.97.16.187::9000" /d:sonar.login="e1c6fe605dadbb095b9b9b37ebba481a201993eb"
       - name: Running tests, building solution
         run: dotnet build Demo/Demo.sln
       - name: Finishing SonarQube scan
