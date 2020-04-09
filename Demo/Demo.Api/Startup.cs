@@ -28,6 +28,15 @@ namespace Demo.Api
             services.AddTransient<IDateTimeProvider, DateTimeProvider>();
             services.AddTransient<IRandomProvider, RandomProvider>();
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllHeaders", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +52,8 @@ namespace Demo.Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors("AllowAllHeaders");
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
