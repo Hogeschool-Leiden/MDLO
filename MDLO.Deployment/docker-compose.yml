@@ -1,9 +1,14 @@
 version: '3'
 
 services:
-  demo:
+  demobackend:
     build:
       context: "./../Demo"
       dockerfile: "./Demo.Deployment/Dockerfile"
     ports:
       - 80:80
+  demofrontend:
+    build:
+      context: "./../DemoFrontEnd"
+    ports:
+      - 8000:80
