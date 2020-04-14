@@ -48,6 +48,9 @@ jobs:
   sonarqube-analyze:
     runs-on: [linux, self-hosted]
     name: Analyzing code
+    env: 
+      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
+      SONAR_HOST: ${{ secrets.SONAR_HOST }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup dotnet install
@@ -59,7 +62,7 @@ jobs:
 #           dotnet tool install --global dotnet-sonarscanner --version 4.8.0
 #           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
       - name: Attaching SonarQube to dotnet
-        run: dotnet sonarscanner begin /k:"mdlo-demo-api" /d:sonar.host.url="${{ secrets.SONAR_HOST }}" /d:sonar.login="${{ secrets.MDLO_DEMO_API_TOKEN }}"
+        run: dotnet sonarscanner begin /k:"mdlo-demo-api" /d:sonar.host.url="$SONAR_HOST" /d:sonar.login="$SONAR_TOKEN"
       - name: Running tests, building solution
         run: dotnet build Demo/Demo.sln
       - name: Finishing SonarQube scan
