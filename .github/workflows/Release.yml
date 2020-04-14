@@ -61,7 +61,7 @@ jobs:
         run: |
           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
       - name: Attaching SonarQube to dotnet
-        run: dotnet sonarscanner begin /k:"mdlo-demo-api" /d:sonar.host.url="$SONAR_HOST" /d:sonar.login="$SONAR_TOKEN"
+        run: dotnet sonarscanner begin /k:"mdlo-demo-api" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
       - name: Running tests, building solution
         run: dotnet build Demo/Demo.sln
       - name: Finishing SonarQube scan
