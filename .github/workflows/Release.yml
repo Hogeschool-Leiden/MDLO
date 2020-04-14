@@ -54,12 +54,12 @@ jobs:
         uses: actions/setup-dotnet@v1
         with: 
           dotnet-version: '3.1.100'
-#       - name: Install SonarCloud scannerr
-#         run: |
-#           dotnet tool install --global dotnet-sonarscanner --version 4.8.0
-#           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
+      - name: Install SonarCloud scannerr
+        run: |
+          dotnet tool install --global dotnet-sonarscanner --version 4.8.0
+          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
       - name: Attaching SonarQube to dotnet
-        run: dotnet sonarscanner begin /k:"mdlo" /d:sonar.host.url="http://145.97.16.187::9000" /d:sonar.login="e1c6fe605dadbb095b9b9b37ebba481a201993eb"
+        run: dotnet sonarscanner begin /k:"mdlo-demo-api" /d:sonar.host.url="${{ secrets.SONAR_HOST }}" /d:sonar.login="${{ secrets.MDLO_DEMO_API_TOKEN }}"
       - name: Running tests, building solution
         run: dotnet build Demo/Demo.sln
       - name: Finishing SonarQube scan
