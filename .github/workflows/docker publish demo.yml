@@ -14,6 +14,10 @@ env:
   PROJECT: Demo/**
   TEST_PROJECT: Demo/Demo.Test/Demo.Test.csproj
   SLN: Demo/Demo.sln
+  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+  DEPLOYMENT_YAML: Demo/Demo.Deployment/deployment.yaml
+  SERVICE_YAML: Demo/Demo.Deployment/service.yaml
+  INTEGRATION_TEST_PROJECT: Demo/Demo.IntegrationTest/Demo.IntegrationTest.csproj
 
 jobs:
   build:
@@ -124,3 +128,41 @@ jobs:
 
           docker tag image $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+          
+  deploy:
+     name: DEPLOY TO KUBERNETES
+     needs: push
+     runs-on: [linux, self-hosted]
+     steps:
+      - uses: actions/checkout@master
+      - name: DEPLOY
+        uses: steebchen/kubectl@master
+        with:
+          args: apply -f $DEPLOYMENT_YAML -f $SERVICE_YAML
+      - name: VERIFY
+        uses: steebchen/kubectl@master
+        with:
+          args: rollout status -f $DEPLOYMENT_YAML -f $SERVICE_YAML
+        
+  integration-test:
+     name: INTEGRATION TEST
+     needs: deploy
+     runs-on: [linux, self-hosted]
+     steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'
+      - name: RUN .NET TEST
+        run: dotnet test $INTEGRATION_TEST_PROJECT
+
+
+
+
+
+
+
+
+
+
+
