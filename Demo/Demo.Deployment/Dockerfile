@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as BUILDER
 WORKDIR /app
 EXPOSE 80
-COPY ../DemoFrontend.Api/. .
+COPY Demo/ .
 RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o output
