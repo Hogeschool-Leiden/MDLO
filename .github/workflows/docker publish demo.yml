@@ -113,7 +113,7 @@ jobs:
 
   deploy:
     env:
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
       DEPLOYMENT_YAML: Demo/Demo.Deployment/deployment.yaml
       SERVICE_YAML: Demo/Demo.Deployment/service.yaml
     name: DEPLOY TO KUBERNETES
