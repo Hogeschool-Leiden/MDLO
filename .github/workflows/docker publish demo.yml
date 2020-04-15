@@ -84,7 +84,7 @@ jobs:
     env:
       SLN: Demo/Demo.sln
     needs: mutation-testing
-    runs-on: [linux, self-hosted]
+    runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-dotnet@v1
@@ -98,7 +98,7 @@ jobs:
       IMAGE_NAME: demo
     name: PUSH DOCKER IMAGE TO REGISTRY
     needs: publish
-    runs-on: [linux, self-hosted]
+    runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@master
       - name: BUILD DOCKER IMAGE
