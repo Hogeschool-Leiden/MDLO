@@ -27,8 +27,8 @@ jobs:
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.100'
-    - name: RUN .NET TEST
-      run: dotnet build --configuration Release $PROJECT
+    - name: RUN .NET BUILD
+      run: dotnet build --configuration Release
   
   test:
     needs: build
