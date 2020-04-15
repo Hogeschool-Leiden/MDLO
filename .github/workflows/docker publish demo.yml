@@ -123,6 +123,7 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
       - uses: Azure/k8s-create-secret@v1
         with:
+          namespace: staging
           container-registry-url: docker.pkg.github.com
           container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
           container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
