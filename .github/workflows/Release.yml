@@ -54,15 +54,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Create docker image ${{ matrix.solution-name }} solution 
-      uses: elgohr/Publish-Docker-Github-Action@master
-      with:
-        name: hsl-mdlo-${{ matrix.solution-name.toLower() }}-staging-i
-        username:  ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-        dockerfile: ${{ matrix.solution-name }}/Dockerfile
-        registry: docker.pkg.github.com
-        tags: "staging"
-        
+      run: |
+        docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB.TOKEN }} docker.pkg.github.com
+        docker build ${{ matrix.solution-name }}/ -t hsl-mdlo-${{ matrix.solution-name }}-i:staging | tr a-z A-Z
+        docker push hsl-mdlo-${{ matrix.solution-name }}-i:staging | tr a-z A-Z
 #   sonarqube-analyze:  
 #     runs-on: [linux, self-hosted]
 #     name: Analyzing code
