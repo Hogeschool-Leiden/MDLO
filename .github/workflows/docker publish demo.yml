@@ -88,7 +88,7 @@ jobs:
     runs-on: [linux, self-hosted]
     steps:
       - uses: actions/checkout@master
-      - uses: actions/checkout@setup-dotnet@v1
+      - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.100'
       - name: RUN .NET PUBLISH
