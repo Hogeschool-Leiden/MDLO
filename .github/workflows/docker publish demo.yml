@@ -5,7 +5,7 @@ on:
     paths:
       - Demo/**
     branches:
-      - master
+      - component-testing-pipeline-feature
     tags:
       - v*
 
@@ -21,7 +21,7 @@ env:
 
 jobs:
   build:
-    runs-on: [linux, self-hosted]
+    runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-dotnet@v1
@@ -32,7 +32,7 @@ jobs:
   
   test:
     needs: build
-    runs-on: [linux, self-hosted]
+    runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-dotnet@v1
@@ -72,7 +72,7 @@ jobs:
   mutation-testing:
     name: MUTATION TESTING
     needs: code-quality
-    runs-on: [linux, self-hosted]
+    runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-dotnet@v1
@@ -146,6 +146,8 @@ jobs:
         
   integration-test:
      name: INTEGRATION TEST
+     env:
+       BASE_URL: http://145.97.16.187/weatherforecast 
      needs: deploy
      runs-on: [linux, self-hosted]
      steps:
