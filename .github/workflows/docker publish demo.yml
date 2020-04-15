@@ -9,16 +9,6 @@ on:
     tags:
       - v*
 
-env:
-  IMAGE_NAME: demo
-  PROJECT: Demo/**
-  TEST_PROJECT: Demo/Demo.Test/Demo.Test.csproj
-  SLN: Demo/Demo.sln
-  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-  DEPLOYMENT_YAML: Demo/Demo.Deployment/deployment.yaml
-  SERVICE_YAML: Demo/Demo.Deployment/service.yaml
-  INTEGRATION_TEST_PROJECT: Demo/Demo.IntegrationTest/Demo.IntegrationTest.csproj
-
 jobs:
   build:
     env:
