@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as BUILDER
 WORKDIR /app
-COPY ./Demo.sln .
+COPY Demo/Demo.Api/Demo.Api.csproj .
 RUN dotnet restore
 RUN dotnet publish -c Release -o output
 
