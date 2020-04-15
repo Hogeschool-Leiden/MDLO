@@ -76,7 +76,7 @@ jobs:
       with:
         dotnet-version: '3.1.100'
     - name: INSTALL STRYKER MUTATOR
-      run: dotnet tool install dotnet-stryker
+      run: dotnet tool install -g dotnet-stryker
     - name: RUN .NET STRYKER
       run: dotnet build --configuration Release $PROJECT
  
