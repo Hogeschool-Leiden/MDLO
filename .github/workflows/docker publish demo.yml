@@ -122,13 +122,21 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: DEPLOY
-        uses: steebchen/kubectl@master
+        uses: Azure/k8s-set-context@v1
         with:
-          args: apply -f $DEPLOYMENT_YAML -f $SERVICE_YAML
-      - name: VERIFY
-        uses: steebchen/kubectl@master
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+      - uses: Azure/k8s-create-secret@v1
         with:
-          args: rollout status -f $DEPLOYMENT_YAML
+          container-registry-url: docker.pkg.github.com
+          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          secret-name: demo-k8s-secret
+      - uses: Azure/k8s-deploy@v1
+        with:
+          manifests: |
+            Demo/Demo.Deployment/deployment.yaml
+            Demo/Demo.Deployment/service.yaml
+          images: docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
         
   integration-test:
      name: INTEGRATION TEST
