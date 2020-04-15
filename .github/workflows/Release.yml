@@ -44,17 +44,22 @@ on:
 
 jobs:
   publish-docker-images:
+    env: 
+      IMAGE_NAME: ${{ matrix.solution-name }}
     runs-on: [ubuntu-latest]
     strategy:
       fail-fast: true
       matrix:
         solution-name: [Demo, DemoFrontend]     # Should be the same as whats in front of the .sln. The containing map as seen from the git root should be the same.
     steps:
+    - name: Turn image name to lowercase
+      run: |
+        export IMAGE_NAME=$IMAGE_NAME | tr '[:upper:]' '[:lower:]'
     - uses: actions/checkout@v2
     - name: Create docker image ${{ matrix.solution-name }} solution 
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: hsl-mdlo-${{ matrix.solution-name }}-staging-i
+        name: hsl-mdlo-$IMAGE_NAME-staging-i
         username:  ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: ${{ matrix.solution-name }}/Dockerfile
