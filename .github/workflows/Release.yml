@@ -56,7 +56,7 @@ jobs:
       with:
         name: hsl-mdlo-${{ matrix.solution-name }}-staging-i
         username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: ${{ matrix.solution-name }}/Dockerfile
         
 #   sonarqube-analyze:  
