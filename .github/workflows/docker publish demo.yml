@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     env:
-      PROJECT: Demo/**
+      SLN: Demo/Demo.sln
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@master
@@ -20,7 +20,7 @@ jobs:
       with:
         dotnet-version: '3.1.100'
     - name: RUN .NET BUILD
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release $SLN
   
   test:
     env:
