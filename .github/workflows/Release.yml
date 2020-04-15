@@ -54,10 +54,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Create docker image ${{ matrix.solution-name }} solution 
-      run: |
-        docker login -u ${{ github.actor }} -p "${{ secrets.GITHUB.TOKEN }}" docker.pkg.github.com
-        docker build ${{ matrix.solution-name }}/ -t hsl-mdlo-${{ matrix.solution-name }}-i:staging | tr a-z A-Z
-        docker push hsl-mdlo-${{ matrix.solution-name }}-i:staging | tr a-z A-Z
+    - uses: azure/docker-login@v1
+      with:
+        login-server: docker.pkg.github.com
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - run: |
+        docker build ${{ matrix.solution-name }}/ -t $( hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
+        docker push $( hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
 #   sonarqube-analyze:  
 #     runs-on: [linux, self-hosted]
 #     name: Analyzing code
