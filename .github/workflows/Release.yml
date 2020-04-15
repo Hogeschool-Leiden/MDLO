@@ -54,7 +54,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Create docker image ${{ matrix.solution-name }} solution 
-    - uses: azure/docker-login@v1
+      uses: azure/docker-login@v1
       with:
         login-server: docker.pkg.github.com
         username: ${{ github.actor }}
