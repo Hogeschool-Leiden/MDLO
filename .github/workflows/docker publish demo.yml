@@ -106,10 +106,9 @@ jobs:
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com/${{ github.repository }}
+          registry: docker.pkg.github.com/hogeschool-leiden/mdlo
           dockerfile: Demo/Demo.Deployment/Dockerfile
-          tag_with_ref: true
-          push: ${{ startsWith(github.ref, 'refs/tags/') }}
+          tags: demo:v1
 
   deploy:
     env:
