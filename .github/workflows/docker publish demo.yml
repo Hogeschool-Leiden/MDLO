@@ -128,7 +128,7 @@ jobs:
       - name: VERIFY
         uses: steebchen/kubectl@master
         with:
-          args: rollout status -f $DEPLOYMENT_YAML -f $SERVICE_YAML
+          args: rollout status -f $DEPLOYMENT_YAML
         
   integration-test:
      name: INTEGRATION TEST
