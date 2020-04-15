@@ -58,6 +58,7 @@ jobs:
         username:  ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: ${{ matrix.solution-name }}/Dockerfile
+        registry: docker.pkg.github.com
         
 #   sonarqube-analyze:  
 #     runs-on: [linux, self-hosted]
