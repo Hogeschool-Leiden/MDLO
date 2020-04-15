@@ -8,6 +8,7 @@ namespace Demo.Api.ComponentTest
         [TestMethod]
         public void TestMethod1()
         {
+            
         }
     }
 }
