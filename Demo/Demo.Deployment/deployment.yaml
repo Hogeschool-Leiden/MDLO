@@ -26,5 +26,3 @@ spec:
             requests:
               cpu: 50m
               memory: 50Mi
-      imagePullSecrets:
-        - name: demo-k8s-secret
