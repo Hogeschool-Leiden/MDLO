@@ -125,7 +125,7 @@ jobs:
         with:
           container-registry-url: docker.pkg.github.com
           container-registry-username: ${{ github.actor }}
-          container-registry-password: ${{ secrets.REGISTRY_TOKEN }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
           secret-name: demo-k8s-secret
       - uses: Azure/k8s-deploy@v1
         with:
