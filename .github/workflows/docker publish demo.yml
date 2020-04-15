@@ -100,36 +100,17 @@ jobs:
     needs: publish
     runs-on: [linux, self-hosted]
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@master
       - name: BUILD DOCKER IMAGE
-        run: docker build . --file Demo/Demo.Deployment/Dockerfile --tag $IMAGE_NAME
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com/${{ github.repository }}
+          dockerfile: Demo/Demo.Deployment/Dockerfile
+          tag_with_ref: true
+          push: ${{ startsWith(github.ref, 'refs/tags/') }}
 
-      - name: LOG IN TO REGISTRY
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
-      - name: PUSH DOCKER IMAGE
-        run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
-          
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-
-          docker tag image $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
-          
   deploy:
     env:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
