@@ -107,7 +107,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          dockerfile: Demo/Demo.Deployment/Dockerfile
+          dockerfile: Demo/Dockerfile
           repository: hogeschool-leiden/mdlo/demo
           tags: v1
 
