@@ -55,7 +55,6 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: hsl-mdlo-${{ matrix.solution-name }}-staging-i
-        username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.GITHUB_TOKEN }}
         dockerfile: ${{ matrix.solution-name }}/Dockerfile
         
