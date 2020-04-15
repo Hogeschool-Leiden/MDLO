@@ -108,7 +108,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com/hogeschool-leiden/mdlo
           dockerfile: Demo/Demo.Deployment/Dockerfile
-          tags: demo:v1
+          repositoy: demo
+          tags: v1
 
   deploy:
     env:
