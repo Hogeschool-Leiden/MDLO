@@ -91,7 +91,7 @@ jobs:
         with:
           dotnet-version: '3.1.100'
       - name: RUN .NET PUBLISH
-        run: dotnet publish -c Release -f “netcoreapp3.1” -o ./obj/Docker/publish $SLN
+        run: dotnet publish -c Release -o ./obj/Docker/publish $SLN
 
   push:
     env:
@@ -163,14 +163,3 @@ jobs:
           dotnet-version: '3.1.100'
       - name: RUN .NET TEST
         run: dotnet test $INTEGRATION_TEST_PROJECT
-
-
-
-
-
-
-
-
-
-
-
