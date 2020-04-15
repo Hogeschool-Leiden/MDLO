@@ -60,8 +60,8 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     - run: |
-        docker build ${{ matrix.solution-name }}/ -t $( hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
-        docker push $( hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
+        docker build ${{ matrix.solution-name }}/ -t $(echo hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
+        docker push $(echo hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
 #   sonarqube-analyze:  
 #     runs-on: [linux, self-hosted]
 #     name: Analyzing code
