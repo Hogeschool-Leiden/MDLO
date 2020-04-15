@@ -112,10 +112,6 @@ jobs:
           tags: v1
 
   deploy:
-    env:
-      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
-      DEPLOYMENT_YAML: Demo/Demo.Deployment/deployment.yaml
-      SERVICE_YAML: Demo/Demo.Deployment/service.yaml
     name: DEPLOY TO KUBERNETES
     needs: push
     runs-on: [linux, self-hosted]
@@ -128,8 +124,8 @@ jobs:
       - uses: Azure/k8s-create-secret@v1
         with:
           container-registry-url: docker.pkg.github.com
-          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          container-registry-username: ${{ github.actor }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
           secret-name: demo-k8s-secret
       - uses: Azure/k8s-deploy@v1
         with:
