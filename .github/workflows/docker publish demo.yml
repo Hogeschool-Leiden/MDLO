@@ -122,8 +122,8 @@ jobs:
         uses: Azure/docker-login@v1
         with:
           login-server: docker.pkg.github.com
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
           
       - run: |
           docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
@@ -139,8 +139,8 @@ jobs:
         with:
           namespace: staging
           container-registry-url: docker.pkg.github.com
-          container-registry-username: ${{ github.actor }}
-          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           secret-name: demo-k8s-secret
       
       - name: DEPLOY
