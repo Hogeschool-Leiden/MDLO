@@ -2,6 +2,8 @@ apiVersion : apps/v1
 kind: Deployment
 metadata:
   name: demo
+  labels:
+    app: demo
   namespace: staging
 spec:
   replicas: 1
@@ -16,7 +18,6 @@ spec:
       containers:
         - name: demo
           image: docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
-          imagePullPolicy: Always
           ports:
             - containerPort: 80
           resources:
@@ -26,5 +27,3 @@ spec:
             requests:
               cpu: 50m
               memory: 50Mi
-      imagePullSecrets:
-        - name: demo-k8s-secret
