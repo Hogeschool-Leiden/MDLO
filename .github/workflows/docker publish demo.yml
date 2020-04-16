@@ -93,23 +93,23 @@ jobs:
       - name: RUN .NET PUBLISH
         run: dotnet publish -c Release -o ./obj/Docker/publish $SLN
 
-  push:
-    env:
-      IMAGE_NAME: demo
-    name: PUSH DOCKER IMAGE TO REGISTRY
-    needs: publish
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@master
-      - name: BUILD DOCKER IMAGE
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          dockerfile: Demo/Dockerfile
-          repository: hogeschool-leiden/mdlo/demo
-          tags: v1
+#   push:
+#     env:
+#       IMAGE_NAME: demo
+#     name: PUSH DOCKER IMAGE TO REGISTRY
+#     needs: publish
+#     runs-on: [ubuntu-latest]
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: BUILD DOCKER IMAGE
+#         uses: docker/build-push-action@v1
+#         with:
+#           username: ${{ github.actor }}
+#           password: ${{ secrets.GITHUB_TOKEN }}
+#           registry: docker.pkg.github.com
+#           dockerfile: Demo/Dockerfile
+#           repository: hogeschool-leiden/mdlo/demo
+#           tags: v1
 
   deploy:
     name: DEPLOY TO KUBERNETES
