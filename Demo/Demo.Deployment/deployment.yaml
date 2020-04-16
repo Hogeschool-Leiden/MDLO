@@ -26,6 +26,6 @@ spec:
             requests:
               cpu: 50m
               memory: 50Mi
-          restartPolicy: Always
-          imagePullSecrets:
-            - name: demo-k8s-secret
+        restartPolicy: Always
+        imagePullSecrets:
+          - name: demo-k8s-secret
