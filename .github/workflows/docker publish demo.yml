@@ -117,18 +117,34 @@ jobs:
     runs-on: [linux, self-hosted]
     steps:
       - uses: actions/checkout@master
-      - name: DEPLOY
+        
+      - name: DOCKER LOGIN
+        uses: Azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - run: |
+          docker build . -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
+          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
+          
+      - name: SET CONFIGURATION
         uses: Azure/k8s-set-context@v1
         with:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
-      - uses: Azure/k8s-create-secret@v1
+      
+      - name: CREATE SECRET
+        uses: Azure/k8s-create-secret@v1
         with:
           namespace: staging
           container-registry-url: docker.pkg.github.com
-          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          container-registry-username: ${{ github.actor }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
           secret-name: demo-k8s-secret
-      - uses: Azure/k8s-deploy@v1
+      
+      - name: DEPLOY
+        uses: Azure/k8s-deploy@v1
         with:
           namespace: staging
           manifests: |
