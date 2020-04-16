@@ -113,7 +113,7 @@ jobs:
 
   deploy:
     name: DEPLOY TO KUBERNETES
-    needs: mutation-testing
+    needs: publish
     runs-on: [linux, self-hosted]
     steps:
       - uses: actions/checkout@master
