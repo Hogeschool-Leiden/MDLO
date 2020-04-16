@@ -126,7 +126,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           
       - run: |
-          docker build . -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
+          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
           docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
           
       - name: SET CONFIGURATION
