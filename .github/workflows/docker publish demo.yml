@@ -117,8 +117,7 @@ jobs:
         with:
           host: 145.97.16.187
           username: root
-          key: ${{ secrets.SSH_KEY }}
-          pasphrase: ${{ secrets.SSH_PASSWORD }}
+          password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
           
