@@ -150,10 +150,6 @@ jobs:
           manifests: |
             Demo/Demo.Deployment/deployment.yaml
             Demo/Demo.Deployment/service.yaml
-          images: |
-            docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v2
-          imagepullsecrets: |
-            demo-k8s-secret
         
   integration-test:
      name: INTEGRATION TEST
