@@ -93,24 +93,6 @@ jobs:
       - name: RUN .NET PUBLISH
         run: dotnet publish -c Release -o ./obj/Docker/publish $SLN
 
-#   push:
-#     env:
-#       IMAGE_NAME: demo
-#     name: PUSH DOCKER IMAGE TO REGISTRY
-#     needs: publish
-#     runs-on: [ubuntu-latest]
-#     steps:
-#       - uses: actions/checkout@master
-#       - name: BUILD DOCKER IMAGE
-#         uses: docker/build-push-action@v1
-#         with:
-#           username: ${{ github.actor }}
-#           password: ${{ secrets.GITHUB_TOKEN }}
-#           registry: docker.pkg.github.com
-#           dockerfile: Demo/Dockerfile
-#           repository: hogeschool-leiden/mdlo/demo
-#           tags: v1
-
   deploy:
     name: DEPLOY TO KUBERNETES
     needs: publish
@@ -127,8 +109,18 @@ jobs:
           
       - name: DOCKER PUSH
         run: |
-          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v2
-          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v2
+          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+ 
+      - name: TRIGGER K3D OR BE TRIGGERED
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: root
+          key: ${{ secrets.SSH_KEY }}
+          pasphrase: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
           
       - name: SET CONFIGURATION
         uses: Azure/k8s-set-context@v1
