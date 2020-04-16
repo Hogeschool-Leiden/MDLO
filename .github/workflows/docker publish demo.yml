@@ -125,7 +125,8 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
           
-      - run: |
+      - name: DOCKER PUSH
+        run: |
           docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v2
           docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v2
           
@@ -134,19 +135,9 @@ jobs:
         with:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
       
-      - name: CREATE SECRET
-        uses: Azure/k8s-create-secret@v1
-        with:
-          namespace: staging
-          container-registry-url: docker.pkg.github.com
-          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          secret-name: demo-k8s-secret
-      
       - name: DEPLOY
         uses: Azure/k8s-deploy@v1
         with:
-          namespace: staging
           manifests: |
             Demo/Demo.Deployment/deployment.yaml
             Demo/Demo.Deployment/service.yaml
