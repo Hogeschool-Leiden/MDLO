@@ -4,6 +4,7 @@ COPY ./ .
 RUN dotnet restore
 RUN dotnet publish -c Release -o output
 
+
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as RUNTIME
 WORKDIR /app
 COPY --from=BUILDER /app/output .
