@@ -126,8 +126,8 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
           
       - run: |
-          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
-          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
+          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v2
+          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v2
           
       - name: SET CONFIGURATION
         uses: Azure/k8s-set-context@v1
@@ -151,7 +151,7 @@ jobs:
             Demo/Demo.Deployment/deployment.yaml
             Demo/Demo.Deployment/service.yaml
           images: |
-            docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v1
+            docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v2
           imagepullsecrets: |
             demo-k8s-secret
         
