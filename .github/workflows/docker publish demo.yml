@@ -2,10 +2,8 @@ name: Continues deployment of demo
 
 on:
   push:
-    paths:
-      - Demo/**
     branches:
-      - component-testing-pipeline-feature
+      - Feature-intergrationTest-fix/rolback
     tags:
       - v*
 
