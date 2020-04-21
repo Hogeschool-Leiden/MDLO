@@ -157,11 +157,11 @@ jobs:
       - uses: actions/checkout@master
         
       - name: DOCKER LOGIN
-          uses: Azure/docker-login@v1
-          with:
-            login-server: docker.pkg.github.com
-            username: ${{ secrets.REGISTRY_USERNAME }}
-            password: ${{ secrets.REGISTRY_PASSWORD }}
+        uses: Azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: DOCKER PUSH
         run: |
@@ -169,23 +169,23 @@ jobs:
           docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
           
       - name: TRIGGER K3D OR BE TRIGGERED
-          uses: appleboy/ssh-action@master
-          with:
-            host: 145.97.16.187
-            username: ${{ secrets.SSH_USER }}
-            password: ${{ secrets.SSH_PASSWORD }}
-            port: 22
-            script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
 
       - name: SET CONFIGURATION
-          uses: Azure/k8s-set-context@v1
-          with:
-            kubeconfig: ${{ secrets.KUBE_CONFIG }}
+        uses: Azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
   - name: DEPLOY
-      uses: Azure/k8s-deploy@v1
-      with:
-        namespace: production
-        manifests: |
-          Demo/Demo.Deployment/deployment.yaml
-          Demo/Demo.Deployment/service.yaml
+    uses: Azure/k8s-deploy@v1
+    with:
+      namespace: production
+      manifests: |
+        Demo/Demo.Deployment/deployment.yaml
+        Demo/Demo.Deployment/service.yaml
