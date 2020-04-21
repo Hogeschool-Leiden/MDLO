@@ -11,8 +11,8 @@ namespace Demo.Api.IntegrationTest
     [TestClass]
     public class WeatherForecastControllerApiTest
     {
-        private const string DefaultUrl = "http://localhost:80/weatherforecast";
-        private const string AppUrlEnvironmentName = "BASE_URL";
+        private const string DefaultUrl = "http://localhost:5000/weatherforecast";
+        private const string AppUrlEnvironmentName = "APP_URL";
 
         private static string _baseUrl;
 
@@ -28,9 +28,6 @@ namespace Demo.Api.IntegrationTest
         [TestMethod]
         public async Task Get_Should_Result_In_HttpStatusCode_Of_200_Ok()
         {
-            Console.WriteLine("===========================");
-            Console.WriteLine(_baseUrl);
-            Console.WriteLine("===========================");
             // Arrange
             var response = await _httpClient.GetAsync(_baseUrl);
 

@@ -2,8 +2,10 @@ name: Continues deployment of demo
 
 on:
   push:
+    paths:
+      - Demo/**
     branches:
-      - Feature-intergrationTest-fix/rolback
+      - component-testing-pipeline-feature
     tags:
       - v*
 
@@ -13,12 +15,12 @@ jobs:
       SLN: Demo/Demo.sln
     runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
-      - name: RUN .NET BUILD
-        run: dotnet build --configuration Release $SLN
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: RUN .NET BUILD
+      run: dotnet build --configuration Release $SLN
 
   test:
     env:
@@ -26,12 +28,12 @@ jobs:
     needs: build
     runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
-      - name: RUN .NET BUILD
-        run: dotnet build $TEST_PROJECT
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: RUN .NET BUILD
+      run: dotnet build $TEST_PROJECT
 
   code-quality:
     needs: test
@@ -69,15 +71,14 @@ jobs:
     needs: code-quality
     runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@master
-      - name: Setup dotnet install
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
-      - name: INSTALL STRYKER MUTATOR
-        run: dotnet tool install -g dotnet-stryker
-      - name: RUN .NET STRYKER
-        run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']"
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: INSTALL STRYKER MUTATOR
+      run: dotnet tool install -g dotnet-stryker
+    - name: RUN .NET STRYKER
+      run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']"
 
   publish:
     env:
@@ -134,13 +135,13 @@ jobs:
             Demo/Demo.Deployment/service.yaml
 
   integration-test:
-    name: INTEGRATION TEST
-    env:
-      BASE_URL: http://145.97.16.187/weatherforecast
-      INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
-    needs: deploy
-    runs-on: [linux, self-hosted]
-    steps:
+     name: INTEGRATION TEST
+     env:
+       BASE_URL: http://145.97.16.187/weatherforecast
+       INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
+     needs: deploy
+     runs-on: [linux, self-hosted]
+     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-dotnet@v1
         with:
