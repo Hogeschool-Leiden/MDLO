@@ -5,7 +5,7 @@ on:
     paths:
       - Demo/**
     branches:
-      - component-testing-pipeline-feature
+      - Feature-intergrationTest-fix/rolback
     tags:
       - v*
 
