@@ -19,69 +19,69 @@ jobs:
         dotnet-version: '3.1.100'
     - name: RUN .NET BUILD
       run: dotnet build --configuration Release $SLN
-
-  test:
-    env:
-      TEST_PROJECT: Demo/Demo.Api.Test/Demo.Api.Test.csproj
-    needs: build
-    runs-on: [ubuntu-latest]
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: RUN .NET BUILD
-      run: dotnet build $TEST_PROJECT
-
-  code-quality:
-    needs: test
-    runs-on: [linux, self-hosted]
-    name: CODE QUALITY CHECK WITH SONARQUBE
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
-      SONAR_HOST: ${{ secrets.SONAR_HOST }}
-      SLN: Demo/Demo.sln
-    steps:
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '9.0.4'
-          java-package: jdk
-          architecture: x64
-      - uses: actions/checkout@v2
-      - name: Setup dotnet install
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
-      - name: INSTALL SONARCLOUD SCANNER
-        run: |
-          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
-      - name: ATTACHING SONARQUBE TO PROJECT
-        run: dotnet sonarscanner begin /k:"Demo" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
-      - name: BUILDING SOLUTION
-        run: dotnet build $SLN
-      - name: FINISHING SONARQUBE SCAN
-        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
-
-  mutation-testing:
-    env:
-      PROJECT: Demo/Demo.Api/Demo.Api.csproj
-    name: MUTATION TESTING
-    needs: code-quality
-    runs-on: [ubuntu-latest]
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: INSTALL STRYKER MUTATOR
-      run: dotnet tool install -g dotnet-stryker
-    - name: RUN .NET STRYKER
-      run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']"
+#
+#  test:
+#    env:
+#      TEST_PROJECT: Demo/Demo.Api.Test/Demo.Api.Test.csproj
+#    needs: build
+#    runs-on: [ubuntu-latest]
+#    steps:
+#    - uses: actions/checkout@master
+#    - uses: actions/setup-dotnet@v1
+#      with:
+#        dotnet-version: '3.1.100'
+#    - name: RUN .NET BUILD
+#      run: dotnet build $TEST_PROJECT
+#
+#  code-quality:
+#    needs: test
+#    runs-on: [linux, self-hosted]
+#    name: CODE QUALITY CHECK WITH SONARQUBE
+#    env:
+#      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
+#      SONAR_HOST: ${{ secrets.SONAR_HOST }}
+#      SLN: Demo/Demo.sln
+#    steps:
+#      - uses: actions/setup-java@v1
+#        with:
+#          java-version: '9.0.4'
+#          java-package: jdk
+#          architecture: x64
+#      - uses: actions/checkout@v2
+#      - name: Setup dotnet install
+#        uses: actions/setup-dotnet@v1
+#        with:
+#          dotnet-version: '3.1.100'
+#      - name: INSTALL SONARCLOUD SCANNER
+#        run: |
+#          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
+#      - name: ATTACHING SONARQUBE TO PROJECT
+#        run: dotnet sonarscanner begin /k:"Demo" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
+#      - name: BUILDING SOLUTION
+#        run: dotnet build $SLN
+#      - name: FINISHING SONARQUBE SCAN
+#        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+#
+#  mutation-testing:
+#    env:
+#      PROJECT: Demo/Demo.Api/Demo.Api.csproj
+#    name: MUTATION TESTING
+#    needs: code-quality
+#    runs-on: [ubuntu-latest]
+#    steps:
+#    - uses: actions/checkout@master
+#    - uses: actions/setup-dotnet@v1
+#      with:
+#        dotnet-version: '3.1.100'
+#    - name: INSTALL STRYKER MUTATOR
+#      run: dotnet tool install -g dotnet-stryker
+#    - name: RUN .NET STRYKER
+#      run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']"
 
   publish:
     env:
       SLN: Demo/Demo.sln
-    needs: mutation-testing
+    needs: build
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@master
