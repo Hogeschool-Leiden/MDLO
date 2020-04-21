@@ -15,12 +15,12 @@ jobs:
       SLN: Demo/Demo.sln
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: RUN .NET BUILD
-      run: dotnet build --configuration Release $SLN
+      - uses: actions/checkout@master
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'
+      - name: RUN .NET BUILD
+        run: dotnet build --configuration Release $SLN
 
   test:
     env:
@@ -28,12 +28,12 @@ jobs:
     needs: build
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: RUN .NET BUILD
-      run: dotnet build $TEST_PROJECT
+      - uses: actions/checkout@master
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'
+      - name: RUN .NET BUILD
+        run: dotnet build $TEST_PROJECT
 
   code-quality:
     needs: test
@@ -71,14 +71,14 @@ jobs:
     needs: code-quality
     runs-on: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: INSTALL STRYKER MUTATOR
-      run: dotnet tool install -g dotnet-stryker
-    - name: RUN .NET STRYKER
-      run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']"
+      - uses: actions/checkout@master
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'
+      - name: INSTALL STRYKER MUTATOR
+        run: dotnet tool install -g dotnet-stryker
+      - name: RUN .NET STRYKER
+        run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']"
 
   publish:
     env:
@@ -135,16 +135,45 @@ jobs:
             Demo/Demo.Deployment/service.yaml
 
   integration-test:
-     name: INTEGRATION TEST
-     env:
-       BASE_URL: http://145.97.16.187/weatherforecast
-       INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
-     needs: deploy
-     runs-on: [linux, self-hosted]
-     steps:
+    name: INTEGRATION TEST
+    env:
+      BASE_URL: http://145.97.16.187/weatherforecast
+      INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
+    needs: deploy
+    runs-on: [linux, self-hosted]
+    steps:
       - uses: actions/checkout@master
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.100'
       - name: RUN .NET TEST
-        run: dotnet test $INTEGRATION_TEST_PROJECT
+          run: dotnet test $INTEGRATION_TEST_PROJECT
+
+  production-deploy:
+    name: DEPLOY TO PRODUCTION
+    needs: integration-test
+    runs-on: [linux, self-hosted]
+    steps:
+      - uses: actions/checkout@master
+        
+      - name: DOCKER LOGIN
+          uses: Azure/docker-login@v1
+          with:
+            login-server: docker.pkg.github.com
+            username: ${{ secrets.REGISTRY_USERNAME }}
+            password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: DOCKER PUSH
+        run: |
+          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+          
+      - name: TRIGGER K3D OR BE TRIGGERED
+          uses: appleboy/ssh-action@master
+          with:
+            host: 145.97.16.187
+            username: ${{ secrets.SSH_USER }}
+            password: ${{ secrets.SSH_PASSWORD }}
+            port: 22
+            script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+      
