@@ -31,7 +31,6 @@ namespace Demo.Api.IntegrationTest
             Console.WriteLine("===========================");
             Console.WriteLine(_baseUrl);
             Console.WriteLine("===========================");
-            
             // Arrange
             var response = await _httpClient.GetAsync(_baseUrl);
 
