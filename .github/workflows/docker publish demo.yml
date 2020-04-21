@@ -182,10 +182,10 @@ jobs:
         with:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
-  - name: DEPLOY
-    uses: Azure/k8s-deploy@v1
-    with:
-      namespace: production
-      manifests: |
-        Demo/Demo.Deployment/deployment.yaml
-        Demo/Demo.Deployment/service.yaml
+      - name: DEPLOY
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: production
+          manifests: |
+            Demo/Demo.Deployment/deployment.yaml
+            Demo/Demo.Deployment/service.yaml
