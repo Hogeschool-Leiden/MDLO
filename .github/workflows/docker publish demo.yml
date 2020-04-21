@@ -108,7 +108,7 @@ jobs:
 
       - name: DOCKER PUSH
         run: |
-          docker build Demo/Demo.Deployment/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
           docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
 
       - name: TRIGGER K3D OR BE TRIGGERED
