@@ -12,7 +12,7 @@ namespace Demo.Api.IntegrationTest
     public class WeatherForecastControllerApiTest
     {
         private const string DefaultUrl = "http://localhost:5000/weatherforecast";
-        private const string AppUrlEnvironmentName = "APP_URL";
+        private const string AppUrlEnvironmentName = "BASE_URL";
 
         private static string _baseUrl;
 
