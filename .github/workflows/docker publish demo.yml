@@ -147,7 +147,7 @@ jobs:
         with:
           dotnet-version: '3.1.100'
       - name: RUN .NET TEST
-          run: dotnet test $INTEGRATION_TEST_PROJECT
+        run: dotnet test $INTEGRATION_TEST_PROJECT
 
   production-deploy:
     name: DEPLOY TO PRODUCTION
@@ -176,4 +176,16 @@ jobs:
             password: ${{ secrets.SSH_PASSWORD }}
             port: 22
             script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
-      
+
+      - name: SET CONFIGURATION
+          uses: Azure/k8s-set-context@v1
+          with:
+            kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+  - name: DEPLOY
+      uses: Azure/k8s-deploy@v1
+      with:
+        namespace: production
+        manifests: |
+          Demo/Demo.Deployment/deployment.yaml
+          Demo/Demo.Deployment/service.yaml
