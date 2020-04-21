@@ -147,4 +147,4 @@ jobs:
         with:
           dotnet-version: '3.1.100'
       - name: RUN .NET TEST
-           run: dotnet test $INTEGRATION_TEST_PROJECT
+        run: dotnet test $INTEGRATION_TEST_PROJECT
