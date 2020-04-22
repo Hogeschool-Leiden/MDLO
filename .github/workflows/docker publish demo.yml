@@ -153,6 +153,11 @@ jobs:
     runs-on: [linux, self-hosted]
     steps:
       - uses: actions/checkout@master
+
+      - name: SET CONFIGURATION
+        uses: Azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
         
       - name: DEPLOY
         uses: Azure/k8s-deploy@v1
