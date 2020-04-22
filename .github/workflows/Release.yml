@@ -34,7 +34,7 @@ name: Release
 on:
   push:   # Change to pull_request when done
     branches:
-      - component-testing-pipeline-feature  # Change to master when done
+      - feature-generic-pipeline  # Change to master when done
 
     tags:
       - v*
@@ -42,26 +42,27 @@ on:
 #   # TODO: Change variable to your image's name.
 #   IMAGE_NAME: demo
 
-jobs:
-  publish-docker-images:
-    env: 
-      IMAGE_NAME: ${{ matrix.solution-name }}
-    runs-on: [ubuntu-latest]
-    strategy:
-      fail-fast: true
-      matrix:
-        solution-name: [Demo, DemoFrontend]     # Should be the same as whats in front of the .sln. The containing map as seen from the git root should be the same.
-    steps:
-    - uses: actions/checkout@v2
-    - name: Create docker image ${{ matrix.solution-name }} solution 
-      uses: azure/docker-login@v1
-      with:
-        login-server: docker.pkg.github.com
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    - run: |
-        docker build ${{ matrix.solution-name }}/ -t $(echo hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
-        docker push $(echo hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
+# jobs:
+#   publish-docker-images:
+#     env: 
+#       IMAGE_NAME: ${{ matrix.solution-name }}
+#     runs-on: [ubuntu-latest]
+#     strategy:
+#       fail-fast: true
+#       matrix:
+#         solution-name: [Demo, DemoFrontend]     # Should be the same as whats in front of the .sln. The containing map as seen from the git root should be the same.
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Create docker image ${{ matrix.solution-name }} solution 
+#       uses: azure/docker-login@v1
+#       with:
+#         login-server: docker.pkg.github.com
+#         username: ${{ github.actor }}
+#         password: ${{ secrets.GITHUB_TOKEN }}
+#     - run: |
+#         docker build ${{ matrix.solution-name }}/ -t $(echo hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
+#         docker push $(echo hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
+
 #   sonarqube-analyze:  
 #     runs-on: [linux, self-hosted]
 #     name: Analyzing code
