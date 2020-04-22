@@ -8,6 +8,7 @@ on:
       - feature-generic-pipeline
     tags:
       - v*
+jobs:
   test:
     env:
       TEST_PROJECT: Demo/Demo.Api.Test/Demo.Api.Test.csproj
