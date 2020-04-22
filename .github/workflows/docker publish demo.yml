@@ -148,3 +148,39 @@ jobs:
           dotnet-version: '3.1.100'
       - name: RUN .NET TEST
         run: dotnet test $INTEGRATION_TEST_PROJECT
+        
+      - name: ROLLBACK STAGING DEPLOYMENT
+        if: always()
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: kubectl delete -f Demo/Demo.Deployment/deployment.yaml
+          
+      - name: ROLLBACK STAGING SERVICE
+        if: always()
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: kubectl delete -f Demo/Demo.Deployment/service.yaml
+          
+  production:
+    needs: [integration-test]
+    runs-on: [linux, self-hosted]
+    steps:
+      - name: SET CONFIGURATION
+        uses: Azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+      
+      - name: DEPLOY
+        uses: Azure/k8s-deploy@v1
+        with:
+          manifests: |
+            Demo/Demo.Deployment/deployment-production.yaml
+            Demo/Demo.Deployment/service-production.yaml
