@@ -137,7 +137,7 @@ jobs:
   integration-test:
      name: INTEGRATION TEST
      env:
-       BASE_URL: http://145.97.16.187/weatherforecast
+       BASE_URL: http://145.97.16.187:8081
        INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
      needs: deploy
      runs-on: [linux, self-hosted]
