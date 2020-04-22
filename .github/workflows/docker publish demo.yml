@@ -2,145 +2,117 @@ name: Continues deployment of demo
 
 on:
   push:
-    paths:
-      - Demo/**
+#     paths:
+#       - Demo/**
     branches:
       - feature-generic-pipeline
     tags:
       - v*
-
-jobs:
-  build:
-    env:
-      SLN: Demo/Demo.sln
-    runs-on: [ubuntu-latest]
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: RUN .NET BUILD
-      run: dotnet build --configuration Release $SLN
-  
-  test:
-    env:
-      TEST_PROJECT: Demo/Demo.Api.Test/Demo.Api.Test.csproj
-    needs: build
-    runs-on: [ubuntu-latest]
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: RUN .NET BUILD
-      run: dotnet build $TEST_PROJECT
- 
-  code-quality:
-    needs: test
-    runs-on: [linux, self-hosted]
-    name: CODE QUALITY CHECK WITH SONARQUBE
-    env: 
-      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
-      SONAR_HOST: ${{ secrets.SONAR_HOST }}
-      SLN: Demo/Demo.sln
-    steps:
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '9.0.4'
-          java-package: jdk
-          architecture: x64
-      - uses: actions/checkout@v2
-      - name: Setup dotnet install
-        uses: actions/setup-dotnet@v1
-        with: 
-          dotnet-version: '3.1.100'
-      - name: INSTALL SONARCLOUD SCANNER
-        run: |
-          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
-      - name: ATTACHING SONARQUBE TO PROJECT
-        run: dotnet sonarscanner begin /k:"Demo" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
-      - name: BUILDING SOLUTION
-        run: dotnet build $SLN
-      - name: FINISHING SONARQUBE SCAN
-        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+jobs: 
+#   code-quality:
+#     strategy:
+#       matrix:
+#         project: [Demo, DemoFrontend]
+#     runs-on: [linux, self-hosted]
+#     name: SonarQube quality check
+#     env: 
+#       SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
+#       SONAR_HOST: ${{ secrets.SONAR_HOST }}
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Use Node.js 12.x
+#         if: matrix.project == 'DemoFrontend'
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: 12.x
+#       - uses: actions/setup-java@v1
+#         with:
+#           java-version: '9.0.4'
+#           java-package: jdk
+#           architecture: x64
+#       - uses: actions/checkout@v2
+#       - name: Setup dotnet install
+#         uses: actions/setup-dotnet@v1
+#         with: 
+#           dotnet-version: '3.1.100'
+#       - name: Install SonarQube scanner
+#         run: |
+#           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
+#       - name: Attach SonarQube to project
+#         run: dotnet sonarscanner begin /k:"${{ matrix.project }}" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
+#       - name: Build solution
+#         run: dotnet build ${{ matrix.project }}/${{ matrix.project }}.sln
+#       - name: Sending analyzed data to SonarQube
+#         run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   
   mutation-testing:
+    strategy:
+      matrix:
+        project: [Demo, DemoFrontend]
+        testtype: [ComponentTest, Test]
     env:
       PROJECT: Demo/Demo.Api/Demo.Api.csproj
-    name: MUTATION TESTING
-    needs: code-quality
+    name: Stryker mutation testing
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@master
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.100'
-    - name: INSTALL STRYKER MUTATOR
-      run: dotnet tool install -g dotnet-stryker
-    - name: RUN .NET STRYKER
-      run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']" 
+    - name: Install Stryker mutator
+      run: |
+        dotnet tool install -g dotnet-stryker
+        ls
+    - name: Run Stryker on project
+      run: dotnet stryker -p ${{ matrix.project }}/${{ matrix.project }}.Api/${{ matrix.project }}.Api.csproj -tp "['${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/${{ matrix.project }}.Api.${{ matrix.testtype }}.csproj']" 
  
-  publish:
-    env:
-      SLN: Demo/Demo.sln
-    needs: mutation-testing
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
-      - name: RUN .NET PUBLISH
-        run: dotnet publish -c Release -o ./obj/Docker/publish $SLN
+#   push:
+#     env:
+#       IMAGE_NAME: demo
+#     name: Create and push docker image to registry
+#     runs-on: [ubuntu-latest]
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: Building and pushing docker image
+#         uses: docker/build-push-action@v1
+#         with:
+#           username: ${{ github.actor }}
+#           password: ${{ secrets.GITHUB_TOKEN }}
+#           registry: docker.pkg.github.com
+#           dockerfile: Demo/Dockerfile
+#           repository: hogeschool-leiden/mdlo/demo
+#           tags: v1
 
-  push:
-    env:
-      IMAGE_NAME: demo
-    name: PUSH DOCKER IMAGE TO REGISTRY
-    needs: publish
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@master
-      - name: BUILD DOCKER IMAGE
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          dockerfile: Demo/Dockerfile
-          repository: hogeschool-leiden/mdlo/demo
-          tags: v1
-
-  deploy:
-    env:
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      DEPLOYMENT_YAML: Demo/Demo.Deployment/deployment.yaml
-      SERVICE_YAML: Demo/Demo.Deployment/service.yaml
-    name: DEPLOY TO KUBERNETES
-    needs: push
-    runs-on: [linux, self-hosted]
-    steps:
-      - uses: actions/checkout@master
-      - name: DEPLOY
-        uses: steebchen/kubectl@master
-        with:
-          args: apply -f $DEPLOYMENT_YAML -f $SERVICE_YAML
-      - name: VERIFY
-        uses: steebchen/kubectl@master
-        with:
-          args: rollout status -f $DEPLOYMENT_YAML -f $SERVICE_YAML
+#   deploy:
+#     env:
+#       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+#       DEPLOYMENT_YAML: Demo/Demo.Deployment/deployment.yaml
+#       SERVICE_YAML: Demo/Demo.Deployment/service.yaml
+#     name: Deploy to Kubernetes staging
+#     needs: push
+#     runs-on: [linux, self-hosted]
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: Deploy
+#         uses: steebchen/kubectl@master
+#         with:
+#           args: apply -f $DEPLOYMENT_YAML -f $SERVICE_YAML
+#       - name: Verify
+#         uses: steebchen/kubectl@master
+#         with:
+#           args: rollout status -f $DEPLOYMENT_YAML -f $SERVICE_YAML
         
-  integration-test:
-     name: INTEGRATION TEST
-     env:
-       BASE_URL: http://145.97.16.187/weatherforecast
-       INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
-     needs: deploy
-     runs-on: [linux, self-hosted]
-     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
-      - name: RUN .NET TEST
-        run: dotnet test $INTEGRATION_TEST_PROJECT
+#   integration-test:
+#      name: Integration test
+#      env:
+#        BASE_URL: http://145.97.16.187/weatherforecast
+#        INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
+#      needs: deploy
+#      runs-on: [linux, self-hosted]
+#      steps:
+#       - uses: actions/checkout@master
+#       - uses: actions/setup-dotnet@v1
+#         with:
+#           dotnet-version: '3.1.100'
+#       - name: Running integration tests
+#         run: dotnet test $INTEGRATION_TEST_PROJECT
