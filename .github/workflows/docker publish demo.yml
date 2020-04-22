@@ -89,7 +89,7 @@ jobs:
         run: |
           imagename=$(echo mdlo-${{ matrix.project }}-i | tr '[:upper:]' '[:lower:]')
           docker build -t $imagename .
-          docker push $imagename
+          docker push $imagename docker.pkg.github.com/Hogeschool-Leiden/MDLO
         working-directory: ${{ matrix.project }}/
         
 
