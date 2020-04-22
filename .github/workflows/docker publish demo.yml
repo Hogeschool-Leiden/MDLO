@@ -20,128 +20,147 @@ jobs:
     - name: RUN .NET BUILD
       run: dotnet build --configuration Release $SLN
 
-#  test:
-#    env:
-#      TEST_PROJECT: Demo/Demo.Api.Test/Demo.Api.Test.csproj
-#    needs: build
-#    runs-on: [ubuntu-latest]
-#    steps:
-#    - uses: actions/checkout@master
-#    - uses: actions/setup-dotnet@v1
-#      with:
-#        dotnet-version: '3.1.100'
-#    - name: RUN .NET BUILD
-#      run: dotnet build $TEST_PROJECT
-#
-#  code-quality:
-#    needs: test
-#    runs-on: [linux, self-hosted]
-#    name: CODE QUALITY CHECK WITH SONARQUBE
-#    env:
-#      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
-#      SONAR_HOST: ${{ secrets.SONAR_HOST }}
-#      SLN: Demo/Demo.sln
-#    steps:
-#      - uses: actions/setup-java@v1
-#        with:
-#          java-version: '9.0.4'
-#          java-package: jdk
-#          architecture: x64
-#      - uses: actions/checkout@v2
-#      - name: Setup dotnet install
-#        uses: actions/setup-dotnet@v1
-#        with:
-#          dotnet-version: '3.1.100'
-#      - name: INSTALL SONARCLOUD SCANNER
-#        run: |
-#          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
-#      - name: ATTACHING SONARQUBE TO PROJECT
-#        run: dotnet sonarscanner begin /k:"Demo" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
-#      - name: BUILDING SOLUTION
-#        run: dotnet build $SLN
-#      - name: FINISHING SONARQUBE SCAN
-#        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
-#
-#  mutation-testing:
-#    env:
-#      PROJECT: Demo/Demo.Api/Demo.Api.csproj
-#    name: MUTATION TESTING
-#    needs: code-quality
-#    runs-on: [ubuntu-latest]
-#    steps:
-#    - uses: actions/checkout@master
-#    - uses: actions/setup-dotnet@v1
-#      with:
-#        dotnet-version: '3.1.100'
-#    - name: INSTALL STRYKER MUTATOR
-#      run: dotnet tool install -g dotnet-stryker
-#    - name: RUN .NET STRYKER
-#      run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']"
-#  publish:
-#    env:
-#      SLN: Demo/Demo.sln
-#    needs: build
-#    runs-on: [ubuntu-latest]
-#    steps:
-#      - uses: actions/checkout@master
-#      - uses: actions/setup-dotnet@v1
-#        with:
-#          dotnet-version: '3.1.100'
-#      - name: RUN .NET PUBLISH
-#        run: dotnet publish -c Release -o ./obj/Docker/publish $SLN
-#
-#  deploy:
-#    name: DEPLOY TO KUBERNETES
-#    needs: publish
-#    runs-on: [linux, self-hosted]
-#    steps:
-#      - uses: actions/checkout@master
-#
-#      - name: DOCKER LOGIN
-#        uses: Azure/docker-login@v1
-#        with:
-#          login-server: docker.pkg.github.com
-#          username: ${{ secrets.REGISTRY_USERNAME }}
-#          password: ${{ secrets.REGISTRY_PASSWORD }}
-#
-#      - name: DOCKER PUSH
-#        run: |
-#          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
-#          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
-#
-#      - name: TRIGGER K3D OR BE TRIGGERED
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: 145.97.16.187
-#          username: ${{ secrets.SSH_USER }}
-#          password: ${{ secrets.SSH_PASSWORD }}
-#          port: 22
-#          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
-#
-#      - name: SET CONFIGURATION
-#        uses: Azure/k8s-set-context@v1
-#        with:
-#          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-#
-#      - name: DEPLOY
-#        uses: Azure/k8s-deploy@v1
-#        with:
-#          namespace: staging
-#          manifests: |
-#            Demo/Demo.Deployment/deployment.yaml
-#            Demo/Demo.Deployment/service.yaml
+  test:
+    env:
+      TEST_PROJECT: Demo/Demo.Api.Test/Demo.Api.Test.csproj
+    needs: build
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: RUN .NET BUILD
+      run: dotnet build $TEST_PROJECT
 
-  integration-test:
-     name: INTEGRATION TEST
-     env:
-       BASE_URL: http://145.97.16.187/weatherforecast
-       INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
-     needs: build
-     runs-on: [linux, self-hosted]
-     steps:
+  code-quality:
+    needs: test
+    runs-on: [linux, self-hosted]
+    name: CODE QUALITY CHECK WITH SONARQUBE
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
+      SONAR_HOST: ${{ secrets.SONAR_HOST }}
+      SLN: Demo/Demo.sln
+    steps:
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '9.0.4'
+          java-package: jdk
+          architecture: x64
+      - uses: actions/checkout@v2
+      - name: Setup dotnet install
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'
+      - name: INSTALL SONARCLOUD SCANNER
+        run: |
+          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
+      - name: ATTACHING SONARQUBE TO PROJECT
+        run: dotnet sonarscanner begin /k:"Demo" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
+      - name: BUILDING SOLUTION
+        run: dotnet build $SLN
+      - name: FINISHING SONARQUBE SCAN
+        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+
+  mutation-testing:
+    env:
+      PROJECT: Demo/Demo.Api/Demo.Api.csproj
+    name: MUTATION TESTING
+    needs: code-quality
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: INSTALL STRYKER MUTATOR
+      run: dotnet tool install -g dotnet-stryker
+    - name: RUN .NET STRYKER
+      run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']"
+  
+  publish:
+    env:
+      SLN: Demo/Demo.sln
+    needs: mutation-testing
+    runs-on: [ubuntu-latest]
+    steps:
       - uses: actions/checkout@master
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.100'
-      - name: RUN .NET TEST
-        run: dotnet test $INTEGRATION_TEST_PROJECT
+      - name: RUN .NET PUBLISH
+        run: dotnet publish -c Release -o ./obj/Docker/publish $SLN
+
+  deploy:
+    name: DEPLOY TO KUBERNETES
+    needs: publish
+    runs-on: [linux, self-hosted]
+    steps:
+      - uses: actions/checkout@master
+
+      - name: DOCKER LOGIN
+        uses: Azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: DOCKER PUSH
+        run: |
+          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+
+      - name: TRIGGER K3D OR BE TRIGGERED
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+
+      - name: SET CONFIGURATION
+        uses: Azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: DEPLOY
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: staging
+          manifests: |
+            Demo/Demo.Deployment/deployment.yaml
+            Demo/Demo.Deployment/service.yaml
+
+  integration-test:
+    name: INTEGRATION TEST
+    env:
+      BASE_URL: http://145.97.16.187/weatherforecast
+      INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
+    needs: deploy
+    runs-on: [linux, self-hosted]
+    steps:
+     - uses: actions/checkout@master
+     - uses: actions/setup-dotnet@v1
+       with:
+         dotnet-version: '3.1.100'
+     - name: RUN .NET TEST
+       run: dotnet test $INTEGRATION_TEST_PROJECT
+        
+  deploy-release:
+    name: DEPLOY RELEASE
+    needs: integration-test
+    runs-on: [linux, self-hosted]
+    steps:
+      - uses: actions/checkout@master
+        
+      - name: DEPLOY
+          uses: Azure/k8s-deploy@v1
+          with:
+            namespace: release
+            manifests: |
+              Demo/Demo.Deployment/deployment.yaml
+              Demo/Demo.Deployment/service.yaml
+
+  
+    
