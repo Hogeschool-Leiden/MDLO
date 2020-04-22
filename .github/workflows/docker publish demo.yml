@@ -64,7 +64,9 @@ jobs:
         dotnet tool install -g dotnet-stryker
         ls
     - name: Run Stryker on project
-      run: dotnet stryker -p ${{ matrix.project }}/${{ matrix.project }}.Api/${{ matrix.project }}.Api.csproj -tp "['${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/${{ matrix.project }}.Api.${{ matrix.testtype }}.csproj']" 
+      run: |
+        dotnet stryker -s ${{ matrix.project }}/${{ matrix.project }}.sln
+        dotnet stryker -p ${{ matrix.project }}/${{ matrix.project }}.Api/${{ matrix.project }}.Api.csproj -tp "['${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/${{ matrix.project }}.Api.${{ matrix.testtype }}.csproj']" 
  
 #   push:
 #     env:
