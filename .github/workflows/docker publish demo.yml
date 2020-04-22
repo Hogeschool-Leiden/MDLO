@@ -19,6 +19,12 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
       SONAR_HOST: ${{ secrets.SONAR_HOST }}
     steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        if: matrix.project == 'DemoFrontend'
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
       - uses: actions/setup-java@v1
         with:
           java-version: '9.0.4'
