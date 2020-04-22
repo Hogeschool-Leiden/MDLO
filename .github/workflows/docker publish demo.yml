@@ -88,7 +88,7 @@ jobs:
       - name: Build and push Docker container
         run: |
           imagename=$(echo mdlo-${{ matrix.project }}-i | tr '[:upper:]' '[:lower:]')
-          docker build -t $imagename
+          docker build -t $imagename .
           docker push $imagename
         working-directory: ${{ matrix.project }}/
         
