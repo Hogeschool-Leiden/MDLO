@@ -45,28 +45,28 @@ jobs:
 #       - name: Sending analyzed data to SonarQube
 #         run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   
-  mutation-testing:
-    strategy:
-      matrix:
-        project: [Demo, DemoFrontend]
-        testtype: [Test, ComponentTest]
-    env:
-      PROJECT: Demo/Demo.Api/Demo.Api.csproj
-    name: Stryker mutation testing
-    runs-on: [ubuntu-latest]
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: Install Stryker mutator
-      run: |
-        dotnet tool install -g dotnet-stryker
-    - name: Run Stryker on project
-      run: |
-        pwd
-        dotnet stryker
-      working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
+  # mutation-testing:
+  #   strategy:
+  #     matrix:
+  #       project: [Demo, DemoFrontend]
+  #       testtype: [Test, ComponentTest]
+  #   env:
+  #     PROJECT: Demo/Demo.Api/Demo.Api.csproj
+  #   name: Stryker mutation testing
+  #   runs-on: [ubuntu-latest]
+  #   steps:
+  #   - uses: actions/checkout@master
+  #   - uses: actions/setup-dotnet@v1
+  #     with:
+  #       dotnet-version: '3.1.100'
+  #   - name: Install Stryker mutator
+  #     run: |
+  #       dotnet tool install -g dotnet-stryker
+  #   - name: Run Stryker on project
+  #     run: |
+  #       pwd
+  #       dotnet stryker
+  #     working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
  
 #   push:
 #     env:
