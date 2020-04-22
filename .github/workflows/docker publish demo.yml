@@ -8,23 +8,10 @@ on:
       - feature-generic-pipeline
     tags:
       - v*
-jobs:
-  test:
-    env:
-      TEST_PROJECT: Demo/Demo.Api.Test/Demo.Api.Test.csproj
-    runs-on: [ubuntu-latest]
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: RUN .NET BUILD
-      run: dotnet build $TEST_PROJECT
- 
+jobs: 
   code-quality:
-    needs: test
     runs-on: [linux, self-hosted]
-    name: CODE QUALITY CHECK WITH SONARQUBE
+    name: SonarQube quality check
     env: 
       SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
       SONAR_HOST: ${{ secrets.SONAR_HOST }}
@@ -40,20 +27,20 @@ jobs:
         uses: actions/setup-dotnet@v1
         with: 
           dotnet-version: '3.1.100'
-      - name: INSTALL SONARCLOUD SCANNER
+      - name: Install SonarQube scanner
         run: |
           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
-      - name: ATTACHING SONARQUBE TO PROJECT
+      - name: Attach SonarQube to project
         run: dotnet sonarscanner begin /k:"Demo" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
-      - name: BUILDING SOLUTION
+      - name: Build solution
         run: dotnet build $SLN
-      - name: FINISHING SONARQUBE SCAN
+      - name: Sending analyzed data to SonarQube
         run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   
   mutation-testing:
     env:
       PROJECT: Demo/Demo.Api/Demo.Api.csproj
-    name: MUTATION TESTING
+    name: Stryker mutation testing
     needs: code-quality
     runs-on: [ubuntu-latest]
     steps:
@@ -61,33 +48,19 @@ jobs:
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.100'
-    - name: INSTALL STRYKER MUTATOR
+    - name: Install Stryker mutator
       run: dotnet tool install -g dotnet-stryker
-    - name: RUN .NET STRYKER
+    - name: Run Stryker on project
       run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']" 
  
-  publish:
-    env:
-      SLN: Demo/Demo.sln
-    needs: mutation-testing
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
-      - name: RUN .NET PUBLISH
-        run: dotnet publish -c Release -o ./obj/Docker/publish $SLN
-
   push:
     env:
       IMAGE_NAME: demo
-    name: PUSH DOCKER IMAGE TO REGISTRY
-    needs: publish
+    name: Create and push docker image to registry
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@master
-      - name: BUILD DOCKER IMAGE
+      - name: Building and pushing docker image
         uses: docker/build-push-action@v1
         with:
           username: ${{ github.actor }}
@@ -102,22 +75,22 @@ jobs:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
       DEPLOYMENT_YAML: Demo/Demo.Deployment/deployment.yaml
       SERVICE_YAML: Demo/Demo.Deployment/service.yaml
-    name: DEPLOY TO KUBERNETES
+    name: Deploy to Kubernetes staging
     needs: push
     runs-on: [linux, self-hosted]
     steps:
       - uses: actions/checkout@master
-      - name: DEPLOY
+      - name: Deploy
         uses: steebchen/kubectl@master
         with:
           args: apply -f $DEPLOYMENT_YAML -f $SERVICE_YAML
-      - name: VERIFY
+      - name: Verify
         uses: steebchen/kubectl@master
         with:
           args: rollout status -f $DEPLOYMENT_YAML -f $SERVICE_YAML
         
   integration-test:
-     name: INTEGRATION TEST
+     name: Integration test
      env:
        BASE_URL: http://145.97.16.187/weatherforecast
        INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
@@ -128,5 +101,5 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.100'
-      - name: RUN .NET TEST
+      - name: Running integration tests
         run: dotnet test $INTEGRATION_TEST_PROJECT
