@@ -10,12 +10,14 @@ on:
       - v*
 jobs: 
   code-quality:
+    strategy:
+      matrix:
+        project: [Demo, DemoFrontend]
     runs-on: [linux, self-hosted]
     name: SonarQube quality check
     env: 
       SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
       SONAR_HOST: ${{ secrets.SONAR_HOST }}
-      SLN: Demo/Demo.sln
     steps:
       - uses: actions/setup-java@v1
         with:
@@ -31,9 +33,9 @@ jobs:
         run: |
           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
       - name: Attach SonarQube to project
-        run: dotnet sonarscanner begin /k:"Demo" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
+        run: dotnet sonarscanner begin /k:"${{ matrix.project }}" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
       - name: Build solution
-        run: dotnet build $SLN
+        run: dotnet build $ {{ matrix.project }}/$ {{ matrix.project }}.sln
       - name: Sending analyzed data to SonarQube
         run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   
