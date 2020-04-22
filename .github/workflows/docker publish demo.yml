@@ -62,6 +62,7 @@ jobs:
     - name: Install Stryker mutator
       run: |
         dotnet tool install -g dotnet-stryker
+        ls
     - name: Run Stryker on project
       run: dotnet stryker -p ${{ matrix.project }}/${{ matrix.project }}.Api/${{ matrix.project }}.Api.csproj -tp "['${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/${{ matrix.project }}.Api.${{ matrix.testtype }}.csproj']" 
  
