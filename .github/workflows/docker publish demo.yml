@@ -46,10 +46,13 @@ jobs:
         run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   
   mutation-testing:
+    strategy:
+      matrix:
+        project: [Demo, DemoFrontend]
+        testtype: [ComponentTest, Test]
     env:
       PROJECT: Demo/Demo.Api/Demo.Api.csproj
     name: Stryker mutation testing
-    needs: code-quality
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@master
@@ -59,7 +62,7 @@ jobs:
     - name: Install Stryker mutator
       run: dotnet tool install -g dotnet-stryker
     - name: Run Stryker on project
-      run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']" 
+      run: dotnet stryker -p ${{ matrix.project }}/${{ matrix.project }}.Api/${{ matrix.project }}.Api.csproj -tp "['${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/${{ matrix.project }}.Api.${{ matrix.testtype }}.csproj']" 
  
   push:
     env:
