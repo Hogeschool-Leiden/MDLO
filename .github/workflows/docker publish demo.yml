@@ -166,3 +166,4 @@ jobs:
           manifests: |
             Demo/Demo.Deployment/deployment-production.yaml
             Demo/Demo.Deployment/service-production.yaml
+
