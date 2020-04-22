@@ -147,20 +147,17 @@ jobs:
      - name: RUN .NET TEST
        run: dotnet test $INTEGRATION_TEST_PROJECT
         
-  deploy-release:
-    name: DEPLOY RELEASE
+  production-deploy:
+    name: PRODUCTION-DEPLOY
     needs: integration-test
     runs-on: [linux, self-hosted]
     steps:
       - uses: actions/checkout@master
         
       - name: DEPLOY
-          uses: Azure/k8s-deploy@v1
-          with:
-            namespace: release
-            manifests: |
-              Demo/Demo.Deployment/deployment.yaml
-              Demo/Demo.Deployment/service.yaml
-
-  
-    
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: production
+          manifests: |
+            Demo/Demo.Deployment/deployment.yaml
+            Demo/Demo.Deployment/service.yaml
