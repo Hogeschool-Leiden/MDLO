@@ -1,69 +1,191 @@
-name: Docker
+name: Continues deployment of demo
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     paths:
       - Demo/**
     branches:
-      - master
-
-    # Publish `v1.2.3` tags as releases.
+      - component-testing-pipeline-feature
     tags:
       - v*
 
-env:
-  # TODO: Change variable to your image's name.
-  IMAGE_NAME: demo
-
 jobs:
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
+  build:
+    env:
+      SLN: Demo/Demo.sln
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: RUN .NET BUILD
+      run: dotnet build --configuration Release $SLN
+
   test:
-    runs-on: ubuntu-latest
-
+    env:
+      TEST_PROJECT: Demo/Demo.Api.Test/Demo.Api.Test.csproj
+    needs: build
+    runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: RUN .NET BUILD
+      run: dotnet build $TEST_PROJECT
 
-      - name: Run tests
-        run: docker build -t <name> -f ./Deployment/Dockerfile .
-
-  # Push image to GitHub Packages.
-  # See also https://docs.docker.com/docker-hub/builds/
-  push:
-    # Ensure test job passes before pushing image.
+  code-quality:
     needs: test
-
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-
+    runs-on: [linux, self-hosted]
+    name: CODE QUALITY CHECK WITH SONARQUBE
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
+      SONAR_HOST: ${{ secrets.SONAR_HOST }}
+      SLN: Demo/Demo.sln
     steps:
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '9.0.4'
+          java-package: jdk
+          architecture: x64
       - uses: actions/checkout@v2
-
-      - name: Build image
-        run: docker build . --file Dockerfile --tag image
-
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
-      - name: Push image
+      - name: Setup dotnet install
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'
+      - name: INSTALL SONARCLOUD SCANNER
         run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
-          
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
+      - name: ATTACHING SONARQUBE TO PROJECT
+        run: dotnet sonarscanner begin /k:"Demo" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
+      - name: BUILDING SOLUTION
+        run: dotnet build $SLN
+      - name: FINISHING SONARQUBE SCAN
+        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+  mutation-testing:
+    env:
+      PROJECT: Demo/Demo.Api/Demo.Api.csproj
+    name: MUTATION TESTING
+    needs: code-quality
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: INSTALL STRYKER MUTATOR
+      run: dotnet tool install -g dotnet-stryker
+    - name: RUN .NET STRYKER
+      run: dotnet stryker -p $PROJECT -tp "['Demo/Demo.Api.Test/Demo.Api.Test.csproj']"
 
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+  publish:
+    env:
+      SLN: Demo/Demo.sln
+    needs: mutation-testing
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'
+      - name: RUN .NET PUBLISH
+        run: dotnet publish -c Release -o ./obj/Docker/publish $SLN
 
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
+  deploy:
+    name: DEPLOY TO KUBERNETES
+    needs: publish
+    runs-on: [linux, self-hosted]
+    steps:
+      - uses: actions/checkout@master
 
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
+      - name: DOCKER LOGIN
+        uses: Azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
-          docker tag image $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+      - name: DOCKER PUSH
+        run: |
+          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+
+      - name: TRIGGER K3D OR BE TRIGGERED
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+
+      - name: SET CONFIGURATION
+        uses: Azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: DEPLOY
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: staging
+          manifests: |
+            Demo/Demo.Deployment/deployment.yaml
+            Demo/Demo.Deployment/service.yaml
+
+  integration-test:
+     name: INTEGRATION TEST
+     env:
+       BASE_URL: http://145.97.16.187:8081
+       INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
+     needs: deploy
+     runs-on: [linux, self-hosted]
+     steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.100'
+      - name: RUN .NET TEST
+        run: dotnet test $INTEGRATION_TEST_PROJECT
+
+      - name: ROLLBACK STAGING DEPLOYMENT
+        if: always()
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: kubectl delete -f Demo/Demo.Deployment/deployment.yaml
+
+      - name: ROLLBACK STAGING SERVICE
+        if: always()
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: kubectl delete -f Demo/Demo.Deployment/service.yaml
+
+
+  production-deploy:
+    name: PRODUCTION-DEPLOY
+    needs: integration-test
+    runs-on: [linux, self-hosted]
+    steps:
+      - uses: actions/checkout@master
+
+      - name: SET CONFIGURATION
+        uses: Azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: DEPLOY
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: production
+          manifests: |
+            Demo/Demo.Deployment/deployment-production.yaml
+            Demo/Demo.Deployment/service-production.yaml

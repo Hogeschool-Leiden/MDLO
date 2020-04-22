@@ -1,9 +1,15 @@
-apiVersion : apps/v1beta1
+apiVersion : apps/v1
 kind: Deployment
 metadata:
   name: demo
+  labels:
+    app: demo
+  namespace: staging
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: demo
   template:
     metadata:
       labels:
@@ -11,8 +17,7 @@ spec:
     spec:
       containers:
         - name: demo
-          image: https://npm.pkg.github.com/degrootwim/mdlo/demo:v1
-          imagePullPolicy: Always
+          image: docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
           ports:
             - containerPort: 80
           resources:

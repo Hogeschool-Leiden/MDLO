@@ -1,11 +1,14 @@
-FROM node:12.16.1-alpine as build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as BUILDER
 WORKDIR /app
-COPY package.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+COPY DemoFrontend.Api .
+RUN dotnet restore
+RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
+RUN apt-get install -y nodejs
+RUN dotnet publish -c Release -o output
 
-FROM nginx:1.17.9-alpine as prod
-COPY --from=build /app/dist/DemoFrontEnd /usr/share/nginx/html
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as RUNTIME
+WORKDIR /app
+COPY --from=BUILDER /app/output .
 EXPOSE 80
-CMD ["nginx","-g","daemon off;"]
+ENTRYPOINT ["dotnet", "DemoFrontend.Api.dll"]
