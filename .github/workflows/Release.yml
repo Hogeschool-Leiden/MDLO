@@ -1,109 +1,120 @@
-name: Release
-
-# on:
-#   push:
-#     branches:
-#       - component-testing-pipeline-feature
-
-#     # Publish `v1.2.3` tags as releases.
-#     tags:
-#       - v*
-# env:
-#   # TODO: Change variable to your image's name.
-#   IMAGE_NAME: demo
-
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest
-#     strategy: 
-#       matrix:
-#         testtype: ['ComponentTest', 'Test']
-#         services: ['DemoFrontend', 'Demo']
-#     name: Running ${{ matrix.services }} ${{ matrix.testtype }}s
-#     steps:
-#     - uses: actions/checkout@v2
-#     - name: Setup dotnet install
-#       uses: actions/setup-dotnet@v1
-#       with: 
-#         dotnet-version: '3.1.100'
-
-#     - name: Run tests
-#       run: dotnet test ${{ matrix.services }}/${{ matrix.services }}.Api.${{matrix.testtype}}/${{ matrix.services }}.Api.${{matrix.testtype}}.csproj
-# name: Release
+name: Continues deployment of demo
 
 on:
-  push:   # Change to pull_request when done
+  push:
+#     paths:
+#       - Demo/**
     branches:
-      - feature-generic-pipeline  # Change to master when done
-
+      - feature-generic-pipeline
     tags:
       - v*
-# env:
-#   # TODO: Change variable to your image's name.
-#   IMAGE_NAME: demo
-
-# jobs:
-#   publish-docker-images:
-#     env: 
-#       IMAGE_NAME: ${{ matrix.solution-name }}
-#     runs-on: [ubuntu-latest]
+jobs: 
+#   code-quality:
 #     strategy:
-#       fail-fast: true
 #       matrix:
-#         solution-name: [Demo, DemoFrontend]     # Should be the same as whats in front of the .sln. The containing map as seen from the git root should be the same.
-#     steps:
-#     - uses: actions/checkout@v2
-#     - name: Create docker image ${{ matrix.solution-name }} solution 
-#       uses: azure/docker-login@v1
-#       with:
-#         login-server: docker.pkg.github.com
-#         username: ${{ github.actor }}
-#         password: ${{ secrets.GITHUB_TOKEN }}
-#     - run: |
-#         docker build ${{ matrix.solution-name }}/ -t $(echo hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
-#         docker push $(echo hsl-mdlo-${{ matrix.solution-name }}:staging | tr '[:upper:]' '[:lower:]')
-
-#   sonarqube-analyze:  
+#         project: [Demo, DemoFrontend]
 #     runs-on: [linux, self-hosted]
-#     name: Analyzing code
+#     name: SonarQube quality check
 #     env: 
 #       SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
 #       SONAR_HOST: ${{ secrets.SONAR_HOST }}
 #     steps:
+#       - uses: actions/checkout@v2
+#       - name: Use Node.js 12.x
+#         if: matrix.project == 'DemoFrontend'
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: 12.x
 #       - uses: actions/setup-java@v1
 #         with:
-#           java-version: '9.0.4' # The JDK version to make available on the path.
-#           java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
-#           architecture: x64 # (x64 or x86) - defaults to x64
+#           java-version: '9.0.4'
+#           java-package: jdk
+#           architecture: x64
 #       - uses: actions/checkout@v2
 #       - name: Setup dotnet install
 #         uses: actions/setup-dotnet@v1
 #         with: 
 #           dotnet-version: '3.1.100'
-#       - name: Install SonarCloud scannerr
+#       - name: Install SonarQube scanner
 #         run: |
 #           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
-#       - name: Attaching SonarQube to dotnet
-#         run: dotnet sonarscanner begin /k:"mdlo-demo-api" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
-#       - name: Running tests, building solution
-#         run: dotnet build Demo/Demo.sln
-#       - name: Finishing SonarQube scan
+#       - name: Attach SonarQube to project
+#         run: dotnet sonarscanner begin /k:"${{ matrix.project }}" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
+#       - name: Build solution
+#         run: dotnet build ${{ matrix.project }}/${{ matrix.project }}.sln
+#       - name: Sending analyzed data to SonarQube
 #         run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
-        
-        
-#   test:
-#     runs-on: ubuntu-latest
-#     strategy: 
-#       matrix:
-#         testtype: ['ComponentTest', 'Test']
-#         services: ['DemoFrontend', 'Demo']
-#     name: Running ${{ matrix.services }} ${{ matrix.testtype }}s
+  
+  mutation-testing:
+    strategy:
+      matrix:
+        project: [Demo, DemoFrontend]
+        testtype: [Test, ComponentTest]
+    env:
+      PROJECT: Demo/Demo.Api/Demo.Api.csproj
+    name: Stryker mutation testing
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: Install Stryker mutator
+      run: |
+        dotnet tool install -g dotnet-stryker
+    - name: Run Stryker on project
+      run: |
+        pwd
+        dotnet stryker
+      working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
+ 
+#   push:
+#     env:
+#       IMAGE_NAME: demo
+#     name: Create and push docker image to registry
+#     runs-on: [ubuntu-latest]
 #     steps:
-#     - uses: actions/checkout@v2
-#     - name: Setup dotnet install
-#       uses: actions/setup-dotnet@v1
-#       with: 
-#         dotnet-version: '3.1.100'
+#       - uses: actions/checkout@master
+#       - name: Building and pushing docker image
+#         uses: docker/build-push-action@v1
+#         with:
+#           username: ${{ github.actor }}
+#           password: ${{ secrets.GITHUB_TOKEN }}
+#           registry: docker.pkg.github.com
+#           dockerfile: Demo/Dockerfile
+#           repository: hogeschool-leiden/mdlo/demo
+#           tags: v1
 
-#     - name: Run tests
-#       run: dotnet test ${{ matrix.services }}/${{ matrix.services }}.Api.${{matrix.testtype}}/${{ matrix.services }}.Api.${{matrix.testtype}}.csproj
+#   deploy:
+#     env:
+#       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+#       DEPLOYMENT_YAML: Demo/Demo.Deployment/deployment.yaml
+#       SERVICE_YAML: Demo/Demo.Deployment/service.yaml
+#     name: Deploy to Kubernetes staging
+#     needs: push
+#     runs-on: [linux, self-hosted]
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: Deploy
+#         uses: steebchen/kubectl@master
+#         with:
+#           args: apply -f $DEPLOYMENT_YAML -f $SERVICE_YAML
+#       - name: Verify
+#         uses: steebchen/kubectl@master
+#         with:
+#           args: rollout status -f $DEPLOYMENT_YAML -f $SERVICE_YAML
+        
+#   integration-test:
+#      name: Integration test
+#      env:
+#        BASE_URL: http://145.97.16.187/weatherforecast
+#        INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
+#      needs: deploy
+#      runs-on: [linux, self-hosted]
+#      steps:
+#       - uses: actions/checkout@master
+#       - uses: actions/setup-dotnet@v1
+#         with:
+#           dotnet-version: '3.1.100'
+#       - name: Running integration tests
+#         run: dotnet test $INTEGRATION_TEST_PROJECT
