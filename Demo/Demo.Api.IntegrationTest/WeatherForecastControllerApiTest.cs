@@ -43,7 +43,7 @@ namespace Demo.Api.IntegrationTest
         public async Task Get_Should_Return_Typeof_IEnumerable_Of_WeatherForecast()
         {
             // Arrange
-            var response = await _httpClient.GetAsync(($"{_baseUrl}{WeatherForecastRoute}");
+            var response = await _httpClient.GetAsync($"{_baseUrl}{WeatherForecastRoute}");
 
             // Act
             var result = await response.Content.ReadAsStringAsync();
