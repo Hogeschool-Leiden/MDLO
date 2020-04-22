@@ -2,26 +2,12 @@ name: Continues deployment of demo
 
 on:
   push:
-    paths:
-      - Demo/**
+#     paths:
+#       - Demo/**
     branches:
-      - component-testing-pipeline-feature
+      - feature-generic-pipeline
     tags:
       - v*
-
-jobs:
-  build:
-    env:
-      SLN: Demo/Demo.sln
-    runs-on: [ubuntu-latest]
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: RUN .NET BUILD
-      run: dotnet build --configuration Release $SLN
-  
   test:
     env:
       TEST_PROJECT: Demo/Demo.Api.Test/Demo.Api.Test.csproj
