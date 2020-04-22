@@ -11,8 +11,9 @@ namespace Demo.Api.IntegrationTest
     [TestClass]
     public class WeatherForecastControllerApiTest
     {
-        private const string DefaultUrl = "http://localhost:5000/weatherforecast";
-        private const string AppUrlEnvironmentName = "APP_URL";
+        private const string DefaultUrl = "http://localhost:5000";
+        private const string WeatherForecastRoute = "/weatherforecast";
+        private const string AppUrlEnvironmentName = "BASE_URL";
 
         private static string _baseUrl;
 
@@ -29,7 +30,7 @@ namespace Demo.Api.IntegrationTest
         public async Task Get_Should_Result_In_HttpStatusCode_Of_200_Ok()
         {
             // Arrange
-            var response = await _httpClient.GetAsync(_baseUrl);
+            var response = await _httpClient.GetAsync($"{_baseUrl}{WeatherForecastRoute}");
 
             // Act
             var result = response.StatusCode;
@@ -42,7 +43,7 @@ namespace Demo.Api.IntegrationTest
         public async Task Get_Should_Return_Typeof_IEnumerable_Of_WeatherForecast()
         {
             // Arrange
-            var response = await _httpClient.GetAsync(_baseUrl);
+            var response = await _httpClient.GetAsync(($"{_baseUrl}{WeatherForecastRoute}");
 
             // Act
             var result = await response.Content.ReadAsStringAsync();
