@@ -50,8 +50,6 @@ jobs:
       matrix:
         project: [Demo, DemoFrontend]
         testtype: [Test, ComponentTest]
-    env:
-      PROJECT: Demo/Demo.Api/Demo.Api.csproj
     name: Stryker mutation testing
     runs-on: [ubuntu-latest]
     steps:
@@ -64,7 +62,6 @@ jobs:
         dotnet tool install -g dotnet-stryker
     - name: Run Stryker on project
       run: |
-        pwd
         dotnet stryker
       working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
  
@@ -73,8 +70,6 @@ jobs:
     strategy:
       matrix:
         project: [Demo, DemoFrontend]
-    env:
-      IMAGE_NAME: demo
     name: Create and push docker image to registry
     runs-on: [ubuntu-latest]
     steps:
