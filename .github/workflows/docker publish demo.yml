@@ -3,7 +3,7 @@ name: Continues deployment of demo
 on:
   push:
     paths:
-      - Demo/**
+      - .github/workflows/**
     branches:
       - feature-rollback
     tags:
