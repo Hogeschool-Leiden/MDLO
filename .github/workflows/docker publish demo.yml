@@ -149,19 +149,19 @@ jobs:
       - name: RUN .NET TEST
         run: dotnet test $INTEGRATION_TEST_PROJECT
       
-      - name: SET ENVIRONMENT
-        if: always()
-        run: echo ::set-env name=KUBE_CONFIG_DATA::$(echo ${{ secrets.KUBE_CONFIG }} | base64)
-      
       - name: ROLLBACK STAGING DEPLOYMENT
         if: always()
         uses: Consensys/kubernetes-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           args: delete Demo/Demo.Deployment/deployment.yaml
 
       - name: ROLLBACK STAGING SERVICE
         if: always()
         uses: Consensys/kubernetes-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           args: delete Demo/Demo.Deployment/service.yaml
 
