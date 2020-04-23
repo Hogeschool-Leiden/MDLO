@@ -151,24 +151,19 @@ jobs:
 
       - name: ROLLBACK STAGING DEPLOYMENT
         if: always()
-        uses: appleboy/ssh-action@master
+        uses: Consensys/kubernetes-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }} | base64
         with:
-          host: 145.97.16.187
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: kubectl delete -f Demo/Demo.Deployment/deployment.yaml
+          args: delete Demo/Demo.Deployment/deployment.yaml
 
       - name: ROLLBACK STAGING SERVICE
         if: always()
-        uses: appleboy/ssh-action@master
+        uses: Consensys/kubernetes-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }} | base64
         with:
-          host: 145.97.16.187
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: kubectl delete -f Demo/Demo.Deployment/service.yaml
-
+          args: delete Demo/Demo.Deployment/service.yaml
 
   production-deploy:
     name: PRODUCTION-DEPLOY
