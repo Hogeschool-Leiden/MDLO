@@ -153,7 +153,7 @@ jobs:
         if: always()
         uses: Consensys/kubernetes-action@master
         env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }} | base64
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
         with:
           args: delete Demo/Demo.Deployment/deployment.yaml
 
@@ -161,7 +161,7 @@ jobs:
         if: always()
         uses: Consensys/kubernetes-action@master
         env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }} | base64
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
         with:
           args: delete Demo/Demo.Deployment/service.yaml
 
