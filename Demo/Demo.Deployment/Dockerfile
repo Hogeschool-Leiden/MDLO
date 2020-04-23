@@ -1,13 +1,11 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as BUILDER
 WORKDIR /app
 EXPOSE 80
-COPY ../DemoFrontend.Api/. .
-RUN dotnet restore
-COPY . ./
+COPY ./ .
 RUN dotnet publish -c Release -o output
 
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/output .
-ENTRYPOINT ["dotnet", "DemoFrontend.Api.dll"]
+ENTRYPOINT ["dotnet", "Demo.Api.dll"]

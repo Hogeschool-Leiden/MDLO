@@ -4,7 +4,7 @@ metadata:
   name: demo
   labels:
     app: demo
-  namespace: staging
+  namespace: production
 spec:
   replicas: 1
   selector:

@@ -91,31 +91,52 @@ jobs:
           docker build -t $imagename .
           docker push $imagename
         working-directory: ${{ matrix.project }}/
-        
 
   deploy:
-    env:
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      DEPLOYMENT_YAML: Demo/Demo.Deployment/deployment.yaml
-      SERVICE_YAML: Demo/Demo.Deployment/service.yaml
-    name: Deploy to Kubernetes staging
-    needs: push
+    name: DEPLOY TO KUBERNETES
+    needs: publish
     runs-on: [linux, self-hosted]
     steps:
       - uses: actions/checkout@master
-      - name: Deploy
-        uses: steebchen/kubectl@master
+
+      - name: DOCKER LOGIN
+        uses: Azure/docker-login@v1
         with:
-          args: apply -f $DEPLOYMENT_YAML -f $SERVICE_YAML
-      - name: Verify
-        uses: steebchen/kubectl@master
+          login-server: docker.pkg.github.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: DOCKER PUSH
+        run: |
+          docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+          docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+
+      - name: TRIGGER K3D OR BE TRIGGERED
+        uses: appleboy/ssh-action@master
         with:
-          args: rollout status -f $DEPLOYMENT_YAML -f $SERVICE_YAML
-        
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+
+      - name: SET CONFIGURATION
+        uses: Azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: DEPLOY
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: staging
+          manifests: |
+            Demo/Demo.Deployment/deployment.yaml
+            Demo/Demo.Deployment/service.yaml
+
   integration-test:
-     name: Integration test
+     name: INTEGRATION TEST
      env:
-       BASE_URL: http://145.97.16.187/weatherforecast
+       BASE_URL: http://145.97.16.187:8081
        INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
      needs: deploy
      runs-on: [linux, self-hosted]
@@ -124,5 +145,46 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.100'
-      - name: Running integration tests
+      - name: RUN .NET TEST
         run: dotnet test $INTEGRATION_TEST_PROJECT
+
+      - name: ROLLBACK STAGING DEPLOYMENT
+        if: always()
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: kubectl delete -f Demo/Demo.Deployment/deployment.yaml
+
+      - name: ROLLBACK STAGING SERVICE
+        if: always()
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: kubectl delete -f Demo/Demo.Deployment/service.yaml
+
+
+  production-deploy:
+    name: PRODUCTION-DEPLOY
+    needs: integration-test
+    runs-on: [linux, self-hosted]
+    steps:
+      - uses: actions/checkout@master
+
+      - name: SET CONFIGURATION
+        uses: Azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: DEPLOY
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: production
+          manifests: |
+            Demo/Demo.Deployment/deployment-production.yaml
+            Demo/Demo.Deployment/service-production.yaml

@@ -11,7 +11,7 @@ services:
     build:
       context: "./../DemoFrontend"
       dockerfile: "./DemoFrontend.Deployment/Dockerfile"
-      args: 
+      args:
         source: ../DemoFrontend/DemoFrontend.Api
-    ports: 
+    ports:
       - 8080:80
