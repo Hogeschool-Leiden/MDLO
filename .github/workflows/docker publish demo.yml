@@ -151,19 +151,19 @@ jobs:
       
       - name: ROLLBACK STAGING DEPLOYMENT
         if: always()
-        uses: Consensys/kubernetes-action@master
+        uses: steebchen/kubectl@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          args: delete Demo/Demo.Deployment/deployment.yaml
+          args: delete -f Demo/Demo.Deployment/deployment.yaml
 
       - name: ROLLBACK STAGING SERVICE
         if: always()
-        uses: Consensys/kubernetes-action@master
+        uses: steebchen/kubectl@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          args: delete Demo/Demo.Deployment/service.yaml
+          args: delete -f Demo/Demo.Deployment/service.yaml
 
   production-deploy:
     name: PRODUCTION-DEPLOY
