@@ -3,9 +3,9 @@ name: Continues deployment of demo
 on:
   push:
     paths:
-      - Demo/**
+      - .github/workflows/**
     branches:
-      - component-testing-pipeline-feature
+      - feature-rollback
     tags:
       - v*
 
@@ -119,7 +119,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
-          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v2
 
       - name: SET CONFIGURATION
         uses: Azure/k8s-set-context@v1
@@ -148,27 +148,22 @@ jobs:
           dotnet-version: '3.1.100'
       - name: RUN .NET TEST
         run: dotnet test $INTEGRATION_TEST_PROJECT
-
+      
       - name: ROLLBACK STAGING DEPLOYMENT
         if: always()
-        uses: appleboy/ssh-action@master
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          host: 145.97.16.187
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: kubectl delete -f Demo/Demo.Deployment/deployment.yaml
+          args: delete -f Demo/Demo.Deployment/deployment.yaml
 
       - name: ROLLBACK STAGING SERVICE
         if: always()
-        uses: appleboy/ssh-action@master
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          host: 145.97.16.187
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: kubectl delete -f Demo/Demo.Deployment/service.yaml
-
+          args: delete -f Demo/Demo.Deployment/service.yaml
 
   production-deploy:
     name: PRODUCTION-DEPLOY
