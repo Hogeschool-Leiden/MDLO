@@ -1,8 +1,0 @@
-<div>
-  <mat-card class="weatherCard" *ngFor="let weather of weatherJson" [ngStyle]="{background: backgroundColor(weather)}">
-    <mat-card-title>{{weather.temperatureC}}&deg;C</mat-card-title>
-    <mat-card-subtitle>{{weather.date.substring(0,10)}}</mat-card-subtitle>
-    <mat-card-content><mat-icon style="font-size: 36px">{{getIcon(weather)}}</mat-icon></mat-card-content>
-  </mat-card>
-</div>
-<button mat-raised-button (click)="getWeatherData()" class="weatherbutton">Get Weather information</button>
