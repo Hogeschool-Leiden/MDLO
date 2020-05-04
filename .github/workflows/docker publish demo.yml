@@ -65,68 +65,54 @@ jobs:
 #         dotnet stryker
 #       working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
  
-  push:
-#     needs: [mutation-testing, code-quality]
-    strategy:
-      matrix:
-        project: [Demo, DemoFrontend]
-    name: Create and push docker image to registry
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Docker login
-        uses: Azure/docker-login@v1
-        with:
-          login-server: docker.pkg.github.com
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-      - name: Build and push Docker container
-        run: |
-          ls -a
-          imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i | tr '[:upper:]' '[:lower:]')
-          docker build -t $imagename .
-          docker push $imagename
-        working-directory: ${{ matrix.project }}/
-
-#   deploy-staging:
-#     name: DEPLOY TO KUBERNETES
-#     runs-on: [linux, self-hosted]
+#   push:
+# #     needs: [mutation-testing, code-quality]
+#     strategy:
+#       matrix:
+#         project: [Demo, DemoFrontend]
+#     name: Create and push docker image to registry
+#     runs-on: [ubuntu-latest]
 #     steps:
-#       - uses: actions/checkout@master
-
-#       - name: DOCKER LOGIN
+#       - uses: actions/checkout@v2
+#       - name: Docker login
 #         uses: Azure/docker-login@v1
 #         with:
 #           login-server: docker.pkg.github.com
 #           username: ${{ secrets.REGISTRY_USERNAME }}
 #           password: ${{ secrets.REGISTRY_PASSWORD }}
-
-#       - name: DOCKER PUSH
+#       - name: Build and push Docker container
 #         run: |
-#           docker build Demo/ -t docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
-#           docker push docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+#           ls -a
+#           imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i | tr '[:upper:]' '[:lower:]')
+#           docker build -t $imagename .
+#           docker push $imagename
+#         working-directory: ${{ matrix.project }}/
 
-#       - name: TRIGGER K3D OR BE TRIGGERED
-#         uses: appleboy/ssh-action@master
-#         with:
-#           host: 145.97.16.187
-#           username: ${{ secrets.SSH_USER }}
-#           password: ${{ secrets.SSH_PASSWORD }}
-#           port: 22
-#           script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
+  deploy-staging:
+    name: DEPLOY TO KUBERNETES
+    runs-on: [linux, self-hosted]
+    steps:
+      - name: TRIGGER K3D OR BE TRIGGERED
+        uses: appleboy/ssh-action@master
+        with:
+          host: 145.97.16.187
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:v3
 
-#       - name: SET CONFIGURATION
-#         uses: Azure/k8s-set-context@v1
-#         with:
-#           kubeconfig: ${{ secrets.KUBE_CONFIG }}
+      - name: SET CONFIGURATION
+        uses: Azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
-#       - name: DEPLOY
-#         uses: Azure/k8s-deploy@v1
-#         with:
-#           namespace: staging
-#           manifests: |
-#             Demo/Demo.Deployment/deployment.yaml
-#             Demo/Demo.Deployment/service.yaml
+      - name: DEPLOY
+        uses: Azure/k8s-deploy@v1
+        with:
+          namespace: staging
+          manifests: |
+            Demo/Demo.Deployment/deployment.yaml
+            Demo/Demo.Deployment/service.yaml
 
 #   integration-test:
 #      name: INTEGRATION TEST
