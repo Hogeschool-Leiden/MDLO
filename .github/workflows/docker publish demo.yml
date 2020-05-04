@@ -82,6 +82,7 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Build and push Docker container
         run: |
+          ls -a
           imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i | tr '[:upper:]' '[:lower:]')
           docker build -t $imagename .
           docker push $imagename
