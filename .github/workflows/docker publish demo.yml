@@ -164,7 +164,7 @@ jobs:
 
 
   production-deploy:
-    name: PRODUCTION-DEPLOY
+    name: Deploy production
     needs: integration-test
     runs-on: [linux, self-hosted]
     steps:
