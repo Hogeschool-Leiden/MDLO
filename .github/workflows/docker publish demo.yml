@@ -99,7 +99,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
-          script: k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo:latest
+          script: |
+            k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:latest
 
       - name: Set configuration
         uses: Azure/k8s-set-context@v1
