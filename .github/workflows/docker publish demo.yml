@@ -100,6 +100,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
+            docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:latest
             k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:latest
 
       - name: Set configuration
