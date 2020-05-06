@@ -107,7 +107,8 @@ jobs:
         uses: Azure/k8s-set-context@v1
         with:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
-
+          
+      - uses: actions/checkout@v2
       - name: Deploy
         uses: Azure/k8s-deploy@v1
         with:
