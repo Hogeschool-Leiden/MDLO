@@ -91,14 +91,7 @@ jobs:
   deploy-staging:
     name: Deploy to Kubernetes
     runs-on: [linux, self-hosted]
-    steps:
-      - uses: Azure/k8s-create-secret@v1
-        with:
-          container-registry-url: docker.pkg.github.com
-          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          secret-name: demo-k8s-secret
-          
+    steps:          
       - name: SSH Into server
         uses: appleboy/ssh-action@master
         with:
@@ -112,7 +105,14 @@ jobs:
             docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:v10
             k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:v10
             k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:v10
-
+            
+      - uses: Azure/k8s-create-secret@v1
+        with:
+          container-registry-url: docker.pkg.github.com
+          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          secret-name: demo-k8s-secret
+          
       - name: Set configuration
         uses: Azure/k8s-set-context@v1
         with:
