@@ -92,12 +92,12 @@ jobs:
     name: Deploy to Kubernetes
     runs-on: [linux, self-hosted]
     steps:
-      - name: DOCKER LOGIN
-        uses: Azure/docker-login@v1
+      - uses: Azure/k8s-create-secret@v1
         with:
-          login-server: docker.pkg.github.com
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+          container-registry-url: docker.pkg.github.com
+          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          secret-name: demo-k8s-secret
           
       - name: SSH Into server
         uses: appleboy/ssh-action@master
