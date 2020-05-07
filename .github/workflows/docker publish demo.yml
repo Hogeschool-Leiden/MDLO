@@ -9,84 +9,84 @@ on:
     tags:
       - v*
 jobs: 
-#   code-quality:
-#     strategy:
-#       matrix:
-#         project: [Demo, DemoFrontend]
-#     runs-on: [linux, self-hosted]
-#     name: SonarQube quality check
-#     env: 
-#       SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
-#       SONAR_HOST: ${{ secrets.SONAR_HOST }}
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Use Node.js 12.x
-#         if: matrix.project == 'DemoFrontend'
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: 12.x
-#       - uses: actions/setup-java@v1
-#         with:
-#           java-version: '9.0.4'
-#           java-package: jdk
-#           architecture: x64
-#       - uses: actions/checkout@v2
-#       - name: Setup dotnet install
-#         uses: actions/setup-dotnet@v1
-#         with: 
-#           dotnet-version: '3.1.100'
-#       - name: Install SonarQube scanner
-#         run: |
-#           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
-#       - name: Attach SonarQube to project
-#         run: dotnet sonarscanner begin /k:"${{ matrix.project }}" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
-#       - name: Build solution
-#         run: dotnet build ${{ matrix.project }}/${{ matrix.project }}.sln
-#       - name: Sending analyzed data to SonarQube
-#         run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+  code-quality:
+    strategy:
+      matrix:
+        project: [Demo, DemoFrontend]
+    runs-on: [linux, self-hosted]
+    name: SonarQube quality check
+    env: 
+      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
+      SONAR_HOST: ${{ secrets.SONAR_HOST }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        if: matrix.project == 'DemoFrontend'
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '9.0.4'
+          java-package: jdk
+          architecture: x64
+      - uses: actions/checkout@v2
+      - name: Setup dotnet install
+        uses: actions/setup-dotnet@v1
+        with: 
+          dotnet-version: '3.1.100'
+      - name: Install SonarQube scanner
+        run: |
+          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
+      - name: Attach SonarQube to project
+        run: dotnet sonarscanner begin /k:"${{ matrix.project }}" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
+      - name: Build solution
+        run: dotnet build ${{ matrix.project }}/${{ matrix.project }}.sln
+      - name: Sending analyzed data to SonarQube
+        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   
-#   mutation-testing:
-#     strategy:
-#       matrix:
-#         project: [Demo, DemoFrontend]
-#         testtype: [Test, ComponentTest]
-#     name: Stryker mutation testing
-#     runs-on: [ubuntu-latest]
-#     steps:
-#     - uses: actions/checkout@master
-#     - uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: '3.1.100'
-#     - name: Install Stryker mutator
-#       run: |
-#         dotnet tool install -g dotnet-stryker
-#     - name: Run Stryker on project
-#       run: |
-#         dotnet stryker
-#       working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
+  mutation-testing:
+    strategy:
+      matrix:
+        project: [Demo, DemoFrontend]
+        testtype: [Test, ComponentTest]
+    name: Stryker mutation testing
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: Install Stryker mutator
+      run: |
+        dotnet tool install -g dotnet-stryker
+    - name: Run Stryker on project
+      run: |
+        dotnet stryker
+      working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
  
-#   push:
-# #     needs: [mutation-testing, code-quality]
-#     strategy:
-#       matrix:
-#         project: [Demo, DemoFrontend]
-#     name: Create and push docker image to registry
-#     runs-on: [ubuntu-latest]
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Docker login
-#         uses: Azure/docker-login@v1
-#         with:
-#           login-server: docker.pkg.github.com
-#           username: ${{ secrets.REGISTRY_USERNAME }}
-#           password: ${{ secrets.REGISTRY_PASSWORD }}
-#       - name: Build and push Docker container
-#         run: |
-#           ls -a
-#           imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i | tr '[:upper:]' '[:lower:]')
-#           docker build -t $imagename .
-#           docker push $imagename
-#         working-directory: ${{ matrix.project }}/
+  push:
+    needs: [mutation-testing, code-quality]
+    strategy:
+      matrix:
+        project: [Demo, DemoFrontend]
+    name: Create and push docker image to registry
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        uses: Azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - name: Build and push Docker container
+        run: |
+          ls -a
+          imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i | tr '[:upper:]' '[:lower:]')
+          docker build -t $imagename .
+          docker push $imagename:v10 # moet branch name worden, dan maken we release branches.
+        working-directory: ${{ matrix.project }}/
 
   deploy-staging:
     name: Deploy to Kubernetes
