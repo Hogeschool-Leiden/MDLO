@@ -108,10 +108,10 @@ jobs:
           port: 22
           script: |
             docker login docker.pkg.github.com -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
-            docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:latest
-            docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:latest
-            k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:latest
-            k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:latest
+            docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:v10
+            docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:v10
+            k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:v10
+            k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:v10
 
       - name: Set configuration
         uses: Azure/k8s-set-context@v1
