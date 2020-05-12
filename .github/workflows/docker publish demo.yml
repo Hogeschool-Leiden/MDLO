@@ -7,7 +7,7 @@ on:
     branches:
       - feature-generic-pipeline
     tags:
-      - v*
+      - 'v*.*.*'
 jobs: 
 #   code-quality:
 #     strategy:
@@ -92,8 +92,7 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Build and push Docker container
         run: |
-          ls -a
-          imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i:$RELEASE_VERSION | tr '[:upper:]' '[:lower:]')
+          imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i:${{ steps.vars.outputs.tag }} | tr '[:upper:]' '[:lower:]')
           docker build -t $imagename .
           docker push $imagename
         working-directory: ${{ matrix.project }}/
