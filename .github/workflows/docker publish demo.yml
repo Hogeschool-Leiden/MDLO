@@ -6,8 +6,9 @@ on:
 #       - Demo/**
     branches:
       - feature-generic-pipeline
-    tags:
-      - 'v*.*.*'
+  release:
+    types: [published]
+      
 jobs: 
 #   code-quality:
 #     strategy:
