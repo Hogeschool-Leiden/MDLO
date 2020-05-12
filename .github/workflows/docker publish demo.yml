@@ -4,12 +4,10 @@ on:
   push:
 #     paths:
 #       - Demo/**
-    tags:
-      - 'v*.*.*'
-    branches:
-      - feature-generic-pipeline
-  release:
-    types: [published]
+      tags:
+        - 'v*.*.*'
+      branches:
+        - feature-generic-pipeline
 
       
 jobs: 
