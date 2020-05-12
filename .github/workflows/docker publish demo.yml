@@ -70,9 +70,19 @@ jobs:
     strategy:
       matrix:
         project: [Demo, DemoFrontend]
-    name: Create and push docker image to registry
-    runs-on: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF:10}
+      - name: Check output
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ steps.vars.outputs.tag }}
+
       - uses: actions/checkout@v2
       - name: Docker login
         uses: Azure/docker-login@v1
@@ -83,7 +93,7 @@ jobs:
       - name: Build and push Docker container
         run: |
           ls -a
-          imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i | tr '[:upper:]' '[:lower:]')
+          imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i:$RELEASE_VERSION | tr '[:upper:]' '[:lower:]')
           docker build -t $imagename .
           docker push $imagename:v10 # moet branch name worden, dan maken we release branches.
         working-directory: ${{ matrix.project }}/
