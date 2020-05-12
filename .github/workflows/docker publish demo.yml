@@ -9,64 +9,64 @@ on:
     tags:
       - v*
 jobs: 
-  code-quality:
-    strategy:
-      matrix:
-        project: [Demo, DemoFrontend]
-    runs-on: [linux, self-hosted]
-    name: SonarQube quality check
-    env: 
-      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
-      SONAR_HOST: ${{ secrets.SONAR_HOST }}
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 12.x
-        if: matrix.project == 'DemoFrontend'
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '9.0.4'
-          java-package: jdk
-          architecture: x64
-      - uses: actions/checkout@v2
-      - name: Setup dotnet install
-        uses: actions/setup-dotnet@v1
-        with: 
-          dotnet-version: '3.1.100'
-      - name: Install SonarQube scanner
-        run: |
-          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
-      - name: Attach SonarQube to project
-        run: dotnet sonarscanner begin /k:"${{ matrix.project }}" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
-      - name: Build solution
-        run: dotnet build ${{ matrix.project }}/${{ matrix.project }}.sln
-      - name: Sending analyzed data to SonarQube
-        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+#   code-quality:
+#     strategy:
+#       matrix:
+#         project: [Demo, DemoFrontend]
+#     runs-on: [linux, self-hosted]
+#     name: SonarQube quality check
+#     env: 
+#       SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
+#       SONAR_HOST: ${{ secrets.SONAR_HOST }}
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Use Node.js 12.x
+#         if: matrix.project == 'DemoFrontend'
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: 12.x
+#       - uses: actions/setup-java@v1
+#         with:
+#           java-version: '9.0.4'
+#           java-package: jdk
+#           architecture: x64
+#       - uses: actions/checkout@v2
+#       - name: Setup dotnet install
+#         uses: actions/setup-dotnet@v1
+#         with: 
+#           dotnet-version: '3.1.100'
+#       - name: Install SonarQube scanner
+#         run: |
+#           echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
+#       - name: Attach SonarQube to project
+#         run: dotnet sonarscanner begin /k:"${{ matrix.project }}" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
+#       - name: Build solution
+#         run: dotnet build ${{ matrix.project }}/${{ matrix.project }}.sln
+#       - name: Sending analyzed data to SonarQube
+#         run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
   
-  mutation-testing:
-    strategy:
-      matrix:
-        project: [Demo, DemoFrontend]
-        testtype: [Test, ComponentTest]
-    name: Stryker mutation testing
-    runs-on: [ubuntu-latest]
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - name: Install Stryker mutator
-      run: |
-        dotnet tool install -g dotnet-stryker
-    - name: Run Stryker on project
-      run: |
-        dotnet stryker
-      working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
+#   mutation-testing:
+#     strategy:
+#       matrix:
+#         project: [Demo, DemoFrontend]
+#         testtype: [Test, ComponentTest]
+#     name: Stryker mutation testing
+#     runs-on: [ubuntu-latest]
+#     steps:
+#     - uses: actions/checkout@master
+#     - uses: actions/setup-dotnet@v1
+#       with:
+#         dotnet-version: '3.1.100'
+#     - name: Install Stryker mutator
+#       run: |
+#         dotnet tool install -g dotnet-stryker
+#     - name: Run Stryker on project
+#       run: |
+#         dotnet stryker
+#       working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
  
-  push:
-    needs: [mutation-testing, code-quality]
+  push-docker:
+#     needs: [mutation-testing, code-quality]
     strategy:
       matrix:
         project: [Demo, DemoFrontend]
@@ -95,85 +95,85 @@ jobs:
           ls -a
           imagename=$(echo docker.pkg.github.com/hogeschool-leiden/mdlo/${{ matrix.project }}-i:$RELEASE_VERSION | tr '[:upper:]' '[:lower:]')
           docker build -t $imagename .
-          docker push $imagename:v10 # moet branch name worden, dan maken we release branches.
+          docker push $imagename
         working-directory: ${{ matrix.project }}/
 
-  deploy-staging:
-    name: Deploy to Kubernetes
-    runs-on: [linux, self-hosted]
-    steps:          
-      - name: SSH Into server
-        uses: appleboy/ssh-action@master
-        with:
-          host: 145.97.16.187
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: |
-            docker login docker.pkg.github.com -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
-            docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:v10
-            docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:v10
-            k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:v10
-            k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:v10
+#   deploy-staging:
+#     name: Deploy to Kubernetes
+#     runs-on: [linux, self-hosted]
+#     steps:          
+#       - name: SSH Into server
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: 145.97.16.187
+#           username: ${{ secrets.SSH_USER }}
+#           password: ${{ secrets.SSH_PASSWORD }}
+#           port: 22
+#           script: |
+#             docker login docker.pkg.github.com -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
+#             docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:v10
+#             docker pull docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:v10
+#             k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demo-i:v10
+#             k3d i docker.pkg.github.com/hogeschool-leiden/mdlo/demofrontend-i:v10
             
-      - uses: Azure/k8s-create-secret@v1
-        with:
-          container-registry-url: docker.pkg.github.com
-          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          secret-name: demo-k8s-secret
+#       - uses: Azure/k8s-create-secret@v1
+#         with:
+#           container-registry-url: docker.pkg.github.com
+#           container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+#           container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+#           secret-name: demo-k8s-secret
           
-      - name: Set configuration
-        uses: Azure/k8s-set-context@v1
-        with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+#       - name: Set configuration
+#         uses: Azure/k8s-set-context@v1
+#         with:
+#           kubeconfig: ${{ secrets.KUBE_CONFIG }}
           
-      - uses: actions/checkout@v2
-      - name: Deploy
-        uses: Azure/k8s-deploy@v1
-        with:
-          namespace: staging
-          manifests: |
-            Demo/Demo.Deployment/deployment.yaml
-            Demo/Demo.Deployment/service.yaml
-            DemoFrontend/DemoFrontend.Deployment/deployment.yaml
-            DemoFrontend/DemoFrontend.Deployment/service.yaml
+#       - uses: actions/checkout@v2
+#       - name: Deploy
+#         uses: Azure/k8s-deploy@v1
+#         with:
+#           namespace: staging
+#           manifests: |
+#             Demo/Demo.Deployment/deployment.yaml
+#             Demo/Demo.Deployment/service.yaml
+#             DemoFrontend/DemoFrontend.Deployment/deployment.yaml
+#             DemoFrontend/DemoFrontend.Deployment/service.yaml
             
 
-  integration-test:
-     name: Integration test
-     env:
-       BASE_URL: http://145.97.16.187:8081
-       INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
-     needs: deploy-staging
-     runs-on: [linux, self-hosted]
-     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.100'
-      - name: Run .NET test
-        run: dotnet test $INTEGRATION_TEST_PROJECT
+#   integration-test:
+#      name: Integration test
+#      env:
+#        BASE_URL: http://145.97.16.187:8081
+#        INTEGRATION_TEST_PROJECT: Demo/Demo.Api.IntegrationTest/Demo.Api.IntegrationTest.csproj
+#      needs: deploy-staging
+#      runs-on: [linux, self-hosted]
+#      steps:
+#       - uses: actions/checkout@master
+#       - uses: actions/setup-dotnet@v1
+#         with:
+#           dotnet-version: '3.1.100'
+#       - name: Run .NET test
+#         run: dotnet test $INTEGRATION_TEST_PROJECT
 
-      - name: Rollback staging deployments
-        if: always()
-        uses: appleboy/ssh-action@master
-        with:
-          host: 145.97.16.187
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: kubectl delete -f Demo/Demo.Deployment/deployment.yaml
+#       - name: Rollback staging deployments
+#         if: always()
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: 145.97.16.187
+#           username: ${{ secrets.SSH_USER }}
+#           password: ${{ secrets.SSH_PASSWORD }}
+#           port: 22
+#           script: kubectl delete -f Demo/Demo.Deployment/deployment.yaml
 
-      - name: Rollback staging services
-        if: always()
-        uses: appleboy/ssh-action@master
-        with:
-          host: 145.97.16.187
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: kubectl delete -f Demo/Demo.Deployment/service.yaml
+#       - name: Rollback staging services
+#         if: always()
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: 145.97.16.187
+#           username: ${{ secrets.SSH_USER }}
+#           password: ${{ secrets.SSH_PASSWORD }}
+#           port: 22
+#           script: kubectl delete -f Demo/Demo.Deployment/service.yaml
 
 
 #   production-deploy:
