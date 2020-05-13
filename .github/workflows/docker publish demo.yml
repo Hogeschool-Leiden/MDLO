@@ -64,7 +64,7 @@ jobs:
         dotnet tool install -g dotnet-stryker
     - name: Run Stryker on project
       run: |
-        dotnet stryker
+        dotnet-stryker
       working-directory: ${{ matrix.project }}/${{ matrix.project }}.Api.${{ matrix.testtype }}/
  
   push-docker:
