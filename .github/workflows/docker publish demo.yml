@@ -7,7 +7,7 @@ on:
       tags:
         - 'v*.*.*'
       branches:
-        - feature-generic-pipeline
+        - develop
 
       
 jobs: 
