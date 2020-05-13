@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../CompetentieAppFrontend.Api/CompetentieAppFrontent.Api.csproj"/>
+    <ProjectReference Include="../CompetentieAppFrontend.Api/CompetentieAppFrontend.Api.csproj"/>
   </ItemGroup>
 
 </Project>
