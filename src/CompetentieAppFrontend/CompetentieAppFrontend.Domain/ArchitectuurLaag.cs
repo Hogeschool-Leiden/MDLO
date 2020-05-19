@@ -1,11 +1,14 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CompetentieAppFrontend.Domain
 {
     public class ArchitectuurLaag
     {
-        public string ArchitectuurLaagNaam { get; set; }
+        public long Id { get; set; }
 
-        public IEnumerable<Activiteit> Activiteiten { get; set; }    
+        public string ArchitectuurLaagNaam { get; set; }
+        
+        public IEnumerable<BeheersingsNiveau> BeheersingsNiveaus { get; set; }
     }
 }

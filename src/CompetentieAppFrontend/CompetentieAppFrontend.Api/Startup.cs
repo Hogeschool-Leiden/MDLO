@@ -1,7 +1,11 @@
+using System;
+using CompetentieAppFrontend.Infrastructure.DAL;
+using CompetentieAppFrontend.Infrastructure.Repositories;
+using CompetentieAppFrontend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,18 +21,19 @@ namespace CompetentieAppFrontend.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            services.AddDbContext<CompetentieAppFrontendContext>(builder =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
+                                  throw new ArgumentNullException());
             });
+            services.AddTransient<IMatrixRepository, MatrixRepository>();
+            services.AddTransient<IEindCompetentieMatrixService, EindCompetentieMatrixService>();
+            services.AddControllersWithViews();
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -38,7 +43,6 @@ namespace CompetentieAppFrontend.Api
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -60,9 +64,6 @@ namespace CompetentieAppFrontend.Api
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
