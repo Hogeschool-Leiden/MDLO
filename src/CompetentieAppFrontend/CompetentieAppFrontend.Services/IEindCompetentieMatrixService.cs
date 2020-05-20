@@ -5,6 +5,6 @@ namespace CompetentieAppFrontend.Services
 {
     public interface IEindCompetentieMatrixService
     {
-        IEnumerable<EindCompetentie> GetCompetentieMatrix(int periodeNummer, string specialisatieNaam);
+        CompetentieMatrix GetEindCompetentieMatrix(int periodeNummer, string specialisatieNaam);
     }
 }

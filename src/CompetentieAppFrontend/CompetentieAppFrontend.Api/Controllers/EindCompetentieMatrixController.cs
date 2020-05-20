@@ -25,7 +25,7 @@ namespace CompetentieAppFrontend.Api.Controllers
             _logger.LogInformation(
                 $"Request received, specialisatie naam: {specialisatieNaam} and periode nummer: {periodeNummer}");
 
-            return Ok(_service.GetCompetentieMatrix(periodeNummer, specialisatieNaam));
+            return Ok(_service.GetEindCompetentieMatrix(periodeNummer, specialisatieNaam));
         }
     }
 }

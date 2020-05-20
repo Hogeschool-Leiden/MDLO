@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
@@ -7,18 +7,31 @@ namespace CompetentieAppFrontend.Services
 {
     public class EindCompetentieMatrixService : IEindCompetentieMatrixService
     {
-        private ILogger<EindCompetentieMatrixService> _logger;
-        private IEindCompetentieRepository _repository;
+        private readonly ILogger<EindCompetentieMatrixService> _logger;
+        private readonly IEindCompetentieRepository _eindCompetentieRepository;
+        private readonly IArchitectuurLaagRepository _architectuurLaagRepository;
+        private readonly IActiviteitRepository _activiteitRepository;
 
-        public EindCompetentieMatrixService(ILogger<EindCompetentieMatrixService> logger, IEindCompetentieRepository repository)
+        public EindCompetentieMatrixService(ILogger<EindCompetentieMatrixService> logger,
+            IEindCompetentieRepository eindCompetentieRepository,
+            IArchitectuurLaagRepository architectuurLaagRepository,
+            IActiviteitRepository activiteitRepository)
         {
             _logger = logger;
-            _repository = repository;
+            _eindCompetentieRepository = eindCompetentieRepository;
+            _architectuurLaagRepository = architectuurLaagRepository;
+            _activiteitRepository = activiteitRepository;
         }
 
-        public IEnumerable<EindCompetentie> GetCompetentieMatrix(int periodeNummer, string specialisatieNaam)
+        public CompetentieMatrix GetEindCompetentieMatrix(int periodeNummer, string specialisatieNaam)
         {
-            return _repository.GetEindCompetenties(periodeNummer, specialisatieNaam);
+            _logger.LogInformation(
+                $"Retrieving eind competenties for specialisatie: {specialisatieNaam} in periode: {periodeNummer}");
+            var architectuurLaagNamen = _architectuurLaagRepository.GetAllArchitectuurLaagNamen().ToList();
+            var activiteitNamen = _activiteitRepository.GetAllActiviteitNamen().ToList();
+            var eindCompetenties = _eindCompetentieRepository.GetEindCompetenties(periodeNummer, specialisatieNaam)
+                .ToList();
+            return new CompetentieMatrix(architectuurLaagNamen, activiteitNamen, eindCompetenties.ToList());
         }
     }
 }
