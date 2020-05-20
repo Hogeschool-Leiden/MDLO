@@ -2,12 +2,7 @@
 
 ## Compententie app
 
-### Domein
+### Domein CompetentieAppFrontend
 
-Dit zijn simpele 'data transfer objecten' omdat het gaat om een read model.
+[![Class diagram: CompetentieAppFrontend.Domain](https://app.lucidchart.com/publicSegments/view/7e97b8b3-9543-4607-978c-0246adb7c3a2/image.png)](https://app.lucidchart.com/documents/view/36b9134f-823d-4e02-a3a3-7d677b83c9c8)
 
-[![Read Model: Eindcompetenties](https://app.lucidchart.com/publicSegments/view/4197ff77-f19b-4dfb-9c4a-02c5597e583b/image.png)](https://app.lucidchart.com/documents/view/a22d92d3-4976-48d2-887a-fe82c95522b8)
-
-Dit evalueerd vervolgens in dit model: (2e slice)
-
-[![Read Model: Modules](https://app.lucidchart.com/publicSegments/view/4787264c-7b7f-4ba4-b28f-7e76fdf3dd23/image.png)](https://app.lucidchart.com/documents/view/4762a1f5-baf8-46a5-8f43-7bc4f8c20ad7)
