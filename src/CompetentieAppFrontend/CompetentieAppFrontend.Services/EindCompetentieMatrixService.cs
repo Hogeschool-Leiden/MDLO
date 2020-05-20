@@ -8,17 +8,17 @@ namespace CompetentieAppFrontend.Services
     public class EindCompetentieMatrixService : IEindCompetentieMatrixService
     {
         private ILogger<EindCompetentieMatrixService> _logger;
-        private IMatrixRepository _repository;
+        private IEindCompetentieRepository _repository;
 
-        public EindCompetentieMatrixService(ILogger<EindCompetentieMatrixService> logger, IMatrixRepository repository)
+        public EindCompetentieMatrixService(ILogger<EindCompetentieMatrixService> logger, IEindCompetentieRepository repository)
         {
             _logger = logger;
             _repository = repository;
         }
 
-        public IEnumerable<MatrixCell> GetCompetentieMatrix(int periodeNummer, string specialisatieNaam)
+        public IEnumerable<EindCompetentie> GetCompetentieMatrix(int periodeNummer, string specialisatieNaam)
         {
-            return _repository.GetCompetentieMatrix(periodeNummer, specialisatieNaam);
+            return _repository.GetEindCompetenties(periodeNummer, specialisatieNaam);
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace CompetentieAppFrontend.Domain
 {
-    public class MatrixCell
+    public class EindCompetentie
     {
         public IEnumerable<Module> Modules { get; set; }
 

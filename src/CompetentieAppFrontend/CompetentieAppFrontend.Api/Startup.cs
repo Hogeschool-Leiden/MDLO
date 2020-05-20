@@ -28,7 +28,7 @@ namespace CompetentieAppFrontend.Api
                 builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
                                   throw new ArgumentNullException());
             });
-            services.AddTransient<IMatrixRepository, MatrixRepository>();
+            services.AddTransient<IEindCompetentieRepository, EindCompetentieRepository>();
             services.AddTransient<IEindCompetentieMatrixService, EindCompetentieMatrixService>();
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });

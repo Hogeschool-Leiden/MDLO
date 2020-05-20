@@ -49,15 +49,15 @@ namespace CompetentieAppFrontend.Infrastructure.Test
         {
             // Arrange
             using var context = new CompetentieAppFrontendContext(_options);
-            var repository = new MatrixRepository(context);
+            var repository = new EindCompetentieRepository(context);
 
             // Act
-            var result = repository.GetCompetentieMatrix(1, "Properdeuse");
+            var result = repository.GetEindCompetenties(1, "Properdeuse");
 
             var stuff = result.ToList();
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(IEnumerable<MatrixCell>));
+            Assert.IsInstanceOfType(result, typeof(IEnumerable<EindCompetentie>));
         }
 
         private static void LoadData()
@@ -181,31 +181,31 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                     {
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 1,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 2,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 3,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 4,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 5,
-                        Niveau = 0
+                        Niveau = 1
                     }
                 });
 
@@ -216,31 +216,31 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                     {
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 1,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 2,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 3,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 4,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 5,
-                        Niveau = 0
+                        Niveau = 1
                     }
                 });
 
@@ -251,31 +251,31 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                     {
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 1,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 2,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 3,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 4,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 5,
-                        Niveau = 0
+                        Niveau = 1
                     }
                 });
 
@@ -286,31 +286,31 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                     {
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 1,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 2,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 3,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 4,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 5,
-                        Niveau = 0
+                        Niveau = 1
                     }
                 });
 
@@ -321,31 +321,31 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                     {
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 1,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 2,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 3,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 4,
-                        Niveau = 0
+                        Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 5,
-                        Niveau = 0
+                        Niveau = 1
                     }
                 });
 
