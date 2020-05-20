@@ -28,6 +28,8 @@ namespace CompetentieAppFrontend.Api
                 builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
                                   throw new ArgumentNullException());
             });
+            services.AddTransient<IArchitectuurLaagRepository, ArchitectuurLaagRepository>();
+            services.AddTransient<IActiviteitRepository, ActiviteitRepository>();
             services.AddTransient<IEindCompetentieRepository, EindCompetentieRepository>();
             services.AddTransient<IEindCompetentieMatrixService, EindCompetentieMatrixService>();
             services.AddControllersWithViews();
@@ -38,6 +40,10 @@ namespace CompetentieAppFrontend.Api
         {
             if (env.IsDevelopment())
             {
+                using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+                serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureDeleted();
+                serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureCreated();
+                serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().EnsureDataSeeded();
                 app.UseDeveloperExceptionPage();
             }
             else
