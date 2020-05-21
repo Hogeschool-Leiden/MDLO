@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  demo-service:
+    build:
+      context: "./../Demo"
+      dockerfile: "./Demo.Deployment/Dockerfile"
+    ports:
+      - 80:80
+  demo-frontend-service:
+    build:
+      context: "./../DemoFrontend"
+      dockerfile: "./DemoFrontend.Deployment/Dockerfile"
+      args:
+        source: ../DemoFrontend/DemoFrontend.Api
+    ports:
+      - 8080:80
