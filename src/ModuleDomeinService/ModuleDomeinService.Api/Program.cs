@@ -3,28 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CompetentieAppFrontend.Infrastructure.DAL;
-using CompetentieAppFrontend.Infrastructure.Repositories;
-using CompetentieAppFrontend.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Miffy;
+using Miffy.MicroServices.Events;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
+using ModuleDomeinService.Api.Messages.Events;
+using Org.BouncyCastle.Asn1.Cms;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
-namespace CompetentieAppFrontend.Api
+namespace ModuleDomeinService.Api
 {
     public class Program
     {
-        private const string QueueName = "CompetentieAppFrontend";
+        private const string QueueName = "ModuleDomeinService";
         public static void Main(string[] args)
         {
+
             using ILoggerFactory loggerFactory = LoggerFactory.Create(configure =>
             {
                 configure.AddConsole().SetMinimumLevel(LogLevel.Error);
@@ -55,15 +57,7 @@ namespace CompetentieAppFrontend.Api
                 .SetLoggerFactory(loggerFactory)
                 .RegisterDependencies(services =>
                 {
-                    services.AddDbContext<CompetentieAppFrontendContext>(builder =>
-                    {
-                        builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
-                                          throw new ArgumentNullException());
-                    });
-                    services.AddTransient<IArchitectuurLaagRepository, ArchitectuurLaagRepository>();
-                    services.AddTransient<IActiviteitRepository, ActiviteitRepository>();
-                    services.AddTransient<IEindCompetentieRepository, EindCompetentieRepository>();
-                    services.AddTransient<IEindCompetentieMatrixService, EindCompetentieMatrixService>();
+                    services.AddDbContext<ModuleDomeinContext>(opts => opts.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")));
                 })
                 .WithQueueName(QueueName)
                 .WithBusContext(context)
@@ -75,7 +69,11 @@ namespace CompetentieAppFrontend.Api
 
 
             host.Resume();
+            var exampleEvent = new ExampleEvent() { ExampleData = "ExampleData event payload" };
+            var publisher = new EventPublisher(context);
+            publisher.PublishAsync(exampleEvent);
             CreateHostBuilder(args).Build().Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -32,6 +32,7 @@ namespace CompetentieAppFrontend.Api
             services.AddTransient<IActiviteitRepository, ActiviteitRepository>();
             services.AddTransient<IEindCompetentieRepository, EindCompetentieRepository>();
             services.AddTransient<IEindCompetentieMatrixService, EindCompetentieMatrixService>();
+
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
