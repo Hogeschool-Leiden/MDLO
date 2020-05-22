@@ -74,6 +74,9 @@ jobs:
       MANIFESTS_PATH_PRODUCTION: |
           manifests/production/competentie-app-frontend.yml
       INTEGRATION_TEST_PROJECT: src/CompetentieAppFrontend/CompetentieAppFrontend.IntegrationTest.csproj
+      SOURCE: src/CompetentieAppFrontend
+      SLN: CompetentieAppFrontend.sln
+      RUNNABLE: CompetentieAppFrontend.Api.dll
     steps:
       - uses: actions/checkout@master
       - name: Set image tag      
@@ -85,7 +88,7 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build . -t ${{ secrets.REGISTRY_URL }}/$IMAGE_NAME:${{ steps.vars.outputs.tag }}
+          docker build . -t ${{ secrets.REGISTRY_URL }}/$IMAGE_NAME:${{ steps.vars.outputs.tag }} --build-arg source=$SOURCE --build-arg sln=$SLN --build-arg runnable=$RUNNABLE
           docker push ${{ secrets.REGISTRY_URL }}/$IMAGE_NAME:${{ steps.vars.outputs.tag }}
       - uses: azure/k8s-actions/aks-set-context@master
         with:
