@@ -1,0 +1,29 @@
+<div class="dropdown-container text-align">
+  <mat-form-field  style="width: 225px">
+    <mat-label>Specialisatie</mat-label>
+    <mat-select [(value)]="specialisation">
+      <mat-option *ngFor="let spec of specialisations" [value]="spec"
+                  (click)="specialisationChosen(); getMatrixDataFromDB()"
+      >{{spec}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<app-competence-matrix
+  [year]=year
+  [period]=period
+  [specialisation]="specialisation"
+  [competenceMatrix]="competenceMatrix"></app-competence-matrix>
+
+<div class="text-align" *ngIf="showSlider">
+  <mat-slider (input)="updateSliderValue($event)"
+              (change)="updateSliderValue($event); getMatrixDataFromDB()"
+              min="{{sliderMin}}" max="{{sliderMax}}"
+              [value]="sliderMin"
+              step="0.25"
+              style="width: 300px"
+              id="periodSlider"
+  ></mat-slider>
+  <p>jaar: {{year}}, periode: {{period}}</p>
+</div>
+
