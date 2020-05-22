@@ -14,15 +14,10 @@
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
-        "DATABASE_ADDRESS": "127.0.0.1:3306",
-        "DATABASE_PASS": "verygoodrootpassword",
-        "SERVICEBUS_PASS": "guest",
-        "SERVICEBUS_USER": "guest",
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DB_CONNECTION_STRING": "Server=localhost;Port=5432;Database=local-module-domein-db;User Id=postgres;Password=verygoodrootpassword;",
         "BROKER_EXCHANGE_NAME": "CompetentieApp",
         "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost:5672",
-        "DATABASE_USER": "root",
-        "DATABASE_NAME": "DomeinServiceDb"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "ModuleDomeinService.Api": {

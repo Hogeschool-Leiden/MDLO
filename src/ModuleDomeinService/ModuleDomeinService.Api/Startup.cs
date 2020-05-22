@@ -1,23 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Miffy;
-using Miffy.MicroServices.Events;
-using Miffy.MicroServices.Host;
-using Miffy.RabbitMQBus;
-using ModuleDomeinService.Api.Messages.Events;
-using RabbitMQ.Client;
+
 
 namespace ModuleDomeinService.Api
 {
@@ -34,19 +22,25 @@ namespace ModuleDomeinService.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            string DbAddress = Environment.GetEnvironmentVariable("DATABASE_ADDRESS");
-            string DbPass = Environment.GetEnvironmentVariable("DATABASE_PASS");
-            string DbUser = Environment.GetEnvironmentVariable("DATABASE_USER");
-            string DbName = Environment.GetEnvironmentVariable("DATABASE_NAME");
-
             services.AddControllers();
 
-            services.AddDbContext<ModuleDomeinContext>(opts => opts.UseMySQL($"Server={DbAddress};Database={DbName};Uid={DbUser};Pwd={DbPass};"));
+            services.AddDbContext<ModuleDomeinContext>(opts => opts.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            try
+            {
+                using (var scope = app.ApplicationServices.CreateScope())
+                using (var context = scope.ServiceProvider.GetService<ModuleDomeinContext>())
+                    context.Database.EnsureCreated();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Retrying to connect to database...");
+            }
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

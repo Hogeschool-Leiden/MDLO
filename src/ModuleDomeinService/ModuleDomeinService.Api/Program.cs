@@ -26,10 +26,6 @@ namespace ModuleDomeinService.Api
         private const string QueueName = "ModuleDomeinService";
         public static void Main(string[] args)
         {
-            string DbAddress = Environment.GetEnvironmentVariable("DATABASE_ADDRESS");
-            string DbPass = Environment.GetEnvironmentVariable("DATABASE_PASS");
-            string DbUser = Environment.GetEnvironmentVariable("DATABASE_USER");
-            string DbName = Environment.GetEnvironmentVariable("DATABASE_NAME");
 
             using ILoggerFactory loggerFactory = LoggerFactory.Create(configure =>
             {
@@ -61,7 +57,7 @@ namespace ModuleDomeinService.Api
                 .SetLoggerFactory(loggerFactory)
                 .RegisterDependencies(services =>
                 {
-                    services.AddDbContext<ModuleDomeinContext>(opts => opts.UseMySQL($"Server={DbAddress};Database={DbName};Uid={DbUser};Pwd={DbPass};"));
+                    services.AddDbContext<ModuleDomeinContext>(opts => opts.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")));
                 })
                 .WithQueueName(QueueName)
                 .WithBusContext(context)
