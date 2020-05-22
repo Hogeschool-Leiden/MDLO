@@ -29,21 +29,5 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
                     Modules = beheersingsNiveau.Competenties.Select(competentie => competentie.Module).ToList()
                 };
         }
-
-        public IEnumerable<EindCompetentie> GetEindCompetentiesAlternative(int periodeNummer, string specialisatieNaam)
-        {
-            return (from beheersingsNiveau in _context.BeheersingsNiveaus
-                from competentie in beheersingsNiveau.Competenties
-                from studiefase in competentie.Module.Studiefasen
-                where studiefase.Periode.PeriodeNummer == periodeNummer
-                where studiefase.Specialisatie.SpecialisatieNaam == specialisatieNaam
-                select new EindCompetentie
-                {
-                    ArchitectuurLaagNaam = beheersingsNiveau.ArchitectuurLaag.ArchitectuurLaagNaam,
-                    ActiviteitNaam = beheersingsNiveau.Activiteit.ActiviteitNaam,
-                    Niveau = studiefase.Module.Competenties.Max(competentie => competentie.BeheersingsNiveau.Niveau),
-                    Modules = beheersingsNiveau.Competenties.Select(competentie => competentie.Module).ToList()
-                }).Distinct();
-        }
     }
 }
