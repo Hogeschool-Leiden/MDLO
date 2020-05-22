@@ -1,0 +1,38 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:64142",
+      "sslPort": 44382
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "weatherforecast",
+      "environmentVariables": {
+        "DATABASE_ADDRESS": "127.0.0.1:3306",
+        "DATABASE_PASS": "verygoodrootpassword",
+        "SERVICEBUS_PASS": "guest",
+        "SERVICEBUS_USER": "guest",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "BROKER_EXCHANGE_NAME": "CompetentieApp",
+        "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost:5672",
+        "DATABASE_USER": "root",
+        "DATABASE_NAME": "DomeinServiceDb"
+      }
+    },
+    "ModuleDomeinService.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "weatherforecast",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5000"
+    }
+  }
+}
