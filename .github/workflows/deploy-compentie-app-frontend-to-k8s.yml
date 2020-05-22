@@ -14,7 +14,7 @@ jobs:
     runs-on: [linux, self-hosted]
     name: SonarQube quality check
     env: 
-      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
+      SONAR_TOKEN: competentie-app-frontend
       SONAR_HOST: ${{ secrets.SONAR_HOST }}
       PROJECT: CompetentieAppFrontend
     steps:
