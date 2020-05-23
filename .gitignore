@@ -83,4 +83,5 @@ wwwroot/lib/
 /dotnet.publish
 
 *.DS_Store
-src/FrontendService/FrontendService.Test/Properties/launchSettings.json
+*/launchSettings.json
+/node_modules
