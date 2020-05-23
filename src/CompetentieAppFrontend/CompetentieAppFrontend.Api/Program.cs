@@ -8,8 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Miffy;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
+using Polly;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
 namespace CompetentieAppFrontend.Api
@@ -21,29 +24,14 @@ namespace CompetentieAppFrontend.Api
         {
             using var loggerFactory = LoggerFactory.Create(configure =>
             {
-                configure.AddConsole().SetMinimumLevel(LogLevel.Error);
+                Enum.TryParse(Environment.GetEnvironmentVariable("LOG_LEVEL"), out LogLevel logLevel);
+                configure.AddConsole().SetMinimumLevel(logLevel);
             });
 
             var contextBuilder = new RabbitMqContextBuilder()
                     .ReadFromEnvironmentVariables();
 
-            var connected = false;
-            while (!connected)
-            {
-                try
-                {
-                    var tryContext = contextBuilder.CreateContext();
-                    connected = true;
-                }
-                catch (BrokerUnreachableException)
-                {
-                    Thread.Sleep(1000);
-                    Console.WriteLine("Retrying connection to message broker..");
-                    continue;
-                }
-            }
-
-            using var context = contextBuilder.CreateContext();
+            using var context = CreateRabbitMqConnection(contextBuilder);
 
             var builder = new MicroserviceHostBuilder()
                 .SetLoggerFactory(loggerFactory)
@@ -76,5 +64,12 @@ namespace CompetentieAppFrontend.Api
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static IBusContext<IConnection> CreateRabbitMqConnection(RabbitMqContextBuilder contextBuilder)
+        {
+            return Policy.Handle<BrokerUnreachableException>()
+                .WaitAndRetryForever(sleepDurationProvider => TimeSpan.FromSeconds(5))
+                .Execute(contextBuilder.CreateContext);
+        }
     }
 }
