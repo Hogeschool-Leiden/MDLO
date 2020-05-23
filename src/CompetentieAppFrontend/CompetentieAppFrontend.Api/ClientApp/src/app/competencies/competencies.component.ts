@@ -18,7 +18,7 @@ export class CompetenciesComponent implements OnInit {
   sliderMax: number = 3.75;
   showSlider: boolean = false;
   competenceMatrix;
-  dbUrl:string = 'http://date.jsontest.com/';
+  dbUrl:string = '/eindcompetentie/Properdeuse/1';
 
 
   constructor(private http: HttpClient) {
@@ -66,11 +66,11 @@ export class CompetenciesComponent implements OnInit {
   }
 
   getMatrixDataFromDB() {
-    // this.http.get(this.dbUrl).toPromise().then(data => {
-    //   this.competenceMatrix = data;
-    // });
+    this.http.get(this.dbUrl).toPromise().then(data => {
+      this.competenceMatrix = data;
+    });
     // get from db but now use mock \/
-    this.competenceMatrix = mockJson;
+    // this.competenceMatrix = mockJson;
   }
 
   ngOnInit(){

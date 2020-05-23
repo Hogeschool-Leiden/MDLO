@@ -15,7 +15,7 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
 
   displayMatrixOffset: number = 1;
   showMatrix: boolean = false;
-  displayeMatrix: string[][] = [
+  displayeMatrix: any[][] = [
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
@@ -49,21 +49,22 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
 
   private setActivityHeaders() {
     for (let i = 0; i < this.displayeMatrix.length - 1; i++) {
-      this.displayeMatrix[i + 1][0] = this.competenceMatrix.ArchitectuurLaagNamen[i];
+      this.displayeMatrix[i + 1][0] = this.competenceMatrix.architectuurLaagNamen[i];
     }
   }
 
   private setArchitectureHeaders() {
     for (let i = 0; i < this.displayeMatrix[0].length - 1; i++) {
-      this.displayeMatrix[0][i + 1] = this.competenceMatrix.ActiviteitNamen[i];
+      this.displayeMatrix[0][i + 1] = this.competenceMatrix.activiteitNamen[i];
     }
   }
 
   private setBody() {
-    for (let y = 0; y < this.competenceMatrix.Matrix.length; y++) {
-      for (let x = 0; x < this.competenceMatrix.Matrix[y].length; x++) {
-        if (this.competenceMatrix.Matrix[y][x] != null) {
-          this.setCellInfo(this.competenceMatrix.Matrix[y][x], y, x);
+    for (let y = 0; y < this.competenceMatrix.matrix.length; y++) {
+      for (let x = 0; x < this.competenceMatrix.matrix[y].length; x++) {
+        if (this.competenceMatrix.matrix[y][x] != null) {
+          console.log(this.competenceMatrix.matrix[y][x])
+          this.setCellInfo(this.competenceMatrix.matrix[y][x], y, x);
         }
       }
     }
@@ -72,17 +73,7 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
   private setCellInfo(matrixElement, y, x) {
     y += this.displayMatrixOffset;
     x += this.displayMatrixOffset;
-    this.displayeMatrix[y][x] = this.getBiggestCompetencePoint(matrixElement).toString();
-  }
-
-  private getBiggestCompetencePoint(matrixElement) {
-    let biggestCompetencePoint = 0;
-    for (let i = 0; i < matrixElement.Modules.length; i++) {
-      if (biggestCompetencePoint < matrixElement.Modules[i].Competenties) {
-        biggestCompetencePoint = matrixElement.Modules[i].Competenties;
-      }
-    }
-    return biggestCompetencePoint;
+    this.displayeMatrix[y][x] = matrixElement.niveau;
   }
 
   getCellColor(stringValue: string) {
