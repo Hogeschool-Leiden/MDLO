@@ -8,10 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Miffy;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
-using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
 namespace CompetentieAppFrontend.Api
@@ -29,7 +27,7 @@ namespace CompetentieAppFrontend.Api
             var contextBuilder = new RabbitMqContextBuilder()
                     .ReadFromEnvironmentVariables();
 
-            bool connected = false;
+            var connected = false;
             while (!connected)
             {
                 try

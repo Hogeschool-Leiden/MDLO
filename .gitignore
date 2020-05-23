@@ -90,3 +90,5 @@ wwwroot/lib/
 /node_modules/**
 /Properties
 /Properties/**
+/dist
+**/dist
