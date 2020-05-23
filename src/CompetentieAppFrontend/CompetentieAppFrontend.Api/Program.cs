@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using CompetentieAppFrontend.Infrastructure.DAL;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using CompetentieAppFrontend.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -20,12 +16,12 @@ using RabbitMQ.Client.Exceptions;
 
 namespace CompetentieAppFrontend.Api
 {
-    public class Program
+    public static class Program
     {
         private const string QueueName = "CompetentieAppFrontend";
         public static void Main(string[] args)
         {
-            using ILoggerFactory loggerFactory = LoggerFactory.Create(configure =>
+            using var loggerFactory = LoggerFactory.Create(configure =>
             {
                 configure.AddConsole().SetMinimumLevel(LogLevel.Error);
             });
@@ -49,7 +45,7 @@ namespace CompetentieAppFrontend.Api
                 }
             }
 
-            using IBusContext<IConnection> context = contextBuilder.CreateContext();
+            using var context = contextBuilder.CreateContext();
 
             var builder = new MicroserviceHostBuilder()
                 .SetLoggerFactory(loggerFactory)
@@ -69,12 +65,10 @@ namespace CompetentieAppFrontend.Api
                 .WithBusContext(context)
                 .UseConventions();
 
-            using IMicroserviceHost host = builder.CreateHost();
+            using var host = builder.CreateHost();
+            
             host.Start();
-            host.Pause();
-
-
-            host.Resume();
+            
             CreateHostBuilder(args).Build().Run();
         }
 
