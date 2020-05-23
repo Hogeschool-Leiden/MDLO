@@ -84,3 +84,7 @@ wwwroot/lib/
 
 *.DS_Store
 */launchSettings.json
+/node_modules
+*/node_modules
+**/node_modules
+/node_modules/**
