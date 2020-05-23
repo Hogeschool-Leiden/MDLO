@@ -35,6 +35,9 @@ namespace CompetentieAppFrontend.Api
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+            
+            services.UseRabbitMq();
+            services.UseMicroserviceHost();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
