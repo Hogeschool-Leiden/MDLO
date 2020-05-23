@@ -2,12 +2,12 @@ name: Deploy to aks
 
 on:
   push:
+    branches:
+      - release
     paths:
-        - src/CompetentieAppFrontend/**
-      branches:
-        - release
-      tags:
-        - 'v*.*.*'
+      - src/CompetentieAppFrontend/**
+    tags:
+      - 'v*.*.*'
     
 jobs:
   code-quality:
