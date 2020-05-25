@@ -42,17 +42,13 @@ namespace CompetentieAppFrontend.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if(Environment.GetEnvironmentVariable("ENVIRONMENT") == "DEVELOPMENT")
+            if (env.IsDevelopment())
             {
                 using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
                 serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureDeleted();
                 serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureCreated();
                 serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().EnsureDataSeeded();
                 app.UseDeveloperExceptionPage();
-            }
-            if (env.IsDevelopment())
-            {
-
             }
             else
             {
