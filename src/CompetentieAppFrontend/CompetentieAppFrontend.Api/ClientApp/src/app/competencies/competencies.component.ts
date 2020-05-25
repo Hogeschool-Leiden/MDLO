@@ -7,7 +7,7 @@ import {HttpClient} from "@angular/common/http";
 @Component({
   selector: 'app-competencies',
   templateUrl: './competencies.component.html',
-  styleUrls: ['./competencies.component.css']
+  styleUrls: ['./competencies.component.scss']
 })
 export class CompetenciesComponent implements OnInit {
   year: number = 1;
@@ -23,18 +23,18 @@ export class CompetenciesComponent implements OnInit {
   dbPeriod: number;
   dbUrl: string = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
 
-  // dbUrl:string = '/eindcompetentie/Properdeuse/1';
+  // dbUrl:string = '/eindcompetentie/Propedeuse/1';
 
 
   constructor(private http: HttpClient) {
   }
 
-  updateSliderValue(event: MatSliderChange) {
+  updateSliderValue(sliderValue) {
     // removes decimals to create the years.
-    this.year = Math.floor(event.value);
+    this.year = Math.floor(sliderValue);
 
     // uses the decimals to create periods.
-    switch (event.value - this.year) {
+    switch (sliderValue - this.year) {
       case 0:
         this.period = 1;
         break;
