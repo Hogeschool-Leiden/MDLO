@@ -17,8 +17,13 @@ export class CompetenciesComponent implements OnInit {
   sliderMin: number = 1;
   sliderMax: number = 3.75;
   showSlider: boolean = false;
+  amountOfPeriodsInYear: number = 4;
+  amountOfPeriodsInPropedeuse: number = 3;
   competenceMatrix;
-  dbUrl:string = '/eindcompetentie/Properdeuse/1';
+  dbPeriod: number;
+  dbUrl: string = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
+
+  // dbUrl:string = '/eindcompetentie/Properdeuse/1';
 
 
   constructor(private http: HttpClient) {
@@ -66,6 +71,7 @@ export class CompetenciesComponent implements OnInit {
   }
 
   getMatrixDataFromDB() {
+    this.getPeriodeInDbFormat();
     this.http.get(this.dbUrl).toPromise().then(data => {
       this.competenceMatrix = data;
     });
@@ -73,6 +79,20 @@ export class CompetenciesComponent implements OnInit {
     // this.competenceMatrix = mockJson;
   }
 
-  ngOnInit(){
+  getPeriodeInDbFormat(){
+    if (this.isSpecialisationPropedeuse()) {
+      this.dbPeriod = this.period;
+    } else {
+      // it removes the 3 propedeuse periods and converts years in 4 periods.
+      this.dbPeriod = (this.year - 1) * this.amountOfPeriodsInYear - this.amountOfPeriodsInPropedeuse + this.period;
+    }
+    this.updateDbUrl();
+  }
+
+  updateDbUrl() {
+    this.dbUrl = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
+  }
+
+  ngOnInit() {
   }
 }
