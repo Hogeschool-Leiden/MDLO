@@ -7,7 +7,7 @@ import {HttpClient} from "@angular/common/http";
 @Component({
   selector: 'app-competencies',
   templateUrl: './competencies.component.html',
-  styleUrls: ['./competencies.component.css']
+  styleUrls: ['./competencies.component.scss']
 })
 export class CompetenciesComponent implements OnInit {
   year: number = 1;
@@ -17,19 +17,24 @@ export class CompetenciesComponent implements OnInit {
   sliderMin: number = 1;
   sliderMax: number = 3.75;
   showSlider: boolean = false;
+  amountOfPeriodsInYear: number = 4;
+  amountOfPeriodsInPropedeuse: number = 3;
   competenceMatrix;
-  dbUrl:string = '/eindcompetentie/Properdeuse/1';
+  dbPeriod: number;
+  // dbUrl: string = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
+
+  dbUrl:string = '/eindcompetentie/Propedeuse/1';
 
 
   constructor(private http: HttpClient) {
   }
 
-  updateSliderValue(event: MatSliderChange) {
+  updateSliderValue(sliderValue) {
     // removes decimals to create the years.
-    this.year = Math.floor(event.value);
+    this.year = Math.floor(sliderValue);
 
     // uses the decimals to create periods.
-    switch (event.value - this.year) {
+    switch (sliderValue - this.year) {
       case 0:
         this.period = 1;
         break;
@@ -66,6 +71,7 @@ export class CompetenciesComponent implements OnInit {
   }
 
   getMatrixDataFromDB() {
+    this.getPeriodeInDbFormat();
     this.http.get(this.dbUrl).toPromise().then(data => {
       this.competenceMatrix = data;
     });
@@ -73,6 +79,20 @@ export class CompetenciesComponent implements OnInit {
     // this.competenceMatrix = mockJson;
   }
 
-  ngOnInit(){
+  getPeriodeInDbFormat(){
+    if (this.isSpecialisationPropedeuse()) {
+      this.dbPeriod = this.period;
+    } else {
+      // it removes the 3 propedeuse periods and converts years in 4 periods.
+      this.dbPeriod = (this.year - 1) * this.amountOfPeriodsInYear - this.amountOfPeriodsInPropedeuse + this.period;
+    }
+    this.updateDbUrl();
+  }
+
+  updateDbUrl() {
+    this.dbUrl = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
+  }
+
+  ngOnInit() {
   }
 }
