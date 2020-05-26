@@ -73,7 +73,7 @@ namespace CompetentieAppFrontend.Api
                     new Specialisatie
                     {
                         Id = 1,
-                        SpecialisatieNaam = "Properdeuse"
+                        SpecialisatieNaam = "Propedeuse"
                     },
                     new Specialisatie
                     {

@@ -7,7 +7,7 @@ services:
        BROKER_EXCHANGE_NAME: CompetentieApp
        DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
        BROKER_QUEUE_NAME: FrontendService
-       ASPNETCORE_ENVIRONMENT: "Development"
+       ENVIRONMENT: DEVELOPMENT
     depends_on:
       - servicebus
       - database
@@ -26,7 +26,7 @@ services:
       BROKER_EXCHANGE_NAME: CompetentieApp
       DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
       BROKER_QUEUE_NAME: ModuleDomeinService
-      ASPNETCORE_ENVIRONMENT: "Development"
+      ENVIRONMENT: DEVELOPMENT
     depends_on:
       - servicebus
       - database
