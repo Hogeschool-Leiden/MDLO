@@ -26,7 +26,7 @@ export class CompetenciesComponent implements OnInit {
   dbUrl:string = '/eindcompetentie/Propedeuse/1';
 
 
-  constructor() {
+  constructor(private http: HttpClient) {
   }
 
   updateSliderValue(sliderValue) {
@@ -76,12 +76,12 @@ export class CompetenciesComponent implements OnInit {
 
 
     // use db instead of mock
-    // this.http.get(this.dbUrl).toPromise().then(data => {
-    //   this.competenceMatrix = data;
-    // });
+    this.http.get(this.dbUrl).toPromise().then(data => {
+      this.competenceMatrix = data;
+    });
 
     // mockdata instead of db
-    this.competenceMatrix = mockJson;
+    // this.competenceMatrix = mockJson;
   }
 
   getPeriodeInDbFormat(){
