@@ -36,6 +36,7 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
 
   private setDisplayMatrix() {
     if (this.competenceMatrix !== undefined) {
+      this.resetMatrix();
       this.showMatrix = true;
       this.setHeaders();
       this.setBody();
@@ -74,6 +75,14 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
     y += this.displayMatrixOffset;
     x += this.displayMatrixOffset;
     this.displayeMatrix[y][x] = matrixElement.niveau;
+  }
+
+  private resetMatrix(){
+    for (let i = 0; i < this.displayeMatrix.length;i++){
+      for (let j = 0; j < this.displayeMatrix[i].length;j++){
+        this.displayeMatrix[i][j] = null;
+      }
+    }
   }
 
   getCellColor(stringValue: string) {

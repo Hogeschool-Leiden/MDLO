@@ -71,12 +71,17 @@ export class CompetenciesComponent implements OnInit {
   }
 
   getMatrixDataFromDB() {
-    this.getPeriodeInDbFormat();
-    this.http.get(this.dbUrl).toPromise().then(data => {
-      this.competenceMatrix = data;
-    });
-    // get from db but now use mock \/
-    // this.competenceMatrix = mockJson;
+    // this gives dynamic url instead of the default.
+    // this.getPeriodeInDbFormat();
+
+
+    // use db instead of mock
+    // this.http.get(this.dbUrl).toPromise().then(data => {
+    //   this.competenceMatrix = data;
+    // });
+
+    // mockdata instead of db
+    this.competenceMatrix = mockJson;
   }
 
   getPeriodeInDbFormat(){
