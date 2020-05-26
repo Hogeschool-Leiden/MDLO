@@ -26,7 +26,7 @@ export class CompetenciesComponent implements OnInit {
   dbUrl:string = '/eindcompetentie/Propedeuse/1';
 
 
-  constructor(private http: HttpClient) {
+  constructor() {
   }
 
   updateSliderValue(sliderValue) {

@@ -4,7 +4,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 @Component({
   selector: 'app-competence-matrix',
   templateUrl: './competence-matrix.component.html',
-  styleUrls: ['./competence-matrix.component.css']
+  styleUrls: ['./competence-matrix.component.scss']
 })
 export class CompetenceMatrixComponent implements OnInit, OnChanges {
 
@@ -34,7 +34,7 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
     this.setDisplayMatrix();
   }
 
-  private setDisplayMatrix() {
+  setDisplayMatrix() {
     if (this.competenceMatrix !== undefined) {
       this.resetMatrix();
       this.showMatrix = true;
@@ -77,7 +77,7 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
     this.displayeMatrix[y][x] = matrixElement.niveau;
   }
 
-  private resetMatrix(){
+  resetMatrix(){
     for (let i = 0; i < this.displayeMatrix.length;i++){
       for (let j = 0; j < this.displayeMatrix[i].length;j++){
         this.displayeMatrix[i][j] = null;
