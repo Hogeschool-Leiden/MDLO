@@ -19,6 +19,8 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
         public DbSet<BeheersingsNiveau> BeheersingsNiveaus { get; set; }
         public DbSet<Activiteit> Activiteiten { get; set; }
 
+        public DbSet<Eindeis> Eindeisen { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder

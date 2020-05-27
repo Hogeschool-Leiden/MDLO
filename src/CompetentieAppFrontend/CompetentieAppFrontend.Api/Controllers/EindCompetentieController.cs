@@ -1,3 +1,4 @@
+using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -6,13 +7,13 @@ namespace CompetentieAppFrontend.Api.Controllers
 {
     [ApiController]
     [Route("eindcompetentie")]
-    public class EindCompetentieMatrixController : ControllerBase
+    public class EindCompetentieController
     {
-        private ILogger<EindCompetentieMatrixController> _logger;
-        private IEindCompetentieMatrixService _service;
+        private ILogger<EindCompetentieController> _logger;
+        private IEindCompetentieService _service;
 
-        public EindCompetentieMatrixController(ILogger<EindCompetentieMatrixController> logger,
-            IEindCompetentieMatrixService service)
+        public EindCompetentieController(ILogger<EindCompetentieController> logger,
+            IEindCompetentieService service)
         {
             _logger = logger;
             _service = service;
@@ -20,12 +21,13 @@ namespace CompetentieAppFrontend.Api.Controllers
 
         [HttpGet]
         [Route("{specialisatieNaam}/{periodeNummer}")]
-        public IActionResult GetCompetentieMatrix([FromRoute] string specialisatieNaam, [FromRoute] int periodeNummer)
+        public CompetentieMatrix GetCompetentieMatrix([FromRoute] string specialisatieNaam,
+            [FromRoute] int periodeNummer)
         {
             _logger.LogInformation(
                 $"Request received, specialisatie naam: {specialisatieNaam} and periode nummer: {periodeNummer}");
 
-            return Ok(_service.GetEindCompetentieMatrix(periodeNummer, specialisatieNaam));
+            return _service.GetEindCompetentieMatrix(periodeNummer, specialisatieNaam);
         }
     }
 }

@@ -8,12 +8,12 @@ using Moq;
 namespace CompetentieAppFrontend.Services.Test
 {
     [TestClass]
-    public class EindCompetentieMatrixServiceTest
+    public class EindCompetentieServiceTest
     {
         private Mock<IArchitectuurLaagRepository> _architectuurLaagRepositoryMock;
         private Mock<IActiviteitRepository> _activiteitRepositoryMock;
         private Mock<IEindCompetentieRepository> _eindCompetentieRepositoryMock;
-        private Mock<ILogger<EindCompetentieMatrixService>> _loggerMock;
+        private Mock<ILogger<EindCompetentieService>> _loggerMock;
 
         [TestInitialize]
         public void TestInitialize()
@@ -21,7 +21,7 @@ namespace CompetentieAppFrontend.Services.Test
             _architectuurLaagRepositoryMock = new Mock<IArchitectuurLaagRepository>();
             _activiteitRepositoryMock = new Mock<IActiviteitRepository>();
             _eindCompetentieRepositoryMock = new Mock<IEindCompetentieRepository>();
-            _loggerMock = new Mock<ILogger<EindCompetentieMatrixService>>();
+            _loggerMock = new Mock<ILogger<EindCompetentieService>>();
 
             _architectuurLaagRepositoryMock
                 .Setup(repository => repository.GetAllArchitectuurLaagNamen())
@@ -43,7 +43,7 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetEindCompetentieMatrix_Should_Return_Typeof_CompetentieMatrix(int periodeNummer, string specialisatieNaam)
         {
             // Arrange
-            var eindCompetentieMatrixService = new EindCompetentieMatrixService(_loggerMock.Object,
+            var eindCompetentieMatrixService = new EindCompetentieService(_loggerMock.Object,
                 _eindCompetentieRepositoryMock.Object, _architectuurLaagRepositoryMock.Object,
                 _activiteitRepositoryMock.Object);
 
@@ -63,7 +63,7 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetEindCompetentieMatrix_Should_Call_GetArchitectuurLaagNamen_On_IArchitectuurLaagRepository(int periodeNummer, string specialisatieNaam)
         {
             // Arrange
-            var eindCompetentieMatrixService = new EindCompetentieMatrixService(_loggerMock.Object,
+            var eindCompetentieMatrixService = new EindCompetentieService(_loggerMock.Object,
                 _eindCompetentieRepositoryMock.Object, _architectuurLaagRepositoryMock.Object,
                 _activiteitRepositoryMock.Object);
             
@@ -83,7 +83,7 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetEindCompetentieMatrix_Should_Call_GetActiviteitNamen_On_IActiviteitRepository(int periodeNummer, string specialisatieNaam)
         {
             // Arrange
-            var eindCompetentieMatrixService = new EindCompetentieMatrixService(_loggerMock.Object,
+            var eindCompetentieMatrixService = new EindCompetentieService(_loggerMock.Object,
                 _eindCompetentieRepositoryMock.Object, _architectuurLaagRepositoryMock.Object,
                 _activiteitRepositoryMock.Object);
             
@@ -104,7 +104,7 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetEindCompetentieMatrix_Should_Call_GetEindCompetenties_On_IEindCompetentieRepository(int periodeNummer, string specialisatieNaam)
         {
             // Arrange
-            var eindCompetentieMatrixService = new EindCompetentieMatrixService(_loggerMock.Object,
+            var eindCompetentieMatrixService = new EindCompetentieService(_loggerMock.Object,
                 _eindCompetentieRepositoryMock.Object, _architectuurLaagRepositoryMock.Object,
                 _activiteitRepositoryMock.Object);
             

@@ -4,6 +4,10 @@ namespace CompetentieAppFrontend.Domain
 {
     public class CompetentieMatrix
     {
+        public CompetentieMatrix()
+        {
+        }
+
         public CompetentieMatrix(List<string> architectuurLaagNamen,
             List<string> activiteitNamen,
             IEnumerable<EindCompetentie> eindCompetenties)
@@ -15,11 +19,11 @@ namespace CompetentieAppFrontend.Domain
             ConvertEindCompetentiesToMatrix(eindCompetenties);
         }
 
-        public List<string> ArchitectuurLaagNamen { get; }
+        public List<string> ArchitectuurLaagNamen { get; set; }
 
-        public List<string> ActiviteitNamen { get; }
+        public List<string> ActiviteitNamen { get; set; }
 
-        public Cell[][] Matrix { get; }
+        public Cell[][] Matrix { get; set; }
 
         private void MakeMatrix2D(int depth)
         {
@@ -35,20 +39,14 @@ namespace CompetentieAppFrontend.Domain
             {
                 var index0 = ArchitectuurLaagNamen.IndexOf(eindCompetentie.ArchitectuurLaagNaam);
                 var index1 = ActiviteitNamen.IndexOf(eindCompetentie.ActiviteitNaam);
-                Matrix[index0][index1] = new Cell(eindCompetentie.Niveau, eindCompetentie.Modules);
+                Matrix[index0][index1] = new Cell {Niveau = eindCompetentie.Niveau, Modules = eindCompetentie.Modules};
             }
         }
 
         public class Cell
         {
-            public Cell(int niveau, IEnumerable<Module> modules)
-            {
-                Niveau = niveau;
-                Modules = modules;
-            }
-
-            public int Niveau { get; }
-            public IEnumerable<Module> Modules { get; }
+            public int Niveau { get; set; }
+            public IEnumerable<Module> Modules { get; set; }
         }
     }
 }

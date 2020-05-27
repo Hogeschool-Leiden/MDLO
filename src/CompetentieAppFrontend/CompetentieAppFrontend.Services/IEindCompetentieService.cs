@@ -3,7 +3,7 @@ using CompetentieAppFrontend.Domain;
 
 namespace CompetentieAppFrontend.Services
 {
-    public interface IEindCompetentieMatrixService
+    public interface IEindCompetentieService
     {
         CompetentieMatrix GetEindCompetentieMatrix(int periodeNummer, string specialisatieNaam);
     }

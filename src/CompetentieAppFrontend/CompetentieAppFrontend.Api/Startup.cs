@@ -1,4 +1,5 @@
 using System;
+using CompetentieAppFrontend.Infrastructure;
 using CompetentieAppFrontend.Infrastructure.DAL;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using CompetentieAppFrontend.Services;
@@ -31,7 +32,7 @@ namespace CompetentieAppFrontend.Api
             services.AddTransient<IArchitectuurLaagRepository, ArchitectuurLaagRepository>();
             services.AddTransient<IActiviteitRepository, ActiviteitRepository>();
             services.AddTransient<IEindCompetentieRepository, EindCompetentieRepository>();
-            services.AddTransient<IEindCompetentieMatrixService, EindCompetentieMatrixService>();
+            services.AddTransient<IEindCompetentieService, EindCompetentieService>();
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });

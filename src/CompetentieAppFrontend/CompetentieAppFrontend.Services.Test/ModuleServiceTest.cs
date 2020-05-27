@@ -1,0 +1,235 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using CompetentieAppFrontend.Domain;
+using CompetentieAppFrontend.Infrastructure.Repositories;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+
+namespace CompetentieAppFrontend.Services.Test
+{
+    [TestClass]
+    public class ModuleServiceTest
+    {
+        private Mock<ICompetentieMatrixService> _competentieMatrixService;
+        private Mock<IModuleRepository> _moduleRepositoryMock;
+        private Mock<ILogger<EindCompetentieService>> _loggerMock;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _competentieMatrixService = new Mock<ICompetentieMatrixService>();
+            _moduleRepositoryMock = new Mock<IModuleRepository>();
+            _loggerMock = new Mock<ILogger<EindCompetentieService>>();
+
+            _moduleRepositoryMock
+                .Setup(repository => repository.GetAllModules())
+                .Returns(new List<Module>
+                {
+                    new Module
+                    {
+                        ModuleCode = "IOPR",
+                        Studiefasen = new List<Studiefase>
+                        {
+                            new Studiefase
+                            {
+                                Specialisatie = new Specialisatie
+                                {
+                                    SpecialisatieNaam = "Propedeuse",
+                                },
+                                Periode = new Periode
+                                {
+                                    PeriodeNummer = 1
+                                }
+                            }
+                        },
+                        Eindeisen = new List<Eindeis>
+                        {
+                            new Eindeis
+                            {
+                                EindeisBeschrijving = "Weten wat een if statement is"
+                            }
+                        },
+                        Competenties = new List<Competentie>
+                        {
+                            new Competentie
+                            {
+                                BeheersingsNiveau = new BeheersingsNiveau
+                                {
+                                    ArchitectuurLaag = new ArchitectuurLaag
+                                    {
+                                        ArchitectuurLaagNaam = "Software engineering"
+                                    },
+                                    Activiteit = new Activiteit
+                                    {
+                                        ActiviteitNaam = "ontwikkelen"
+                                    },
+                                    Niveau = 1
+                                }
+                            }
+                        }
+                    },
+                    new Module
+                    {
+                        ModuleCode = "IOPR2",
+                        Studiefasen = new List<Studiefase>
+                        {
+                            new Studiefase
+                            {
+                                Specialisatie = new Specialisatie
+                                {
+                                    SpecialisatieNaam = "Propedeuse",
+                                },
+                                Periode = new Periode
+                                {
+                                    PeriodeNummer = 3
+                                }
+                            }
+                        },
+                        Eindeisen = new List<Eindeis>
+                        {
+                            new Eindeis
+                            {
+                                EindeisBeschrijving = "OOP kunnen programeren"
+                            }
+                        },
+                        Competenties = new List<Competentie>
+                        {
+                            new Competentie
+                            {
+                                BeheersingsNiveau = new BeheersingsNiveau
+                                {
+                                    ArchitectuurLaag = new ArchitectuurLaag
+                                    {
+                                        ArchitectuurLaagNaam = "Software engineering"
+                                    },
+                                    Activiteit = new Activiteit
+                                    {
+                                        ActiviteitNaam = "ontwikkelen"
+                                    },
+                                    Niveau = 2
+                                }
+                            }
+                        }
+                    }
+                });
+
+            _competentieMatrixService
+                .Setup(service => service.CreateCompetentieMatrix(It.IsAny<Module>()))
+                .Returns(new CompetentieMatrix
+                {
+                    ArchitectuurLaagNamen = new List<string>(),
+                    ActiviteitNamen = new List<string>(),
+                    Matrix = new[]
+                    {
+                        new CompetentieMatrix.Cell[5],
+                        new CompetentieMatrix.Cell[5],
+                        new CompetentieMatrix.Cell[5],
+                        new CompetentieMatrix.Cell[5],
+                        new CompetentieMatrix.Cell[5],
+                    }
+                });
+        }
+
+        [TestMethod]
+        public void GetAllModules_Should_Return_Typeof_IEnumerable_With_ModuleWithMatrix()
+        {
+            // Arrange
+            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object);
+
+            // Act
+            var result = service.GetAllModules();
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(IEnumerable<ModuleWithMatrix>));
+        }
+
+        [TestMethod]
+        public void GetAllModules_Should_Call_GetAllModules_On_ModuleRepository()
+        {
+            // Arrange
+            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object);
+
+            // Act
+            var result = service.GetAllModules();
+
+            // Assert
+            _moduleRepositoryMock.Verify(repository => repository.GetAllModules());
+        }
+
+        [DataTestMethod]
+        [DataRow("IOPR")]
+        [DataRow("IOPR2")]
+        public void GetAllModules_Should_Return_ModulesWithMatrix_From_Database_Data(string moduleCode)
+        {
+            // Arrange
+            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object);
+
+            // Act
+            var result = service.GetAllModules();
+
+            // Assert
+            Assert.IsTrue(result.Any(matrix => matrix.ModuleCode.Equals(moduleCode)));
+        }
+
+        [TestMethod]
+        public void GetAllModules_Should_Return_ModulesWithMatrix_With_Specialisaties()
+        {
+            // Arrange
+            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object);
+
+            // Act
+            var result = service.GetAllModules();
+
+            // Assert
+            Assert.IsTrue(result.Any(matrix => matrix.Specialisaties.Contains("Propedeuse")));
+        }
+
+        [TestMethod]
+        public void GetAllModules_Should_Return_ModulesWithMatrix_With_Perioden()
+        {
+            // Arrange
+            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object);
+
+            // Act
+            var result = service.GetAllModules();
+
+            // Assert
+            Assert.IsTrue(result.Any(matrix => matrix.Perioden.Contains(1)));
+        }
+
+        [TestMethod]
+        public void GetAllModules_Should_Return_ModulesWithMatrix_With_Eindeisen()
+        {
+            // Arrange
+            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object);
+
+            // Act
+            var result = service.GetAllModules();
+
+            // Assert
+            Assert.IsTrue(result.Any(matrix => matrix.Eindeisen.Contains("Weten wat een if statement is")));
+        }
+
+        [TestMethod]
+        public void GetAllModules_Should_Return_ModulesWithMatrix_With_Matrix()
+        {
+            // Arrange
+            var moduleService = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object);
+
+            // Act
+            var result = moduleService.GetAllModules();
+
+            // Assert
+            Assert.IsTrue(!result.Any(matrix => matrix.Matrix.Equals(null)));
+        }
+    }
+}

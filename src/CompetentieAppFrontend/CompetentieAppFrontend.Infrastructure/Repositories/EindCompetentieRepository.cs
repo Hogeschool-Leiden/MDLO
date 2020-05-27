@@ -19,7 +19,7 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
             return from beheersingsNiveau in _context.BeheersingsNiveaus
                 from competentie in beheersingsNiveau.Competenties
                 from studiefase in competentie.Module.Studiefasen
-                where studiefase.Periode.PeriodeNummer == periodeNummer
+                where studiefase.Periode.PeriodeNummer <= periodeNummer
                 where studiefase.Specialisatie.SpecialisatieNaam == specialisatieNaam
                 select new EindCompetentie
                 {

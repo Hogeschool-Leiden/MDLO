@@ -1,7 +1,7 @@
+using System.Linq;
 using CompetentieAppFrontend.Domain;
-using CompetentieAppFrontend.Infrastructure.DAL;
 
-namespace CompetentieAppFrontend.Api
+namespace CompetentieAppFrontend.Infrastructure.DAL
 {
     public static class Seeding
     {
@@ -370,6 +370,22 @@ namespace CompetentieAppFrontend.Api
                         BeheersingsNiveauId = 5
                     }
                 });
+
+            context.AddRange(new[]
+            {
+                new Eindeis
+                {
+                    Id = 1,
+                    ModuleId = 1,
+                    EindeisBeschrijving = "Deze module is erg moeilijk."
+                },
+                new Eindeis
+                {
+                    Id = 2,
+                    ModuleId = 1,
+                    EindeisBeschrijving = "Het is onmogelijk deze module te halen."
+                }
+            });
 
             context.SaveChanges();
         }

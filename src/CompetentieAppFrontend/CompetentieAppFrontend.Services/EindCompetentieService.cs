@@ -5,14 +5,14 @@ using Microsoft.Extensions.Logging;
 
 namespace CompetentieAppFrontend.Services
 {
-    public class EindCompetentieMatrixService : IEindCompetentieMatrixService
+    public class EindCompetentieService : IEindCompetentieService
     {
-        private readonly ILogger<EindCompetentieMatrixService> _logger;
+        private readonly ILogger<EindCompetentieService> _logger;
         private readonly IEindCompetentieRepository _eindCompetentieRepository;
         private readonly IArchitectuurLaagRepository _architectuurLaagRepository;
         private readonly IActiviteitRepository _activiteitRepository;
 
-        public EindCompetentieMatrixService(ILogger<EindCompetentieMatrixService> logger,
+        public EindCompetentieService(ILogger<EindCompetentieService> logger,
             IEindCompetentieRepository eindCompetentieRepository,
             IArchitectuurLaagRepository architectuurLaagRepository,
             IActiviteitRepository activiteitRepository)

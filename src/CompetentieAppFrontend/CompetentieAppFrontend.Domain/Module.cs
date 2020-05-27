@@ -15,5 +15,7 @@ namespace CompetentieAppFrontend.Domain
         public IEnumerable<Studiefase> Studiefasen { get; set; }
 
         public IEnumerable<Competentie> Competenties { get; set; }
+
+        public IEnumerable<Eindeis> Eindeisen { get; set; }
     }
 }
