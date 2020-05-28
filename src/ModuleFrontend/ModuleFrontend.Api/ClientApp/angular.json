@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ModuleFrontend.Api": {
+    "CompetentieAppFrontend.Api": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "progress": false,
             "extractCss": true,
             "outputPath": "dist",
@@ -33,12 +32,6 @@
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -60,18 +53,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ModuleFrontend.Api:build"
+            "browserTarget": "CompetentieAppFrontend.Api:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ModuleFrontend.Api:build:production"
+              "browserTarget": "CompetentieAppFrontend.Api:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ModuleFrontend.Api:build"
+            "browserTarget": "CompetentieAppFrontend.Api:build"
           }
         },
         "test": {
@@ -131,7 +124,7 @@
         }
       }
     },
-    "ModuleFrontend.Api-e2e": {
+    "CompetentieAppFrontend.Api-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -139,7 +132,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ModuleFrontend.Api:serve"
+            "devServerTarget": "CompetentieAppFrontend.Api:serve"
           }
         },
         "lint": {
@@ -154,5 +147,8 @@
       }
     }
   },
-  "defaultProject": "ModuleFrontend.Api"
+  "defaultProject": "CompetentieAppFrontend.Api",
+  "cli": {
+    "analytics": "d7ac71fa-1ec7-469d-91ed-43815a567fbe"
+  }
 }
