@@ -39,6 +39,25 @@ services:
       context: "../src/ModuleDomeinService/"
     ports:
       - 8080:80
+  module-beheer-frontend-service:
+    environment: 
+      BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
+      BROKER_EXCHANGE_NAME: CompetentieApp
+      DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-frontend-db;User Id=postgres;Password=verygoodrootpassword;
+      BROKER_QUEUE_NAME: ModuleFrontend
+      ENVIRONMENT: DEVELOPMENT
+    depends_on:
+      - servicebus
+      - database
+    build:
+      dockerfile: "../../docker/angular/Dockerfile"
+      args: 
+        sln: ModuleFrontend.sln
+        source: .
+        runnable: ModuleFrontend.Api.dll
+      context: "../src/ModuleFrontend/"
+    ports:
+      - 81:80
   servicebus:
     image: rabbitmq:3-management
     ports:
@@ -48,7 +67,5 @@ services:
     image: postgres:12.3-alpine
     environment: 
       POSTGRES_PASSWORD: verygoodrootpassword
-    volumes:
-      - /c/data:/var/lib/postgresql/data
     ports:
       - 5432:5432
