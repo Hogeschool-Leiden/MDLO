@@ -1,1 +1,42 @@
-<p>modules works!</p>
+<h1>Overzicht van alle modules</h1>
+
+<div class="table-container mat-elevation-z8>">
+  <mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="module">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'smallCell'"> Module</mat-header-cell>
+      <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'"> {{moduleData.module}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="specialisation">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'smallCell'"> Spec</mat-header-cell>
+      <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'">
+        <mat-list dense>
+          <mat-list-item *ngFor="let specialisation of moduleData.specialisation"> {{specialisation}}</mat-list-item>
+        </mat-list>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="period">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'smallCell'"> Periode</mat-header-cell>
+      <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'"> {{moduleData.period}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="matrix">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'matrixCell'"> Matrix</mat-header-cell>
+      <mat-cell *matCellDef="let moduleData" [ngClass]="'matrixCell'"> {{moduleData.matrix}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="endRequirements">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'requirmentCell'"> Eindeisen</mat-header-cell>
+      <mat-cell *matCellDef="let moduleData" [ngClass]="'requirmentCell'">
+        <mat-list>
+          <mat-list-item *ngFor="let requirement of moduleData.endRequirements"> {{requirement}}</mat-list-item>
+        </mat-list>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let moduleRowData; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

@@ -18,6 +18,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatTableModule} from "@angular/material/table";
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {MatTableModule} from "@angular/material/table";
     MatFormFieldModule,
     MatSelectModule,
     MatGridListModule,
-    MatTableModule
+    MatTableModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
