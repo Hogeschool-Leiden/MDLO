@@ -1,63 +1,63 @@
 version: '3'
 # Used only for local testing.
 services:
-  frontend-service:
-    environment: 
-       BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
-       BROKER_EXCHANGE_NAME: CompetentieApp
-       DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
-       BROKER_QUEUE_NAME: FrontendService
-       ENVIRONMENT: DEVELOPMENT
-    depends_on:
-      - servicebus
-      - database
-    build:
-      dockerfile: "../../docker/angular/Dockerfile"
-      args: 
-        sln: CompetentieAppFrontend.sln
-        source: .
-        runnable: CompetentieAppFrontend.Api.dll
-      context: "../src/CompetentieAppFrontend/"
-    ports:
-      - 80:80
-  module-domein-service:
-    environment: 
-      BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
-      BROKER_EXCHANGE_NAME: CompetentieApp
-      DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
-      BROKER_QUEUE_NAME: ModuleDomeinService
-      ENVIRONMENT: DEVELOPMENT
-    depends_on:
-      - servicebus
-      - database
-    build:
-      dockerfile: "../../docker/normal/Dockerfile"
-      args: 
-        sln: ModuleDomeinService.sln
-        source: .
-        runnable: ModuleDomeinService.Api.dll
-      context: "../src/ModuleDomeinService/"
-    ports:
-      - 8080:80
-  module-beheer-frontend-service:
-    environment: 
-      BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
-      BROKER_EXCHANGE_NAME: CompetentieApp
-      DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-frontend-db;User Id=postgres;Password=verygoodrootpassword;
-      BROKER_QUEUE_NAME: ModuleFrontend
-      ENVIRONMENT: DEVELOPMENT
-    depends_on:
-      - servicebus
-      - database
-    build:
-      dockerfile: "../../docker/angular/Dockerfile"
-      args: 
-        sln: ModuleFrontend.sln
-        source: .
-        runnable: ModuleFrontend.Api.dll
-      context: "../src/ModuleFrontend/"
-    ports:
-      - 81:80
+  # frontend-service:
+  #   environment: 
+  #      BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
+  #      BROKER_EXCHANGE_NAME: CompetentieApp
+  #      DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
+  #      BROKER_QUEUE_NAME: FrontendService
+  #      ENVIRONMENT: DEVELOPMENT
+  #   depends_on:
+  #     - servicebus
+  #     - database
+  #   build:
+  #     dockerfile: "../../docker/angular/Dockerfile"
+  #     args: 
+  #       sln: CompetentieAppFrontend.sln
+  #       source: .
+  #       runnable: CompetentieAppFrontend.Api.dll
+  #     context: "../src/CompetentieAppFrontend/"
+  #   ports:
+  #     - 80:80
+  # module-domein-service:
+  #   environment: 
+  #     BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
+  #     BROKER_EXCHANGE_NAME: CompetentieApp
+  #     DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
+  #     BROKER_QUEUE_NAME: ModuleDomeinService
+  #     ENVIRONMENT: DEVELOPMENT
+  #   depends_on:
+  #     - servicebus
+  #     - database
+  #   build:
+  #     dockerfile: "../../docker/normal/Dockerfile"
+  #     args: 
+  #       sln: ModuleDomeinService.sln
+  #       source: .
+  #       runnable: ModuleDomeinService.Api.dll
+  #     context: "../src/ModuleDomeinService/"
+  #   ports:
+  #     - 8080:80
+  # module-beheer-frontend-service:
+  #   environment: 
+  #     BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
+  #     BROKER_EXCHANGE_NAME: CompetentieApp
+  #     DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-frontend-db;User Id=postgres;Password=verygoodrootpassword;
+  #     BROKER_QUEUE_NAME: ModuleFrontend
+  #     ENVIRONMENT: DEVELOPMENT
+  #   depends_on:
+  #     - servicebus
+  #     - database
+  #   build:
+  #     dockerfile: "../../docker/angular/Dockerfile"
+  #     args: 
+  #       sln: ModuleFrontend.sln
+  #       source: .
+  #       runnable: ModuleFrontend.Api.dll
+  #     context: "../src/ModuleFrontend/"
+  #   ports:
+  #     - 81:80
   servicebus:
     image: rabbitmq:3-management
     ports:
