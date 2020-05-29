@@ -15,19 +15,5 @@ namespace CompetentieAppFrontend.Services
         public string XHeader { get; }
         public string YHeader { get; }
         public Eindniveau Value { get; }
-
-        public static Eindcompetentie FromCompetentie(Competentie competentie)
-        {
-            return new Eindcompetentie(
-                competentie.BeheersingsNiveau.ArchitectuurLaag.ArchitectuurLaagNaam,
-                competentie.BeheersingsNiveau.Activiteit.ActiviteitNaam,
-                new Eindniveau
-                {
-                    Niveau = competentie.BeheersingsNiveau.Niveau,
-                    Modules = competentie.BeheersingsNiveau.Competenties.Select(beheersingsNiveauCompetentie =>
-                        beheersingsNiveauCompetentie.Module.ModuleCode)
-                }
-            );
-        }
     }
 }
