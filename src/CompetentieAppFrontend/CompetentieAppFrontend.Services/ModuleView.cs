@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 
-namespace CompetentieAppFrontend.Domain
+namespace CompetentieAppFrontend.Services
 {
-    public class ModuleWithMatrix
+    public class ModuleView
     {
         public IEnumerable<string> Specialisaties { get; set; }
         public string ModuleCode { get; set; }
         public IEnumerable<int> Perioden { get; set; }
-        public CompetentieMatrix Matrix { get; set; }
+        public Matrix<int> Matrix { get; set; }
         public IEnumerable<string> Eindeisen { get; set; }
     }
 }

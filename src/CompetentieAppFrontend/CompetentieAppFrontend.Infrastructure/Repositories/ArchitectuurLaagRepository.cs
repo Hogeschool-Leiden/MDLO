@@ -12,10 +12,13 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
         {
             _context = context;
         }
-        
-        public IEnumerable<string> GetAllArchitectuurLaagNamen()
+
+        public IList<string> GetAllArchitectuurLaagNamen()
         {
-            return _context.ArchitectuurLagen.Select(laag => laag.ArchitectuurLaagNaam);
+            return _context
+                .ArchitectuurLagen
+                .Select(laag => laag.ArchitectuurLaagNaam)
+                .ToList();
         }
     }
 }

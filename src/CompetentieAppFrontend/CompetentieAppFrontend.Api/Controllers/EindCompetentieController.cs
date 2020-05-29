@@ -10,10 +10,10 @@ namespace CompetentieAppFrontend.Api.Controllers
     public class EindCompetentieController
     {
         private ILogger<EindCompetentieController> _logger;
-        private IEindCompetentieService _service;
+        private IEindcompetentieService _service;
 
         public EindCompetentieController(ILogger<EindCompetentieController> logger,
-            IEindCompetentieService service)
+            IEindcompetentieService service)
         {
             _logger = logger;
             _service = service;
@@ -21,13 +21,13 @@ namespace CompetentieAppFrontend.Api.Controllers
 
         [HttpGet]
         [Route("{specialisatieNaam}/{periodeNummer}")]
-        public CompetentieMatrix GetCompetentieMatrix([FromRoute] string specialisatieNaam,
+        public Matrix<Eindniveau> GetCompetentieMatrix([FromRoute] string specialisatieNaam,
             [FromRoute] int periodeNummer)
         {
             _logger.LogInformation(
                 $"Request received, specialisatie naam: {specialisatieNaam} and periode nummer: {periodeNummer}");
 
-            return _service.GetEindCompetentieMatrix(periodeNummer, specialisatieNaam);
+            return _service.GetEindcompetentieMatrixByCriteria(periodeNummer, specialisatieNaam);
         }
     }
 }

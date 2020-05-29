@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
 
@@ -8,31 +7,33 @@ namespace CompetentieAppFrontend.Services
 {
     public class ModuleService : IModuleService
     {
-        private readonly ILogger<EindCompetentieService> _logger;
-        private readonly ICompetentieMatrixService _competentieMatrixService;
+        private readonly ILogger<EindcompetentieService> _logger;
+        private readonly IMatrixService<int> _matrixService;
         private readonly IModuleRepository _moduleRepository;
 
-        public ModuleService(ILogger<EindCompetentieService> logger,
-            ICompetentieMatrixService competentieService,
+        public ModuleService(ILogger<EindcompetentieService> logger,
+            IMatrixService<int> service,
             IModuleRepository moduleRepository)
         {
             _logger = logger;
-            _competentieMatrixService = competentieService;
+            _matrixService = service;
             _moduleRepository = moduleRepository;
         }
 
-        public IEnumerable<ModuleWithMatrix> GetAllModules()
+        public IEnumerable<ModuleView> GetAllModules()
         {
-            return from module in _moduleRepository.GetAllModules()
-                select new ModuleWithMatrix
-                {
-                    Specialisaties =
-                        module.Studiefasen.Select(studiefase => studiefase.Specialisatie.SpecialisatieNaam),
-                    ModuleCode = module.ModuleCode,
-                    Matrix = _competentieMatrixService.CreateCompetentieMatrix(module),
-                    Perioden = module.Studiefasen.Select(studiefase => studiefase.Periode.PeriodeNummer),
-                    Eindeisen = module.Eindeisen.Select(eindeis => eindeis.EindeisBeschrijving),
-                };
+            var modules = _moduleRepository.GetAllModules();
+
+            _logger.LogTrace($"Retrieved {modules.Count} modules.");
+
+            return modules.Select(module => new ModuleView
+            {
+                Specialisaties = module.Studiefasen.Select(studiefase => studiefase.Specialisatie.SpecialisatieNaam),
+                ModuleCode = module.ModuleCode,
+                Matrix = _matrixService.CreateCompetentieMatrix(module.Competenties),
+                Perioden = module.Studiefasen.Select(studiefase => studiefase.Periode.PeriodeNummer),
+                Eindeisen = module.Eindeisen.Select(eindeis => eindeis.EindeisBeschrijving),
+            });
         }
     }
 }

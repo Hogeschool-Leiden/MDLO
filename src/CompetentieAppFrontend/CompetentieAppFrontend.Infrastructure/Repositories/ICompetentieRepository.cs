@@ -3,8 +3,8 @@ using CompetentieAppFrontend.Domain;
 
 namespace CompetentieAppFrontend.Infrastructure.Repositories
 {
-    public interface IModuleRepository
+    public interface ICompetentieRepository
     {
-        IList<Module> GetAllModules();
+        IList<Competentie> GetAllCompetentiesByCriteria(int periodeNummer, string specialisatieNaam);
     }
 }

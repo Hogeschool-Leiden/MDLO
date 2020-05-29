@@ -10,16 +10,35 @@ namespace CompetentieAppFrontend.Services.Test
     [TestClass]
     public class CompetentieMatrixServiceTest
     {
+        private readonly List<Competentie> _competenties = new List<Competentie>
+        {
+            new Competentie
+            {
+                BeheersingsNiveau = new BeheersingsNiveau
+                {
+                    ArchitectuurLaag = new ArchitectuurLaag
+                    {
+                        ArchitectuurLaagNaam = "Software engineering"
+                    },
+                    Activiteit = new Activiteit
+                    {
+                        ActiviteitNaam = "ontwerpen"
+                    },
+                    Niveau = 3
+                }
+            }
+        };
+
         private Mock<IArchitectuurLaagRepository> _architectuurRepositoryMock;
         private Mock<IActiviteitRepository> _activiteitRepositoryMock;
-        private Mock<ILogger<CompetentieMatrixService>> _loggerMock;
+        private Mock<ILogger<NiveauMatrixService>> _loggerMock;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _architectuurRepositoryMock = new Mock<IArchitectuurLaagRepository>();
             _activiteitRepositoryMock = new Mock<IActiviteitRepository>();
-            _loggerMock = new Mock<ILogger<CompetentieMatrixService>>();
+            _loggerMock = new Mock<ILogger<NiveauMatrixService>>();
 
             _architectuurRepositoryMock
                 .Setup(repository => repository.GetAllArchitectuurLaagNamen())
@@ -34,65 +53,31 @@ namespace CompetentieAppFrontend.Services.Test
         public void CreateCompetentieMatrix_Should_Return_Typeof_CompetentieMatrix()
         {
             // Arrange
-            var service = new CompetentieMatrixService(_loggerMock.Object, _architectuurRepositoryMock.Object,
-                _activiteitRepositoryMock.Object);
+            var service = new NiveauMatrixService(
+                _loggerMock.Object,
+                _architectuurRepositoryMock.Object,
+                _activiteitRepositoryMock.Object
+            );
 
             // Act
-            var result = service.CreateCompetentieMatrix(new Module
-            {
-                Competenties = new List<Competentie>
-                {
-                    new Competentie
-                    {
-                        BeheersingsNiveau = new BeheersingsNiveau
-                        {
-                            ArchitectuurLaag = new ArchitectuurLaag
-                            {
-                                ArchitectuurLaagNaam = "Software engineering"
-                            },
-                            Activiteit = new Activiteit
-                            {
-                                ActiviteitNaam = "ontwerpen"
-                            },
-                            Niveau = 3
-                        }
-                    }
-                }
-            });
+            var result = service.CreateCompetentieMatrix(_competenties);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(CompetentieMatrix));
+            Assert.IsInstanceOfType(result, typeof(Matrix<int>));
         }
 
         [TestMethod]
         public void CreateCompetentieMatrix_Should_Call_GetAllArchitectuurLaagNamen_On_ArchitectuurLaagRepository()
         {
             // Arrange
-            var service = new CompetentieMatrixService(_loggerMock.Object, _architectuurRepositoryMock.Object,
-                _activiteitRepositoryMock.Object);
+            var service = new NiveauMatrixService(
+                _loggerMock.Object,
+                _architectuurRepositoryMock.Object,
+                _activiteitRepositoryMock.Object
+            );
 
             // Act
-            var result = service.CreateCompetentieMatrix(new Module
-            {
-                Competenties = new List<Competentie>
-                {
-                    new Competentie
-                    {
-                        BeheersingsNiveau = new BeheersingsNiveau
-                        {
-                            ArchitectuurLaag = new ArchitectuurLaag
-                            {
-                                ArchitectuurLaagNaam = "Software engineering"
-                            },
-                            Activiteit = new Activiteit
-                            {
-                                ActiviteitNaam = "ontwerpen"
-                            },
-                            Niveau = 3
-                        }
-                    }
-                }
-            });
+            var result = service.CreateCompetentieMatrix(_competenties);
 
             // Assert
             _architectuurRepositoryMock.Verify(repository => repository.GetAllArchitectuurLaagNamen());
@@ -102,31 +87,14 @@ namespace CompetentieAppFrontend.Services.Test
         public void CreateCompetentieMatrix_Should_Call_GetAllActiviteitNamen_On_ActiviteitRepository()
         {
             // Arrange
-            var service = new CompetentieMatrixService(_loggerMock.Object, _architectuurRepositoryMock.Object,
-                _activiteitRepositoryMock.Object);
+            var service = new NiveauMatrixService(
+                _loggerMock.Object,
+                _architectuurRepositoryMock.Object,
+                _activiteitRepositoryMock.Object
+            );
 
             // Act
-            var result = service.CreateCompetentieMatrix(new Module
-            {
-                Competenties = new List<Competentie>
-                {
-                    new Competentie
-                    {
-                        BeheersingsNiveau = new BeheersingsNiveau
-                        {
-                            ArchitectuurLaag = new ArchitectuurLaag
-                            {
-                                ArchitectuurLaagNaam = "Software engineering"
-                            },
-                            Activiteit = new Activiteit
-                            {
-                                ActiviteitNaam = "ontwerpen"
-                            },
-                            Niveau = 3
-                        }
-                    }
-                }
-            });
+            var result = service.CreateCompetentieMatrix(_competenties);
 
             // Assert
             _activiteitRepositoryMock.Verify(repository => repository.GetAllActiviteitNamen());
@@ -136,34 +104,17 @@ namespace CompetentieAppFrontend.Services.Test
         public void CreateCompetentieMatrix_Should_Build_Correct_Matrix()
         {
             // Arrange
-            var service = new CompetentieMatrixService(_loggerMock.Object, _architectuurRepositoryMock.Object,
-                _activiteitRepositoryMock.Object);
+            var service = new NiveauMatrixService(
+                _loggerMock.Object,
+                _architectuurRepositoryMock.Object,
+                _activiteitRepositoryMock.Object
+            );
 
             // Act
-            var result = service.CreateCompetentieMatrix(new Module
-            {
-                Competenties = new List<Competentie>
-                {
-                    new Competentie
-                    {
-                        BeheersingsNiveau = new BeheersingsNiveau
-                        {
-                            ArchitectuurLaag = new ArchitectuurLaag
-                            {
-                                ArchitectuurLaagNaam = "Software engineering"
-                            },
-                            Activiteit = new Activiteit
-                            {
-                                ActiviteitNaam = "ontwerpen"
-                            },
-                            Niveau = 3
-                        }
-                    }
-                }
-            });
+            var result = service.CreateCompetentieMatrix(_competenties);
 
             // Assert
-            Assert.AreEqual(3, result.Matrix[0][0].Niveau);
+            Assert.AreEqual(3, result.Cells[0][0].Value);
         }
     }
 }

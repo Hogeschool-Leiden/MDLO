@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
@@ -12,16 +11,16 @@ namespace CompetentieAppFrontend.Services.Test
     [TestClass]
     public class ModuleServiceTest
     {
-        private Mock<ICompetentieMatrixService> _competentieMatrixService;
+        private Mock<IMatrixService<int>> _competentieMatrixService;
         private Mock<IModuleRepository> _moduleRepositoryMock;
-        private Mock<ILogger<EindCompetentieService>> _loggerMock;
+        private Mock<ILogger<EindcompetentieService>> _loggerMock;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _competentieMatrixService = new Mock<ICompetentieMatrixService>();
+            _competentieMatrixService = new Mock<IMatrixService<int>>();
             _moduleRepositoryMock = new Mock<IModuleRepository>();
-            _loggerMock = new Mock<ILogger<EindCompetentieService>>();
+            _loggerMock = new Mock<ILogger<EindcompetentieService>>();
 
             _moduleRepositoryMock
                 .Setup(repository => repository.GetAllModules())
@@ -116,20 +115,8 @@ namespace CompetentieAppFrontend.Services.Test
                 });
 
             _competentieMatrixService
-                .Setup(service => service.CreateCompetentieMatrix(It.IsAny<Module>()))
-                .Returns(new CompetentieMatrix
-                {
-                    ArchitectuurLaagNamen = new List<string>(),
-                    ActiviteitNamen = new List<string>(),
-                    Matrix = new[]
-                    {
-                        new CompetentieMatrix.Cell[5],
-                        new CompetentieMatrix.Cell[5],
-                        new CompetentieMatrix.Cell[5],
-                        new CompetentieMatrix.Cell[5],
-                        new CompetentieMatrix.Cell[5],
-                    }
-                });
+                .Setup(service => service.CreateCompetentieMatrix(It.IsAny<IEnumerable<Competentie>>()))
+                .Returns(new Matrix<int>(new List<string>(), new List<string>(), new List<Niveau> { }));
         }
 
         [TestMethod]
@@ -143,15 +130,18 @@ namespace CompetentieAppFrontend.Services.Test
             var result = service.GetAllModules();
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(IEnumerable<ModuleWithMatrix>));
+            Assert.IsInstanceOfType(result, typeof(IEnumerable<ModuleView>));
         }
 
         [TestMethod]
         public void GetAllModules_Should_Call_GetAllModules_On_ModuleRepository()
         {
             // Arrange
-            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
-                _moduleRepositoryMock.Object);
+            var service = new ModuleService(
+                _loggerMock.Object,
+                _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object
+            );
 
             // Act
             var result = service.GetAllModules();
@@ -166,8 +156,11 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetAllModules_Should_Return_ModulesWithMatrix_From_Database_Data(string moduleCode)
         {
             // Arrange
-            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
-                _moduleRepositoryMock.Object);
+            var service = new ModuleService(
+                _loggerMock.Object,
+                _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object
+            );
 
             // Act
             var result = service.GetAllModules();
@@ -180,8 +173,11 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetAllModules_Should_Return_ModulesWithMatrix_With_Specialisaties()
         {
             // Arrange
-            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
-                _moduleRepositoryMock.Object);
+            var service = new ModuleService(
+                _loggerMock.Object,
+                _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object
+            );
 
             // Act
             var result = service.GetAllModules();
@@ -194,8 +190,11 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetAllModules_Should_Return_ModulesWithMatrix_With_Perioden()
         {
             // Arrange
-            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
-                _moduleRepositoryMock.Object);
+            var service = new ModuleService(
+                _loggerMock.Object,
+                _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object
+            );
 
             // Act
             var result = service.GetAllModules();
@@ -208,8 +207,11 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetAllModules_Should_Return_ModulesWithMatrix_With_Eindeisen()
         {
             // Arrange
-            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
-                _moduleRepositoryMock.Object);
+            var service = new ModuleService(
+                _loggerMock.Object,
+                _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object
+            );
 
             // Act
             var result = service.GetAllModules();
@@ -222,14 +224,17 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetAllModules_Should_Return_ModulesWithMatrix_With_Matrix()
         {
             // Arrange
-            var moduleService = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
-                _moduleRepositoryMock.Object);
+            var moduleService = new ModuleService(
+                _loggerMock.Object,
+                _competentieMatrixService.Object,
+                _moduleRepositoryMock.Object
+            );
 
             // Act
             var result = moduleService.GetAllModules();
 
             // Assert
-            Assert.IsTrue(!result.Any(matrix => matrix.Matrix.Equals(null)));
+            Assert.IsFalse(result.Any(matrix => matrix.Matrix.Equals(null)));
         }
     }
 }

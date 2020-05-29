@@ -13,9 +13,12 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
             _context = context;
         }
 
-        public IEnumerable<string> GetAllActiviteitNamen()
+        public IList<string> GetAllActiviteitNamen()
         {
-            return _context.Activiteiten.Select(activiteit => activiteit.ActiviteitNaam);
+            return _context
+                .Activiteiten
+                .Select(activiteit => activiteit.ActiviteitNaam)
+                .ToList();
         }
     }
 }

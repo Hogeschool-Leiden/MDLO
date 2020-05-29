@@ -21,7 +21,7 @@ namespace CompetentieAppFrontend.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ModuleWithMatrix> GetAllModules()
+        public IEnumerable<ModuleView> GetAllModules()
         {
             _logger.LogInformation("Received call to get all modules.");
             return _moduleService.GetAllModules();

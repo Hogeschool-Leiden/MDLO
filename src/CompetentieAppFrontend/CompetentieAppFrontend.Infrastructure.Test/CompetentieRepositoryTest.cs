@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CompetentieAppFrontend.Infrastructure.Test
 {
     [TestClass]
-    public class MatrixRepositoryTest
+    public class CompetentieRepositoryTest
     {
         private const string DATA_SOURCE = "DataSource=:memory:";
         private static SqliteConnection _connection;
@@ -47,13 +47,13 @@ namespace CompetentieAppFrontend.Infrastructure.Test
         {
             // Arrange
             using var context = new CompetentieAppFrontendContext(_options);
-            var repository = new EindCompetentieRepository(context);
+            var repository = new CompetentieRepository(context);
 
             // Act
-            var result = repository.GetEindCompetenties(1, "Propedeuse");
+            var result = repository.GetAllCompetentiesByCriteria(1, "Propedeuse");
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(IEnumerable<EindCompetentie>));
+            Assert.IsInstanceOfType(result, typeof(IList<Competentie>));
         }
     }
 }

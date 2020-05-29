@@ -23,7 +23,7 @@ namespace CompetentieAppFrontend.Api.Test
             _moduleServiceMock = new Mock<IModuleService>();
             _loggerMock = new Mock<ILogger<ModuleController>>();
 
-            _moduleServiceMock.Setup(service => service.GetAllModules()).Returns(new List<ModuleWithMatrix>());
+            _moduleServiceMock.Setup(service => service.GetAllModules()).Returns(new List<ModuleView>());
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace CompetentieAppFrontend.Api.Test
             var result = controller.GetAllModules();
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(IEnumerable<ModuleWithMatrix>));
+            Assert.IsInstanceOfType(result, typeof(IEnumerable<ModuleView>));
         }
 
         [TestMethod]
@@ -95,8 +95,8 @@ namespace CompetentieAppFrontend.Api.Test
         public void GetAllModules_Should_Return_Data_Received_From_ModuleService()
         {
             // Arrange
-            _moduleServiceMock.Setup(service => service.GetAllModules()).Returns(new List<ModuleWithMatrix>
-                {new ModuleWithMatrix {ModuleCode = "TestCode"}});
+            _moduleServiceMock.Setup(service => service.GetAllModules()).Returns(new List<ModuleView>
+                {new ModuleView {ModuleCode = "TestCode"}});
             var controller = new ModuleController(_loggerMock.Object, _moduleServiceMock.Object);
 
             // Act

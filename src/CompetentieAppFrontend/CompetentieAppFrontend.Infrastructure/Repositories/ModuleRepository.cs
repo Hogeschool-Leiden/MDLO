@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.DAL;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
             _context = context;
         }
 
-        public IEnumerable<Module> GetAllModules()
+        public IList<Module> GetAllModules()
         {
             return _context
                 .Modules
@@ -28,7 +29,8 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
                 .ThenInclude(studiefase => studiefase.Specialisatie)
                 .Include(module => module.Studiefasen)
                 .ThenInclude(studiefase => studiefase.Periode)
-                .Include(module => module.Eindeisen);
+                .Include(module => module.Eindeisen)
+                .ToList();
         }
     }
 }

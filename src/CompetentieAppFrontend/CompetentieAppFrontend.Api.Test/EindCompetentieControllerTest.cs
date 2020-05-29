@@ -9,13 +9,13 @@ namespace CompetentieAppFrontend.Api.Test
     [TestClass]
     public class EindCompetentieControllerTest
     {
-        private Mock<IEindCompetentieService> _eindCompetentieService;
+        private Mock<IEindcompetentieService> _eindCompetentieService;
         private Mock<ILogger<EindCompetentieController>> _loggerMock;
         
         [TestInitialize]
         public void TestInitialize()
         {
-            _eindCompetentieService = new Mock<IEindCompetentieService>();
+            _eindCompetentieService = new Mock<IEindcompetentieService>();
             _loggerMock = new Mock<ILogger<EindCompetentieController>>();
         }
         

@@ -10,28 +10,24 @@ namespace CompetentieAppFrontend.Services.Test
     [TestClass]
     public class EindCompetentieServiceTest
     {
-        private Mock<IArchitectuurLaagRepository> _architectuurLaagRepositoryMock;
-        private Mock<IActiviteitRepository> _activiteitRepositoryMock;
-        private Mock<IEindCompetentieRepository> _eindCompetentieRepositoryMock;
-        private Mock<ILogger<EindCompetentieService>> _loggerMock;
+        private Mock<IMatrixService<Eindniveau>> _competentieMatrixService;
+        private Mock<ICompetentieRepository> _competentieRepositoryMock;
+        private Mock<ILogger<EindcompetentieService>> _loggerMock;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _architectuurLaagRepositoryMock = new Mock<IArchitectuurLaagRepository>();
-            _activiteitRepositoryMock = new Mock<IActiviteitRepository>();
-            _eindCompetentieRepositoryMock = new Mock<IEindCompetentieRepository>();
-            _loggerMock = new Mock<ILogger<EindCompetentieService>>();
+            _competentieMatrixService = new Mock<IMatrixService<Eindniveau>>();
+            _competentieRepositoryMock = new Mock<ICompetentieRepository>();
+            _loggerMock = new Mock<ILogger<EindcompetentieService>>();
 
-            _architectuurLaagRepositoryMock
-                .Setup(repository => repository.GetAllArchitectuurLaagNamen())
-                .Returns(new List<string>());
-            _activiteitRepositoryMock
-                .Setup(repository => repository.GetAllActiviteitNamen())
-                .Returns(new List<string>());
-            _eindCompetentieRepositoryMock
-                .Setup(repository => repository.GetEindCompetenties(It.IsAny<int>(), It.IsAny<string>()))
-                .Returns(new List<EindCompetentie>());
+            _competentieRepositoryMock
+                .Setup(repository => repository.GetAllCompetentiesByCriteria(It.IsAny<int>(), It.IsAny<string>()))
+                .Returns(new List<Competentie>());
+
+            _competentieMatrixService
+                .Setup(service => service.CreateCompetentieMatrix(It.IsAny<IEnumerable<Competentie>>()))
+                .Returns(new Matrix<Eindniveau>(new List<string>(), new List<string>(), new List<Eindcompetentie>()));
         }
 
         [DataTestMethod]
@@ -40,18 +36,22 @@ namespace CompetentieAppFrontend.Services.Test
         [DataRow(3, "Business data management")]
         [DataRow(5, "Forensische ict")]
         [DataRow(7, "Interactie technologie")]
-        public void GetEindCompetentieMatrix_Should_Return_Typeof_CompetentieMatrix(int periodeNummer, string specialisatieNaam)
+        public void GetEindCompetentieMatrix_Should_Return_Typeof_CompetentieMatrix(int periodeNummer,
+            string specialisatieNaam)
         {
             // Arrange
-            var eindCompetentieMatrixService = new EindCompetentieService(_loggerMock.Object,
-                _eindCompetentieRepositoryMock.Object, _architectuurLaagRepositoryMock.Object,
-                _activiteitRepositoryMock.Object);
+            var eindCompetentieMatrixService = new EindcompetentieService(
+                _loggerMock.Object,
+                _competentieRepositoryMock.Object,
+                _competentieMatrixService.Object
+            );
 
             // Act
-            var result = eindCompetentieMatrixService.GetEindCompetentieMatrix(periodeNummer, specialisatieNaam);
+            var result =
+                eindCompetentieMatrixService.GetEindcompetentieMatrixByCriteria(periodeNummer, specialisatieNaam);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(CompetentieMatrix));
+            Assert.IsInstanceOfType(result, typeof(Matrix<Eindniveau>));
         }
 
         [DataTestMethod]
@@ -60,59 +60,23 @@ namespace CompetentieAppFrontend.Services.Test
         [DataRow(3, "Business data management")]
         [DataRow(5, "Forensische ict")]
         [DataRow(7, "Interactie technologie")]
-        public void GetEindCompetentieMatrix_Should_Call_GetArchitectuurLaagNamen_On_IArchitectuurLaagRepository(int periodeNummer, string specialisatieNaam)
+        public void GetEindCompetentieMatrix_Should_Call_GetAllCompetentiesByCriteria_On_IEindCompetentieRepository(
+            int periodeNummer, string specialisatieNaam)
         {
             // Arrange
-            var eindCompetentieMatrixService = new EindCompetentieService(_loggerMock.Object,
-                _eindCompetentieRepositoryMock.Object, _architectuurLaagRepositoryMock.Object,
-                _activiteitRepositoryMock.Object);
-            
-            // Act
-            var result = eindCompetentieMatrixService.GetEindCompetentieMatrix(periodeNummer, specialisatieNaam);
-            
-            // Assert
-            _architectuurLaagRepositoryMock.Verify(repository => repository.GetAllArchitectuurLaagNamen());
-        }
+            var eindCompetentieMatrixService = new EindcompetentieService(
+                _loggerMock.Object,
+                _competentieRepositoryMock.Object,
+                _competentieMatrixService.Object
+            );
 
-        [DataTestMethod]
-        [DataRow(1, "Interactie technologie")]
-        [DataRow(2, "Software engineering")]
-        [DataRow(3, "Business data management")]
-        [DataRow(5, "Forensische ict")]
-        [DataRow(7, "Interactie technologie")]
-        public void GetEindCompetentieMatrix_Should_Call_GetActiviteitNamen_On_IActiviteitRepository(int periodeNummer, string specialisatieNaam)
-        {
-            // Arrange
-            var eindCompetentieMatrixService = new EindCompetentieService(_loggerMock.Object,
-                _eindCompetentieRepositoryMock.Object, _architectuurLaagRepositoryMock.Object,
-                _activiteitRepositoryMock.Object);
-            
             // Act
-            var result = eindCompetentieMatrixService.GetEindCompetentieMatrix(periodeNummer, specialisatieNaam);
-            
-            
-            // Assert
-            _activiteitRepositoryMock.Verify(repository => repository.GetAllActiviteitNamen());
-        }
+            var result =
+                eindCompetentieMatrixService.GetEindcompetentieMatrixByCriteria(periodeNummer, specialisatieNaam);
 
-        [DataTestMethod]
-        [DataRow(1, "Interactie technologie")]
-        [DataRow(2, "Software engineering")]
-        [DataRow(3, "Business data management")]
-        [DataRow(5, "Forensische ict")]
-        [DataRow(7, "Interactie technologie")]
-        public void GetEindCompetentieMatrix_Should_Call_GetEindCompetenties_On_IEindCompetentieRepository(int periodeNummer, string specialisatieNaam)
-        {
-            // Arrange
-            var eindCompetentieMatrixService = new EindCompetentieService(_loggerMock.Object,
-                _eindCompetentieRepositoryMock.Object, _architectuurLaagRepositoryMock.Object,
-                _activiteitRepositoryMock.Object);
-            
-            // Act
-            var result = eindCompetentieMatrixService.GetEindCompetentieMatrix(periodeNummer, specialisatieNaam);
-            
             // Assert
-            _eindCompetentieRepositoryMock.Verify(repository => repository.GetEindCompetenties(periodeNummer, specialisatieNaam));
+            _competentieRepositoryMock.Verify(repository =>
+                repository.GetAllCompetentiesByCriteria(periodeNummer, specialisatieNaam));
         }
     }
 }
