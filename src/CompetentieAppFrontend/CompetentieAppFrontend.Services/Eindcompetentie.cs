@@ -5,7 +5,7 @@ namespace CompetentieAppFrontend.Services
 {
     public class Eindcompetentie : IMatrixable<Eindniveau>
     {
-        private Eindcompetentie(string xHeader, string yHeader, Eindniveau value)
+        public Eindcompetentie(string xHeader, string yHeader, Eindniveau value)
         {
             XHeader = xHeader;
             YHeader = yHeader;

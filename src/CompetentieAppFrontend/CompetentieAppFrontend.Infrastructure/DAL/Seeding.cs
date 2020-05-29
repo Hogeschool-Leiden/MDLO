@@ -122,30 +122,35 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 1,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 2,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 3,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 4,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 5,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 5,
                         Niveau = 1
@@ -157,30 +162,35 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 6,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 7,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 8,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 9,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 10, 
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 5,
                         Niveau = 1
@@ -192,30 +202,35 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 11,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 12,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 13,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 14,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 15,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 5,
                         Niveau = 1
@@ -227,68 +242,118 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 16,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 17,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 18,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 19,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 20,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 5,
                         Niveau = 1
                     }
                 });
-
+            
             context.BeheersingsNiveaus
                 .AddRange(new[]
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 21,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 22,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 23,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 24,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 25,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 5,
                         Niveau = 1
+                    }
+                });
+            
+            context.BeheersingsNiveaus
+                .AddRange(new[]
+                {
+                    new BeheersingsNiveau
+                    {
+                        Id = 26,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 1,
+                        Niveau = 3
+                    },
+                    new BeheersingsNiveau
+                    {
+                        Id = 27,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 2,
+                        Niveau = 3
+                    },
+                    new BeheersingsNiveau
+                    {
+                        Id = 28,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 3,
+                        Niveau = 3
+                    },
+                    new BeheersingsNiveau
+                    {
+                        Id = 29,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 4,
+                        Niveau = 3
+                    },
+                    new BeheersingsNiveau
+                    {
+                        Id = 30,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 5,
+                        Niveau = 3
                     }
                 });
 
@@ -336,7 +401,7 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                     new Studiefase
                     {
                         ModuleId = 3,
-                        PeriodeId = 2,
+                        PeriodeId = 1,
                         SpecialisatieId = 1
                     }
                 });
@@ -367,7 +432,7 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                     new Competentie
                     {
                         ModuleId = 3,
-                        BeheersingsNiveauId = 5
+                        BeheersingsNiveauId = 26
                     }
                 });
 

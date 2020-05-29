@@ -13,7 +13,7 @@ namespace CompetentieAppFrontend.Services
         private readonly IActiviteitRepository _activiteitRepository;
 
         public EindcompetentieMatrixService(ILogger<EindcompetentieMatrixService> logger,
-            IArchitectuurLaagRepository architectuurLaagRepository, 
+            IArchitectuurLaagRepository architectuurLaagRepository,
             IActiviteitRepository activiteitRepository)
         {
             _logger = logger;
@@ -25,8 +25,15 @@ namespace CompetentieAppFrontend.Services
         {
             var architectuurLaagNamen = _architectuurLaagRepository.GetAllArchitectuurLaagNamen();
             var activiteitNamen = _activiteitRepository.GetAllActiviteitNamen();
-            // TODO: Filter eindcompetenties to be distinct on the eindcompetentie with the highest niveau.
-            var eindcompetenties = competenties.Select(Eindcompetentie.FromCompetentie);
+            var eindcompetenties = from eindcompetentie in competenties.Select(Eindcompetentie.FromCompetentie)
+                group eindcompetentie by new {eindcompetentie.XHeader, eindcompetentie.YHeader}
+                into groupedEindcompetentie
+                select new Eindcompetentie(groupedEindcompetentie.Key.XHeader, groupedEindcompetentie.Key.YHeader,
+                    new Eindniveau
+                    {
+                        Niveau = groupedEindcompetentie.ToList().Max(eindcompetentie => eindcompetentie.Value.Niveau),
+                        Modules = groupedEindcompetentie.SelectMany(eindcompetentie => eindcompetentie.Value.Modules)
+                    });
             return new Matrix<Eindniveau>(architectuurLaagNamen, activiteitNamen, eindcompetenties);
         }
     }
