@@ -2,9 +2,13 @@ using CompetentieAppFrontend.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ModuleFrontend.Api.DAL;
+using ModuleFrontend.Api.Utility;
+using System;
 
 namespace ModuleFrontend.Api
 {
@@ -20,11 +24,13 @@ namespace ModuleFrontend.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<CompetentieAppFrontendContext>(builder =>
-            //{
-            //    builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
-            //                      throw new ArgumentNullException());
-            //});
+            var loader = new CsvLoader();
+            loader.LoadFromCsv("module-overzicht-csv.csv");
+            services.AddDbContext<ModuleContext>(builder =>
+            {
+                builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
+                                  throw new ArgumentNullException());
+            });
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -34,6 +40,8 @@ namespace ModuleFrontend.Api
             });
             services.UseRabbitMq();
             services.UseMicroserviceHost();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
