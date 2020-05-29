@@ -25,16 +25,27 @@ namespace CompetentieAppFrontend.Services
         {
             var architectuurLaagNamen = _architectuurLaagRepository.GetAllArchitectuurLaagNamen();
             var activiteitNamen = _activiteitRepository.GetAllActiviteitNamen();
-            var eindcompetenties = from eindcompetentie in competenties.Select(Eindcompetentie.FromCompetentie)
-                group eindcompetentie by new {eindcompetentie.XHeader, eindcompetentie.YHeader}
+            var eindcompetenties = MapToEindcompetenties(competenties);
+            return new Matrix<Eindniveau>(architectuurLaagNamen, activiteitNamen, eindcompetenties);
+        }
+
+        private static IEnumerable<Eindcompetentie> MapToEindcompetenties(IEnumerable<Competentie> competenties)
+        {
+            return from competentie in competenties
+                group competentie by new
+                {
+                    competentie.BeheersingsNiveau.ArchitectuurLaag.ArchitectuurLaagNaam,
+                    competentie.BeheersingsNiveau.Activiteit.ActiviteitNaam
+                }
                 into groupedEindcompetentie
-                select new Eindcompetentie(groupedEindcompetentie.Key.XHeader, groupedEindcompetentie.Key.YHeader,
+                select new Eindcompetentie(groupedEindcompetentie.Key.ArchitectuurLaagNaam,
+                    groupedEindcompetentie.Key.ActiviteitNaam,
                     new Eindniveau
                     {
-                        Niveau = groupedEindcompetentie.ToList().Max(eindcompetentie => eindcompetentie.Value.Niveau),
-                        Modules = groupedEindcompetentie.SelectMany(eindcompetentie => eindcompetentie.Value.Modules)
+                        Niveau = groupedEindcompetentie.ToList()
+                            .Max(competentie => competentie.BeheersingsNiveau.Niveau),
+                        Modules = groupedEindcompetentie.Select(competentie => competentie.Module.ModuleCode)
                     });
-            return new Matrix<Eindniveau>(architectuurLaagNamen, activiteitNamen, eindcompetenties);
         }
     }
 }
