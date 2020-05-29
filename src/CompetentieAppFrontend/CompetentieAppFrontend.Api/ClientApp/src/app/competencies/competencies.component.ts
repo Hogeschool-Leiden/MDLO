@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSliderChange} from "@angular/material/slider";
 // @ts-ignore  its only mock-data
-import mockJson from './../../assets/mock-data/mock-matrix-json.json';
+import mockJson from './../../assets/mock-data/eindcompetentie-mock.json';
 import {HttpClient} from "@angular/common/http";
 
 @Component({
@@ -76,12 +76,12 @@ export class CompetenciesComponent implements OnInit {
 
 
     // use db instead of mock
-    this.http.get(this.dbUrl).toPromise().then(data => {
-      this.competenceMatrix = data;
-    });
+    // this.http.get(this.dbUrl).toPromise().then(data => {
+    //   this.competenceMatrix = data;
+    // });
 
     // mockdata instead of db
-    // this.competenceMatrix = mockJson;
+    this.competenceMatrix = mockJson;
   }
 
   getPeriodeInDbFormat(){

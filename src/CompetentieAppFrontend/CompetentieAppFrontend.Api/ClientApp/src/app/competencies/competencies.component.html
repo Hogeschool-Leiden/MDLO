@@ -9,9 +9,7 @@
   </mat-form-field>
 </div>
 
-<app-competence-matrix
-  [year]=year
-  [period]=period
+<app-competence-matrix class="matrix-container"
   [specialisation]="specialisation"
   [competenceMatrix]="competenceMatrix"></app-competence-matrix>
 
@@ -19,7 +17,6 @@
   <mat-slider (input)="updateSliderValue($event.value)"
               (change)="updateSliderValue($event.value); getMatrixDataFromDB()"
               min="{{sliderMin}}" max="{{sliderMax}}"
-              thumbLabel
               [value]="sliderMin"
               step="0.25"
               style="width: 300px"

@@ -8,8 +8,6 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 })
 export class CompetenceMatrixComponent implements OnInit, OnChanges {
 
-  @Input() year: number;
-  @Input() period: number;
   @Input() specialisation: string;
   @Input() competenceMatrix;
 
@@ -50,22 +48,21 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
 
   private setActivityHeaders() {
     for (let i = 0; i < this.displayeMatrix.length - 1; i++) {
-      this.displayeMatrix[i + 1][0] = this.competenceMatrix.architectuurLaagNamen[i];
+      this.displayeMatrix[i + 1][0] = this.competenceMatrix.xHeaders[i];
     }
   }
 
   private setArchitectureHeaders() {
     for (let i = 0; i < this.displayeMatrix[0].length - 1; i++) {
-      this.displayeMatrix[0][i + 1] = this.competenceMatrix.activiteitNamen[i];
+      this.displayeMatrix[0][i + 1] = this.competenceMatrix.yHeaders[i];
     }
   }
 
   private setBody() {
-    for (let y = 0; y < this.competenceMatrix.matrix.length; y++) {
-      for (let x = 0; x < this.competenceMatrix.matrix[y].length; x++) {
-        if (this.competenceMatrix.matrix[y][x] != null) {
-          console.log(this.competenceMatrix.matrix[y][x])
-          this.setCellInfo(this.competenceMatrix.matrix[y][x], y, x);
+    for (let y = 0; y < this.competenceMatrix.cells.length; y++) {
+      for (let x = 0; x < this.competenceMatrix.cells[y].length; x++) {
+        if (this.competenceMatrix.cells[y][x] != null) {
+          this.setCellInfo(this.competenceMatrix.cells[y][x], y, x);
         }
       }
     }
@@ -74,7 +71,7 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
   private setCellInfo(matrixElement, y, x) {
     y += this.displayMatrixOffset;
     x += this.displayMatrixOffset;
-    this.displayeMatrix[y][x] = matrixElement.niveau;
+    this.displayeMatrix[y][x] = matrixElement.value.niveau;
   }
 
   resetMatrix(){

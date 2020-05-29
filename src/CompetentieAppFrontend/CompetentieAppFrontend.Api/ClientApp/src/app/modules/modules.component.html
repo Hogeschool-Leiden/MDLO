@@ -1,18 +1,25 @@
-<h1>Overzicht van alle modules</h1>
+<div style="text-align: center">
+  <h3>Overzicht van alle modules</h3>
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium">
+  </mat-form-field>
+</div>
 
-<div class="table-container mat-elevation-z8>">
+<div class="table-container">
   <mat-table [dataSource]="dataSource">
 
     <ng-container matColumnDef="module">
       <mat-header-cell *matHeaderCellDef [ngClass]="'smallCell'"> Module</mat-header-cell>
-      <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'"> {{moduleData.module}} </mat-cell>
+      <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'"><b>{{moduleData.module}}</b></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="specialisation">
       <mat-header-cell *matHeaderCellDef [ngClass]="'smallCell'"> Spec</mat-header-cell>
       <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'">
-        <mat-list dense>
-          <mat-list-item *ngFor="let specialisation of moduleData.specialisation"> {{specialisation}}</mat-list-item>
+        <mat-list dense class="spec-list">
+          <mat-list-item class="spec-list-item"
+                         *ngFor="let specialisation of moduleData.specialisation"> {{specialisation}}</mat-list-item>
         </mat-list>
       </mat-cell>
     </ng-container>
@@ -24,19 +31,23 @@
 
     <ng-container matColumnDef="matrix">
       <mat-header-cell *matHeaderCellDef [ngClass]="'matrixCell'"> Matrix</mat-header-cell>
-      <mat-cell *matCellDef="let moduleData" [ngClass]="'matrixCell'"> {{moduleData.matrix}} </mat-cell>
+      <mat-cell *matCellDef="let moduleData" [ngClass]="'matrixCell'">
+        <app-competence-matrix [competenceMatrix]="moduleData.matrix" style="font-size: 75%;"></app-competence-matrix>
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="endRequirements">
       <mat-header-cell *matHeaderCellDef [ngClass]="'requirmentCell'"> Eindeisen</mat-header-cell>
       <mat-cell *matCellDef="let moduleData" [ngClass]="'requirmentCell'">
         <mat-list>
-          <mat-list-item *ngFor="let requirement of moduleData.endRequirements"> {{requirement}}</mat-list-item>
+          <mat-list-item class="endRequirement-list-item"
+                         *ngFor="let requirement of moduleData.endRequirements; let i = index"><p>
+            &bull; {{requirement}}</p></mat-list-item>
         </mat-list>
       </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let moduleRowData; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let moduleRowData; let i = index; columns: displayedColumns;"></mat-row>
   </mat-table>
 </div>

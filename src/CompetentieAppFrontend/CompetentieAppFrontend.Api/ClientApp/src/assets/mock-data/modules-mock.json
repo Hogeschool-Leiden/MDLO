@@ -1,0 +1,204 @@
+[
+    {
+        "specialisaties": [
+            "Propedeuse"
+        ],
+        "moduleCode": "IOPR",
+        "perioden": [
+            1
+        ],
+        "matrix": {
+            "xHeaders": [
+                "gebruikersinteractie",
+                "organisatieprocessen",
+                "infrastructuur",
+                "software",
+                "hardware interfacing"
+            ],
+            "yHeaders": [
+                "analyseren",
+                "adviseren",
+                "ontwerpen",
+                "realiseren",
+                "manage & control"
+            ],
+            "cells": [
+                [
+                    {
+                        "value": 1
+                    },
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    {
+                        "value": 1
+                    }
+                ]
+            ]
+        },
+        "eindeisen": [
+            "Deze module is erg moeilijk.",
+            "Het is onmogelijk deze module te halen."
+        ]
+    },
+    {
+        "specialisaties": [
+            "Propedeuse"
+        ],
+        "moduleCode": "IOPR2",
+        "perioden": [
+            3
+        ],
+        "matrix": {
+            "xHeaders": [
+                "gebruikersinteractie",
+                "organisatieprocessen",
+                "infrastructuur",
+                "software",
+                "hardware interfacing"
+            ],
+            "yHeaders": [
+                "analyseren",
+                "adviseren",
+                "ontwerpen",
+                "realiseren",
+                "manage & control"
+            ],
+            "cells": [
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    {
+                        "value": 1
+                    },
+                    {
+                        "value": 1
+                    },
+                    null
+                ]
+            ]
+        },
+        "eindeisen": []
+    },
+    {
+        "specialisaties": [
+            "Propedeuse"
+        ],
+        "moduleCode": "IUML",
+        "perioden": [
+            2
+        ],
+        "matrix": {
+            "xHeaders": [
+                "gebruikersinteractie",
+                "organisatieprocessen",
+                "infrastructuur",
+                "software",
+                "hardware interfacing"
+            ],
+            "yHeaders": [
+                "analyseren",
+                "adviseren",
+                "ontwerpen",
+                "realiseren",
+                "manage & control"
+            ],
+            "cells": [
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    {
+                        "value": 1
+                    },
+                    null,
+                    null,
+                    null
+                ]
+            ]
+        },
+        "eindeisen": []
+    }
+]

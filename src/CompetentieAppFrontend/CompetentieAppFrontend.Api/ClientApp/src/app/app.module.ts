@@ -19,6 +19,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatTableModule} from "@angular/material/table";
 import {MatListModule} from "@angular/material/list";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {MatListModule} from "@angular/material/list";
     MatSelectModule,
     MatGridListModule,
     MatTableModule,
-    MatListModule
+    MatListModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
