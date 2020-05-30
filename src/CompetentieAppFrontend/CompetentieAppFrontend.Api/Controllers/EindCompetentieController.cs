@@ -1,4 +1,3 @@
-using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

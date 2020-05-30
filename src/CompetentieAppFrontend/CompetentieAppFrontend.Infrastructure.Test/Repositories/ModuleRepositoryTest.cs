@@ -5,10 +5,9 @@ using CompetentieAppFrontend.Infrastructure.DAL;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CompetentieAppFrontend.Infrastructure.Test
+namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
 {
     [TestClass]
     public class ModuleRepositoryTest
@@ -38,7 +37,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test
         }
 
         [TestMethod]
-        public void GetAllModules_Should_Return_Typeof_IEnumerable_Of_Modules()
+        public void GetAllModules_Should_Return_Typeof_IList_Of_Modules()
         {
             // Arrange
             var context = new CompetentieAppFrontendContext(_options);
@@ -48,7 +47,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test
             var result = repository.GetAllModules();
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(IEnumerable<Module>));
+            Assert.IsInstanceOfType(result, typeof(IList<Module>));
         }
 
         [DataTestMethod]

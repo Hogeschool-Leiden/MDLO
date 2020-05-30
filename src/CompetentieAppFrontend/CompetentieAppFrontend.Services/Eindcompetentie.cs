@@ -1,6 +1,3 @@
-using System.Linq;
-using CompetentieAppFrontend.Domain;
-
 namespace CompetentieAppFrontend.Services
 {
     public class Eindcompetentie : IMatrixable<Eindniveau>

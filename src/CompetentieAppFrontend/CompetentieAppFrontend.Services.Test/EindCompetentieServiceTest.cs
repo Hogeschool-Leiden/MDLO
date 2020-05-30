@@ -10,14 +10,14 @@ namespace CompetentieAppFrontend.Services.Test
     [TestClass]
     public class EindCompetentieServiceTest
     {
-        private Mock<IMatrixService<Eindniveau>> _competentieMatrixService;
+        private Mock<IMatrixService<Eindniveau>> _eindcompetentieMatrixService;
         private Mock<ICompetentieRepository> _competentieRepositoryMock;
         private Mock<ILogger<EindcompetentieService>> _loggerMock;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _competentieMatrixService = new Mock<IMatrixService<Eindniveau>>();
+            _eindcompetentieMatrixService = new Mock<IMatrixService<Eindniveau>>();
             _competentieRepositoryMock = new Mock<ICompetentieRepository>();
             _loggerMock = new Mock<ILogger<EindcompetentieService>>();
 
@@ -25,7 +25,7 @@ namespace CompetentieAppFrontend.Services.Test
                 .Setup(repository => repository.GetAllCompetentiesByCriteria(It.IsAny<int>(), It.IsAny<string>()))
                 .Returns(new List<Competentie>());
 
-            _competentieMatrixService
+            _eindcompetentieMatrixService
                 .Setup(service => service.CreateCompetentieMatrix(It.IsAny<IEnumerable<Competentie>>()))
                 .Returns(new Matrix<Eindniveau>(new List<string>(), new List<string>(), new List<Eindcompetentie>()));
         }
@@ -43,7 +43,7 @@ namespace CompetentieAppFrontend.Services.Test
             var eindCompetentieMatrixService = new EindcompetentieService(
                 _loggerMock.Object,
                 _competentieRepositoryMock.Object,
-                _competentieMatrixService.Object
+                _eindcompetentieMatrixService.Object
             );
 
             // Act
@@ -67,7 +67,7 @@ namespace CompetentieAppFrontend.Services.Test
             var eindCompetentieMatrixService = new EindcompetentieService(
                 _loggerMock.Object,
                 _competentieRepositoryMock.Object,
-                _competentieMatrixService.Object
+                _eindcompetentieMatrixService.Object
             );
 
             // Act

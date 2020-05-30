@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CompetentieAppFrontend.Api.Controllers;
-using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

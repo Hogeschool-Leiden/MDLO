@@ -26,7 +26,13 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
             modelBuilder
                 .ApplyConfiguration(new CompetentieConfiguration())
                 .ApplyConfiguration(new BeheersingsNiveauConfiguration())
-                .ApplyConfiguration(new StudiefaseConfiguration());
+                .ApplyConfiguration(new StudiefaseConfiguration())
+                .ApplyConfiguration(new EindeisConfiguration())
+                .ApplyConfiguration(new ActiviteitConfiguration())
+                .ApplyConfiguration(new ArchitectuurLaagConfiguration())
+                .ApplyConfiguration(new ModuleConfiguration())
+                .ApplyConfiguration(new PeriodeConfiguration())
+                .ApplyConfiguration(new SpecialisatieConfiguration());
         }
     }
 }

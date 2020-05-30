@@ -8,7 +8,7 @@ using Moq;
 namespace CompetentieAppFrontend.Services.Test
 {
     [TestClass]
-    public class CompetentieMatrixServiceTest
+    public class NiveauMatrixServiceTest
     {
         private readonly List<Competentie> _competenties = new List<Competentie>
         {

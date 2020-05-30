@@ -11,14 +11,14 @@ namespace CompetentieAppFrontend.Services.Test
     [TestClass]
     public class ModuleServiceTest
     {
-        private Mock<IMatrixService<int>> _competentieMatrixService;
+        private Mock<IMatrixService<int>> _niveauMatrixService;
         private Mock<IModuleRepository> _moduleRepositoryMock;
         private Mock<ILogger<EindcompetentieService>> _loggerMock;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _competentieMatrixService = new Mock<IMatrixService<int>>();
+            _niveauMatrixService = new Mock<IMatrixService<int>>();
             _moduleRepositoryMock = new Mock<IModuleRepository>();
             _loggerMock = new Mock<ILogger<EindcompetentieService>>();
 
@@ -114,7 +114,7 @@ namespace CompetentieAppFrontend.Services.Test
                     }
                 });
 
-            _competentieMatrixService
+            _niveauMatrixService
                 .Setup(service => service.CreateCompetentieMatrix(It.IsAny<IEnumerable<Competentie>>()))
                 .Returns(new Matrix<int>(new List<string>(), new List<string>(), new List<Niveau> { }));
         }
@@ -123,8 +123,11 @@ namespace CompetentieAppFrontend.Services.Test
         public void GetAllModules_Should_Return_Typeof_IEnumerable_With_ModuleWithMatrix()
         {
             // Arrange
-            var service = new ModuleService(_loggerMock.Object, _competentieMatrixService.Object,
-                _moduleRepositoryMock.Object);
+            var service = new ModuleService(
+                _loggerMock.Object,
+                _niveauMatrixService.Object,
+                _moduleRepositoryMock.Object
+            );
 
             // Act
             var result = service.GetAllModules();
@@ -139,7 +142,7 @@ namespace CompetentieAppFrontend.Services.Test
             // Arrange
             var service = new ModuleService(
                 _loggerMock.Object,
-                _competentieMatrixService.Object,
+                _niveauMatrixService.Object,
                 _moduleRepositoryMock.Object
             );
 
@@ -158,7 +161,7 @@ namespace CompetentieAppFrontend.Services.Test
             // Arrange
             var service = new ModuleService(
                 _loggerMock.Object,
-                _competentieMatrixService.Object,
+                _niveauMatrixService.Object,
                 _moduleRepositoryMock.Object
             );
 
@@ -175,7 +178,7 @@ namespace CompetentieAppFrontend.Services.Test
             // Arrange
             var service = new ModuleService(
                 _loggerMock.Object,
-                _competentieMatrixService.Object,
+                _niveauMatrixService.Object,
                 _moduleRepositoryMock.Object
             );
 
@@ -192,7 +195,7 @@ namespace CompetentieAppFrontend.Services.Test
             // Arrange
             var service = new ModuleService(
                 _loggerMock.Object,
-                _competentieMatrixService.Object,
+                _niveauMatrixService.Object,
                 _moduleRepositoryMock.Object
             );
 
@@ -209,7 +212,7 @@ namespace CompetentieAppFrontend.Services.Test
             // Arrange
             var service = new ModuleService(
                 _loggerMock.Object,
-                _competentieMatrixService.Object,
+                _niveauMatrixService.Object,
                 _moduleRepositoryMock.Object
             );
 
@@ -226,7 +229,7 @@ namespace CompetentieAppFrontend.Services.Test
             // Arrange
             var moduleService = new ModuleService(
                 _loggerMock.Object,
-                _competentieMatrixService.Object,
+                _niveauMatrixService.Object,
                 _moduleRepositoryMock.Object
             );
 
