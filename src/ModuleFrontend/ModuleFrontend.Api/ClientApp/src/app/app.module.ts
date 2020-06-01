@@ -10,12 +10,16 @@ import { HomeComponent } from './pages/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { AppRoutingModule } from './app-routing.module';
+import { ModuleEditorComponent } from './components/module-editor/module-editor.component';
+import { ModuleAanmakenComponent } from './pages/module-aanmaken/module-aanmaken.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
+    ModuleEditorComponent,
+    ModuleAanmakenComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

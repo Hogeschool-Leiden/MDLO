@@ -1,0 +1,208 @@
+<form id="moduleForm" [formGroup]="moduleForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>
+            ID
+        </mat-label>
+        <input matInput type="number" formControlName="Id">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Modulenaam:
+        </mat-label>
+        <input matInput type="string" formControlName="ModuleNaam">
+
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Modulecode:
+        </mat-label>
+        <input matInput type="string" formControlName="ModuleCode">
+
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Aantal EC:
+        </mat-label>
+        <input matInput type="number" formControlName="AantalEc">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>
+            Studiejaar:
+        </mat-label>
+        <input matInput type="string" formControlName="Studiejaar">
+    </mat-form-field>
+
+    <br>
+    <h3>Moduleleider</h3>
+    <div formGroupName="Moduleleider">
+        <mat-form-field>
+            <mat-label>
+                Naam:
+            </mat-label>
+            <input matInput type="string" formControlName="Naam">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>
+                Email:
+            </mat-label>
+            <input matInput type="string" formControlName="Email">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>
+                Telefoonnummer:
+            </mat-label>
+            <input matInput type="string" formControlName="Telefoonnummer">
+        </mat-form-field>
+
+    </div>
+    <br>
+    <h3>Studiefase</h3>
+    <div formGroupName="Studiefase">
+        <mat-form-field>
+            <mat-label>
+                Fase:
+            </mat-label>
+            <input matInput type="string" formControlName="Fase">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>
+                Periode:
+            </mat-label>
+            <input matInput type="number" formControlName="Periode">
+        </mat-form-field>
+
+    </div>
+    <br>
+    <h3>Verplicht voor</h3>
+    <div formGroupName="VerplichtVoor">
+
+        <mat-label>
+            SE:
+        </mat-label>
+        <mat-checkbox formControlName="SE"></mat-checkbox>
+
+        <mat-label>
+            FICT:
+        </mat-label>
+        <mat-checkbox formControlName="FICT"></mat-checkbox>
+
+
+        <mat-label>
+            BDAM:
+        </mat-label>
+        <mat-checkbox formControlName="BDAM"></mat-checkbox>
+
+        <mat-label>
+            IAT:
+        </mat-label>
+        <mat-checkbox formControlName="IAT"></mat-checkbox>
+
+
+
+    </div>
+    <br>
+    <h3>Aanbevolen voor</h3>
+    <div formGroupName="AanbevolenVoor">
+
+        <mat-label>
+            SE:
+        </mat-label>
+        <mat-checkbox formControlName="SE"></mat-checkbox>
+
+        <mat-label>
+            FICT:
+        </mat-label>
+        <mat-checkbox formControlName="FICT"></mat-checkbox>
+
+        <mat-label>
+            BDAM:
+        </mat-label>
+        <mat-checkbox formControlName="BDAM"></mat-checkbox>
+
+        <mat-label>
+            IAT:
+        </mat-label>
+        <mat-checkbox formControlName="IAT"></mat-checkbox>
+
+
+    </div>
+    <mat-form-field>
+        <mat-label>
+            Beschrijving leerdoelen:
+        </mat-label>
+        <input matInput type="text" formControlName="BeschrijvingLeerdoelen">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Inhoudelijke beschrijving:
+        </mat-label>
+        <input matInput type="text" formControlName="InhoudelijkeBeschrijving">
+
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Eindeisen:
+        </mat-label>
+        <input matInput type="text" formControlName="Eindeisen">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Contacturen en werkvormen:
+        </mat-label>
+        <input matInput type="text" formControlName="ContacturenWerkvormen">
+    </mat-form-field>
+
+    <br>
+    <h3>Toetsvorm</h3>
+    <mat-form-field>
+        <mat-label>
+            Toetsvorm:
+        </mat-label>
+        <input matInput type="text" formControlName="Toetsvorm">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Voorwaarden voldoende:
+        </mat-label>
+        <input matInput type="text" formControlName="VoorwaardenVoldoende">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Let Op:
+        </mat-label>
+        <input matInput type="text" formControlName="LetOp">
+    </mat-form-field>
+
+
+    <mat-label>
+        Summatief:
+    </mat-label>
+    <mat-checkbox formControlName="Summatief"></mat-checkbox>
+
+    <mat-label>
+        Formatief:
+    </mat-label>
+    <mat-checkbox formControlName="Formatief"></mat-checkbox>
+
+    <mat-label>
+        Kwalitatief:
+    </mat-label>
+    <mat-checkbox formControlName="Kwalitatief"></mat-checkbox>
+
+    <mat-label>
+        Kwantitatief:
+    </mat-label>
+    <mat-checkbox formControlName="Kwantitatief"></mat-checkbox>
+
+    <mat-form-field>
+        <mat-label>
+            Examinatoren:
+        </mat-label>
+        <input matInput type="textarea" formControlName="Examinatoren">
+    </mat-form-field>
+
+    <button mat-button type="submit" [disabled]="!moduleForm.valid">Creeer module</button>
+</form>
+
+<pre>{{jsonValue | json}}</pre>
