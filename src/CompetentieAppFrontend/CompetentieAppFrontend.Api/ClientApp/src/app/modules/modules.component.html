@@ -7,7 +7,7 @@
 </div>
 
 <div class="table-container">
-  <mat-table [dataSource]="dataSource">
+  <mat-table [dataSource]="dataSource" [ngClass]="{smallTableStyle: showListUnderMatrix}">
 
     <ng-container matColumnDef="module">
       <mat-header-cell *matHeaderCellDef [ngClass]="'smallCell'"> Module</mat-header-cell>
@@ -32,18 +32,28 @@
     <ng-container matColumnDef="matrix">
       <mat-header-cell *matHeaderCellDef [ngClass]="'matrixCell'"> Matrix</mat-header-cell>
       <mat-cell *matCellDef="let moduleData" [ngClass]="'matrixCell'">
-        <app-competence-matrix [competenceMatrix]="moduleData.matrix" style="font-size: 75%;"></app-competence-matrix>
+        <div>
+          <app-competence-matrix [competenceMatrix]="moduleData.matrix" style="font-size: 75%;"></app-competence-matrix>
+          <div *ngIf="showListUnderMatrix">
+            <p><b>Eindeisen</b></p>
+            <ul style="padding:  0">
+              <li class="endRequirement-list-item"
+                             *ngFor="let requirement of moduleData.endRequirements; let i = index"><p>
+                &bull; {{requirement}}</p></li>
+            </ul>
+          </div>
+        </div>
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="endRequirements">
       <mat-header-cell *matHeaderCellDef [ngClass]="'requirmentCell'"> Eindeisen</mat-header-cell>
       <mat-cell *matCellDef="let moduleData" [ngClass]="'requirmentCell'">
-        <mat-list>
-          <mat-list-item class="endRequirement-list-item"
-                         *ngFor="let requirement of moduleData.endRequirements; let i = index"><p>
-            &bull; {{requirement}}</p></mat-list-item>
-        </mat-list>
+        <ul style="padding:  0">
+          <li class="endRequirement-list-item"
+              *ngFor="let requirement of moduleData.endRequirements; let i = index"><p>
+            &bull; {{requirement}}</p></li>
+        </ul>
       </mat-cell>
     </ng-container>
 
