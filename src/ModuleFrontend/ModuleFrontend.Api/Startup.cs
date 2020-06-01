@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ModuleFrontend.Api.DAL;
+using ModuleFrontend.Api.Services;
 using ModuleFrontend.Api.Utility;
 using System;
 
@@ -24,13 +25,14 @@ namespace ModuleFrontend.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var loader = new CsvLoader();
-            loader.LoadFromCsv("module-overzicht-csv.csv");
+            //var loader = new CsvLoader();
+            //loader.LoadFromCsv("module-overzicht-csv.csv");
             services.AddDbContext<ModuleContext>(builder =>
             {
                 builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
                                   throw new ArgumentNullException());
             });
+            services.AddTransient<IModuleService, ModuleService>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

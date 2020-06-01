@@ -4,24 +4,24 @@ import { Specialisatie } from "./specialisatie";
 
 export interface Module {
     Id: number
-    ModuleNaam: string
-    ModuleCode: string
-    AantalEc: number
-    Studiejaar: string
-    Moduleleider: Moduleleider
-    Studiefase: Studiefase
-    VerplichtVoor: Specialisatie[]
-    AanbevolenVoor: Specialisatie[]
-    BeschrijvingLeerdoelen: string
-    InhoudelijkeBeschrijving: string
-    Eindeisen: string
-    ContacturenWerkvormen: string
-    Toetsvorm: string
-    VoorwaardenVoldoende: string
-    LetOp: string
-    Summatief: boolean
-    Formatief: boolean
-    Kwalitatief: boolean
-    Kwantitatief: boolean
-    Examinatoren: string
+    moduleNaam: string
+    moduleCode: string
+    aantalEc: number
+    studiejaar: string
+    moduleleider: Moduleleider
+    studiefase: Studiefase
+    verplichtVoor: Specialisatie[]
+    aanbevolenVoor: Specialisatie[]
+    beschrijvingLeerdoelen: string
+    inhoudelijkeBeschrijving: string
+    eindeisen: string
+    contacturenWerkvormen: string
+    toetsvorm: string
+    voorwaardenVoldoende: string
+    letOp: string
+    summatief: boolean
+    formatief: boolean
+    kwalitatief: boolean
+    kwantitatief: boolean
+    examinatoren: string
 }

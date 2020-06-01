@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ModuleFrontend.Api.Models;
 using ModuleFrontend.Api.Services;
+using System;
 
 namespace ModuleFrontend.Api.Controllers
 {
@@ -25,6 +27,17 @@ namespace ModuleFrontend.Api.Controllers
         public IActionResult GetAll()
         {
             return Ok(_service.GetAllModules());
+        }
+
+        [Route("module")]
+        [HttpPost]
+        public IActionResult PostModule([FromBody]Module module) 
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(module);
+            }
+            return BadRequest(ModelState.Values);
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Miffy;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
+using ModuleFrontend.Api.Services;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
@@ -21,6 +22,8 @@ namespace CompetentieAppFrontend.Api
                 .Execute(contextBuilder.CreateContext);
 
             services.AddSingleton(context);
+            services.AddTransient<IModuleService, ModuleService>();
+
         }
 
         public static void UseMicroserviceHost(this IServiceCollection services)

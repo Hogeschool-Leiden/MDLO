@@ -3,79 +3,79 @@
         <mat-label>
             ID
         </mat-label>
-        <input matInput type="number" formControlName="Id">
+        <input matInput type="number" formControlName="id">
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Modulenaam:
         </mat-label>
-        <input matInput type="string" formControlName="ModuleNaam">
+        <input matInput type="string" formControlName="moduleNaam">
 
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Modulecode:
         </mat-label>
-        <input matInput type="string" formControlName="ModuleCode">
+        <input matInput type="string" formControlName="moduleCode">
 
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Aantal EC:
         </mat-label>
-        <input matInput type="number" formControlName="AantalEc">
+        <input matInput type="number" formControlName="aantalEc">
     </mat-form-field>
 
     <mat-form-field>
         <mat-label>
             Studiejaar:
         </mat-label>
-        <input matInput type="string" formControlName="Studiejaar">
+        <input matInput type="string" formControlName="studiejaar">
     </mat-form-field>
 
     <br>
     <h3>Moduleleider</h3>
-    <div formGroupName="Moduleleider">
+    <div formGroupName="moduleleider">
         <mat-form-field>
             <mat-label>
                 Naam:
             </mat-label>
-            <input matInput type="string" formControlName="Naam">
+            <input matInput type="string" formControlName="naam">
         </mat-form-field>
         <mat-form-field>
             <mat-label>
                 Email:
             </mat-label>
-            <input matInput type="string" formControlName="Email">
+            <input matInput type="string" formControlName="email">
         </mat-form-field>
         <mat-form-field>
             <mat-label>
                 Telefoonnummer:
             </mat-label>
-            <input matInput type="string" formControlName="Telefoonnummer">
+            <input matInput type="string" formControlName="telefoonnummer">
         </mat-form-field>
 
     </div>
     <br>
     <h3>Studiefase</h3>
-    <div formGroupName="Studiefase">
+    <div formGroupName="studiefase">
         <mat-form-field>
             <mat-label>
                 Fase:
             </mat-label>
-            <input matInput type="string" formControlName="Fase">
+            <input matInput type="string" formControlName="fase">
         </mat-form-field>
         <mat-form-field>
             <mat-label>
                 Periode:
             </mat-label>
-            <input matInput type="number" formControlName="Periode">
+            <input matInput type="number" formControlName="periode">
         </mat-form-field>
 
     </div>
     <br>
     <h3>Verplicht voor</h3>
-    <div formGroupName="VerplichtVoor">
+    <div formGroupName="verplichtVoor">
 
         <mat-label>
             SE:
@@ -103,7 +103,7 @@
     </div>
     <br>
     <h3>Aanbevolen voor</h3>
-    <div formGroupName="AanbevolenVoor">
+    <div formGroupName="aanbevolenVoor">
 
         <mat-label>
             SE:
@@ -131,26 +131,26 @@
         <mat-label>
             Beschrijving leerdoelen:
         </mat-label>
-        <input matInput type="text" formControlName="BeschrijvingLeerdoelen">
+        <input matInput type="text" formControlName="beschrijvingLeerdoelen">
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Inhoudelijke beschrijving:
         </mat-label>
-        <input matInput type="text" formControlName="InhoudelijkeBeschrijving">
+        <input matInput type="text" formControlName="inhoudelijkeBeschrijving">
 
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Eindeisen:
         </mat-label>
-        <input matInput type="text" formControlName="Eindeisen">
+        <input matInput type="text" formControlName="eindeisen">
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Contacturen en werkvormen:
         </mat-label>
-        <input matInput type="text" formControlName="ContacturenWerkvormen">
+        <input matInput type="text" formControlName="contacturenWerkvormen">
     </mat-form-field>
 
     <br>
@@ -159,50 +159,51 @@
         <mat-label>
             Toetsvorm:
         </mat-label>
-        <input matInput type="text" formControlName="Toetsvorm">
+        <input matInput type="text" formControlName="toetsvorm">
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Voorwaarden voldoende:
         </mat-label>
-        <input matInput type="text" formControlName="VoorwaardenVoldoende">
+        <input matInput type="text" formControlName="voorwaardenVoldoende">
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Let Op:
         </mat-label>
-        <input matInput type="text" formControlName="LetOp">
+        <input matInput type="text" formControlName="letOp">
     </mat-form-field>
 
 
     <mat-label>
         Summatief:
     </mat-label>
-    <mat-checkbox formControlName="Summatief"></mat-checkbox>
+    <mat-checkbox formControlName="summatief"></mat-checkbox>
 
     <mat-label>
         Formatief:
     </mat-label>
-    <mat-checkbox formControlName="Formatief"></mat-checkbox>
+    <mat-checkbox formControlName="formatief"></mat-checkbox>
 
     <mat-label>
         Kwalitatief:
     </mat-label>
-    <mat-checkbox formControlName="Kwalitatief"></mat-checkbox>
+    <mat-checkbox formControlName="kwalitatief"></mat-checkbox>
 
     <mat-label>
         Kwantitatief:
     </mat-label>
-    <mat-checkbox formControlName="Kwantitatief"></mat-checkbox>
+    <mat-checkbox formControlName="kwantitatief"></mat-checkbox>
 
     <mat-form-field>
         <mat-label>
             Examinatoren:
         </mat-label>
-        <input matInput type="textarea" formControlName="Examinatoren">
+        <input matInput type="textarea" formControlName="examinatoren">
     </mat-form-field>
 
     <button mat-button type="submit" [disabled]="!moduleForm.valid">Creeer module</button>
 </form>
 
 <pre>{{jsonValue | json}}</pre>
+<pre>{{jsonValueReturnes | json}}</pre>

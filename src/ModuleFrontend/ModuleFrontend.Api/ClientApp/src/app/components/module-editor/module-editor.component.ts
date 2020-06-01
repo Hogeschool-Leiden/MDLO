@@ -14,52 +14,53 @@ export class ModuleEditorComponent {
   }
 
   jsonValue = null;
+  jsonValueReturnes = null;
   moduleForm = new FormGroup({
-    Id: new FormControl({ value: '', disabled: true }),
-    ModuleNaam: new FormControl(''),
-    ModuleCode: new FormControl(''),
-    AantalEc: new FormControl(''),
-    Studiejaar: new FormControl(''),
-    Moduleleider: new FormGroup({
-      Naam: new FormControl(''),
-      Email: new FormControl(''),
-      Telefoonnummer: new FormControl(''),
+    id: new FormControl({ value: '', disabled: true }),
+    moduleNaam: new FormControl(''),
+    moduleCode: new FormControl(''),
+    aantalEc: new FormControl(''),
+    studiejaar: new FormControl(''),
+    moduleleider: new FormGroup({
+      naam: new FormControl(''),
+      email: new FormControl(''),
+      telefoonnummer: new FormControl(''),
     }),
-    Studiefase: new FormGroup({
-      Fase: new FormControl(''),
-      Periode: new FormControl(''),
+    studiefase: new FormGroup({
+      fase: new FormControl(''),
+      periode: new FormControl(''),
     }),
-    VerplichtVoor: new FormGroup({
+    verplichtVoor: new FormGroup({
       SE: new FormControl(''),
       FICT: new FormControl(''),
       BDAM: new FormControl(''),
       IAT: new FormControl(''),
     }),
-    AanbevolenVoor: new FormGroup({
+    aanbevolenVoor: new FormGroup({
       SE: new FormControl(''),
       FICT: new FormControl(''),
       BDAM: new FormControl(''),
       IAT: new FormControl(''),
     }),
-    BeschrijvingLeerdoelen: new FormControl(''),
-    InhoudelijkeBeschrijving: new FormControl(''),
-    Eindeisen: new FormControl(''),
-    ContacturenWerkvormen: new FormControl(''),
-    Toetsvorm: new FormControl(''),
-    VoorwaardenVoldoende: new FormControl(''),
-    LetOp: new FormControl(''),
-    Summatief: new FormControl(''),
-    Formatief: new FormControl(''),
-    Kwalitatief: new FormControl(''),
-    Kwantitatief: new FormControl(''),
-    Examinatoren: new FormControl(''),
+    beschrijvingLeerdoelen: new FormControl(''),
+    inhoudelijkeBeschrijving: new FormControl(''),
+    eindeisen: new FormControl(''),
+    contacturenWerkvormen: new FormControl(''),
+    toetsvorm: new FormControl(''),
+    voorwaardenVoldoende: new FormControl(''),
+    letOp: new FormControl(''),
+    summatief: new FormControl(''),
+    formatief: new FormControl(''),
+    kwalitatief: new FormControl(''),
+    kwantitatief: new FormControl(''),
+    examinatoren: new FormControl(''),
   })
 
   onSubmit() {
     this.jsonValue = this.moduleForm.value as Module;
     this.httpService.postModule(this.moduleForm.value as Module).subscribe(
       data =>{
-        console.log(data);
+        this.jsonValueReturnes = data as Module;
       }, err =>{
         console.log(err);
       }
