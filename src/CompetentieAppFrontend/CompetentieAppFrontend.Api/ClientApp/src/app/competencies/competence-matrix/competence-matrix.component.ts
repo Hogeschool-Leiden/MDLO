@@ -71,7 +71,11 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
   private setCellInfo(matrixElement, y, x) {
     y += this.displayMatrixOffset;
     x += this.displayMatrixOffset;
-    this.displayeMatrix[y][x] = matrixElement.value.niveau;
+    if (matrixElement.value.niveau === undefined){
+      this.displayeMatrix[y][x] = matrixElement.value;
+    } else {
+      this.displayeMatrix[y][x] = matrixElement.value.niveau;
+    }
   }
 
   resetMatrix(){

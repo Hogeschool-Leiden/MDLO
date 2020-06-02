@@ -7,16 +7,16 @@
 </div>
 
 <div class="table-container">
-  <mat-table [dataSource]="dataSource" [ngClass]="{smallTableStyle: showListUnderMatrix}">
+  <mat-table matSort [dataSource]="dataSource" [ngClass]="{smallTableStyle: showListUnderMatrix}">
 
     <ng-container matColumnDef="module">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'smallCell'"> Module</mat-header-cell>
+      <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="'smallCell'"> Module</mat-header-cell>
       <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'"><b>{{moduleData.module}}</b></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="specialisation">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'smallCell'"> Spec</mat-header-cell>
-      <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'specCell'"> Spec</mat-header-cell>
+      <mat-cell *matCellDef="let moduleData" [ngClass]="'specCell'">
         <mat-list dense class="spec-list">
           <mat-list-item class="spec-list-item"
                          *ngFor="let specialisation of moduleData.specialisation"> {{specialisation}}</mat-list-item>
@@ -25,7 +25,7 @@
     </ng-container>
 
     <ng-container matColumnDef="period">
-      <mat-header-cell *matHeaderCellDef [ngClass]="'smallCell'"> Periode</mat-header-cell>
+      <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="'smallCell'"> Periode</mat-header-cell>
       <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'"> {{moduleData.period}} </mat-cell>
     </ng-container>
 

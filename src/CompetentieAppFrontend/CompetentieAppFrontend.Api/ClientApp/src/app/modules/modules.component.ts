@@ -1,8 +1,10 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CompetenceMatrixComponent} from "../competencies/competence-matrix/competence-matrix.component";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 // @ts-ignore
-import mockJson from './../../assets/mock-data/eindcompetentie-mock.json';
+import moduleMock from "./../../assets/mock-data/modules-mock.json"
+import {MatSort} from "@angular/material/sort";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-modules',
@@ -16,8 +18,18 @@ export class ModulesComponent implements OnInit {
   columnRemoveName: string = 'endRequirements';
   fullColumnSize: number = 5;
   showListUnderMatrix: boolean = true;
+  moduleData;
 
-  constructor() {
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+  constructor(private http: HttpClient) {
+  }
+
+  ngOnInit() {
+    this.clearModuleData();
+    this.getDataFromDB();
+    this.onPageResize();
+    this.dataSource.sort = this.sort;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -37,13 +49,13 @@ export class ModulesComponent implements OnInit {
   }
 
   private removeColumn() {
-    if (this.displayedColumns.length >= this.fullColumnSize){
+    if (this.displayedColumns.length >= this.fullColumnSize) {
       this.displayedColumns.splice(this.displayedColumns.length - 1);
     }
   }
 
   private addColumn() {
-    if (this.displayedColumns.length !< this.fullColumnSize){
+    if (this.displayedColumns.length ! < this.fullColumnSize) {
       this.displayedColumns.push(this.columnRemoveName);
     }
   }
@@ -62,94 +74,55 @@ export class ModulesComponent implements OnInit {
 
   applyFilter($event: KeyboardEvent) {
     const filterValue = (event.target as HTMLInputElement).value;
+    this.setColumnsToFilter();
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  ngOnInit() {
-    this.onPageResize();
+  setColumnsToFilter() {
+    //specifies what column the filter looks at.
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      return data.specialisation.includes(filter) || data.module.toLowerCase().includes(filter) ||
+        data.period.toString().includes(filter);
+    }
+  }
+
+  getDataFromDB() {
+    //DBdata
+    this.http.get(this.dbUrl).toPromise().then(data =>{
+      this.moduleData = data;
+      this.injectDataInTable();
+    });
+
+    //mockdata
+    this.moduleData = moduleMock;
+    this.injectDataInTable();
+  }
+
+  injectDataInTable() {
+    for (let i = 0; i < this.moduleData.length; i++) {
+      MODULE_DATA.push(
+        {
+          specialisation: this.moduleData[i].specialisaties,
+          module: this.moduleData[i].moduleCode,
+          period: this.moduleData[i].perioden,
+          matrix: this.moduleData[i].matrix,
+          endRequirements: this.moduleData[i].eindeisen
+        }
+      );
+    }
+  }
+
+  clearModuleData() {
+    MODULE_DATA.length = 0;
   }
 }
 
 export interface ModuleModel {
   specialisation: string[];
   module: string;
-  period: number;
+  period: number[];
   matrix: any;//TODO: use matrix
   endRequirements: string[];
 }
 
-const MODULE_DATA: ModuleModel[] = [
-  {
-    specialisation: ['se', 'bdam'],
-    module: 'ISCIRPT',
-    period: 1,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  },
-  {
-    specialisation: ['medt', 'fict'],
-    module: 'IARCH',
-    period: 3,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  }, {
-    specialisation: ['se', 'bdam', 'medt', 'fict'],
-    module: 'INET',
-    period: 4,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  },
-  {
-    specialisation: ['se'],
-    module: 'IPSENH',
-    period: 2,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  }, {
-    specialisation: ['se', 'bdam', 'medt', 'fict'],
-    module: 'IRDB',
-    period: 6,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  },
-  {
-    specialisation: ['bdam'],
-    module: 'IPROV',
-    period: 5,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  }, {
-    specialisation: ['medt', 'fict'],
-    module: 'IARCH',
-    period: 3,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  }, {
-    specialisation: ['se', 'bdam', 'medt', 'fict'],
-    module: 'INET',
-    period: 4,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  },
-  {
-    specialisation: ['se'],
-    module: 'IPSENH',
-    period: 2,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  }, {
-    specialisation: ['se', 'bdam', 'medt', 'fict'],
-    module: 'IRDB',
-    period: 6,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  },
-  {
-    specialisation: ['bdam'],
-    module: 'IPROV',
-    period: 5,
-    matrix: mockJson,
-    endRequirements: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.']
-  },
-
-];
+let MODULE_DATA: ModuleModel[] = [];

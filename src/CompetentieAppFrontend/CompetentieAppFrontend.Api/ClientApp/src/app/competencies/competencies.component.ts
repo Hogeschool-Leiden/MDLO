@@ -14,6 +14,9 @@ export class CompetenciesComponent implements OnInit {
   period: number = 1;
   specialisations: string[] = ['Propedeuse', 'Software Engineering', 'Interactie Technologie', 'Business Data Management', 'Forensiche ICT'];
   specialisation: string;
+  cohorts: string[] = [];
+  cohort: string;
+  firstYear: number = 2015;
   sliderMin: number = 1;
   sliderMax: number = 3.75;
   showSlider: boolean = false;
@@ -21,9 +24,8 @@ export class CompetenciesComponent implements OnInit {
   amountOfPeriodsInPropedeuse: number = 3;
   competenceMatrix;
   dbPeriod: number;
-  dbUrl: string = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
+  dbUrl: string;
 
-  // dbUrl:string = '/eindcompetentie/Propedeuse/1';
 
 
   constructor(private http: HttpClient) {
@@ -48,7 +50,6 @@ export class CompetenciesComponent implements OnInit {
         this.period = 4;
         break;
     }
-
   }
 
   specialisationChosen() {
@@ -84,7 +85,7 @@ export class CompetenciesComponent implements OnInit {
     this.competenceMatrix = mockJson;
   }
 
-  getPeriodeInDbFormat(){
+  getPeriodeInDbFormat() {
     if (this.isSpecialisationPropedeuse()) {
       this.dbPeriod = this.period;
     } else {
@@ -95,9 +96,33 @@ export class CompetenciesComponent implements OnInit {
   }
 
   updateDbUrl() {
-    this.dbUrl = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
+    this.dbUrl = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod + '/' + this.cohort;
+  }
+
+  getCohorts() {
+    let year: number = this.getYearValue();
+
+    while (year > this.firstYear) {
+      let cohort = this.createCohort(year);
+      this.cohorts.push(cohort);
+      year = year - 1;
+    }
+    this.setCurrentCohort();
+  }
+
+  getYearValue() {
+    return new Date().getFullYear() + 1;
+  }
+
+  createCohort(year) {
+    return (year - 1).toString()+ '-' + year.toString();
+  }
+
+  setCurrentCohort() {
+    this.cohort = this.cohorts[1];
   }
 
   ngOnInit() {
+    this.getCohorts();
   }
 }

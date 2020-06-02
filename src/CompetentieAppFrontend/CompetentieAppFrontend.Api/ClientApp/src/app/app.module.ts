@@ -20,6 +20,7 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatTableModule} from "@angular/material/table";
 import {MatListModule} from "@angular/material/list";
 import {MatInputModule} from "@angular/material/input";
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
   declarations: [
@@ -31,26 +32,27 @@ import {MatInputModule} from "@angular/material/input";
     AdminComponent,
     CompetenceMatrixComponent
   ],
-  imports: [
-    BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot([
-      {path: '', component: HomeComponent, pathMatch: 'full'},
-      {path: 'admin', component: AdminComponent, pathMatch: 'full'},
-      {path: 'competencies', component: CompetenciesComponent, pathMatch: 'full'},
-      {path: 'modules', component: ModulesComponent, pathMatch: 'full'},
-    ]),
-    BrowserAnimationsModule,
-    MatSliderModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatGridListModule,
-    MatTableModule,
-    MatListModule,
-    MatInputModule
-  ],
+    imports: [
+        BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
+        HttpClientModule,
+        FormsModule,
+        RouterModule.forRoot([
+            {path: '', component: HomeComponent, pathMatch: 'full'},
+            {path: 'admin', component: AdminComponent, pathMatch: 'full'},
+            {path: 'competencies', component: CompetenciesComponent, pathMatch: 'full'},
+            {path: 'modules', component: ModulesComponent, pathMatch: 'full'},
+        ]),
+        BrowserAnimationsModule,
+        MatSliderModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatGridListModule,
+        MatTableModule,
+        MatListModule,
+        MatInputModule,
+        MatSortModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

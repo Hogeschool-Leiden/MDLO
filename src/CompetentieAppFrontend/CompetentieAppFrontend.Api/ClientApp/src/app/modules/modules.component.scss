@@ -4,8 +4,12 @@
 }
 
 .smallTableStyle{
-  width: 710px;
+  width: 740px;
   margin: 0 auto;
+}
+
+.specCell {
+  flex: 0 0 75px;
 }
 
 .requirmentCell {
@@ -17,7 +21,7 @@
 }
 
 .smallCell {
-  flex: 0 0 60px;
+  flex: 0 0 65px;
   font-size: 12px;
 }
 
@@ -35,6 +39,10 @@
 
 .mat-cell, .mat-row {
   align-items: normal;
+}
+
+mat-header-row{
+  top: -1px !important;
 }
 
 .mat-row:nth-child(odd) {
