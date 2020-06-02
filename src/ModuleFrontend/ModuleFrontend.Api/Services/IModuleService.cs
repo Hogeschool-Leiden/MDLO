@@ -1,5 +1,5 @@
 ﻿using ModuleFrontend.Api.Models;
-using System.Collections;
+using ModuleFrontend.Api.ViewModels;
 using System.Collections.Generic;
 
 namespace ModuleFrontend.Api.Services
@@ -8,5 +8,6 @@ namespace ModuleFrontend.Api.Services
     {
         Module GetByModuleCode(string modulecode);
         IEnumerable<Module> GetAllModules();
+        Module AddModule(ModuleViewModel module);
     }
 }

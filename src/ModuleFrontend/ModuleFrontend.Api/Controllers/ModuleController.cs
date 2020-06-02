@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ModuleFrontend.Api.Models;
+using ModuleFrontend.Api.ViewModels;
 using ModuleFrontend.Api.Services;
-using System;
+using System.Linq;
+using ModuleFrontend.Api.Exceptions;
 
 namespace ModuleFrontend.Api.Controllers
 {
@@ -31,13 +32,26 @@ namespace ModuleFrontend.Api.Controllers
 
         [Route("module")]
         [HttpPost]
-        public IActionResult PostModule([FromBody]Module module) 
+        public IActionResult PostModule([FromBody]ModuleViewModel module) 
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return Ok(module);
+                return BadRequest(ModelState.Values);
+            } else if(module.VerplichtVoor.Count() < 1)
+            {
+                ModelState.AddModelError("VerplichtVoorError", "Een module moet voor minstens één specialisatie verplicht zijn, of een keuzevak zijn.");
+                return BadRequest(ModelState.Values);
             }
-            return BadRequest(ModelState.Values);
+            try
+            {
+                _service.AddModule(module);
+            }
+            catch (AlreadyExistsException e)
+            {
+                ModelState.AddModelError("BestaatAlError", e.Message);
+                return BadRequest(ModelState.Values);
+            }
+            return Ok(module);
         }
     }
 }

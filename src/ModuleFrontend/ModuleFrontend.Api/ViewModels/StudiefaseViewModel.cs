@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ModuleFrontend.Api.Models
+namespace ModuleFrontend.Api.ViewModels
 {
-    public class Studiefase
+    public class StudiefaseViewModel
     {
         public long Id { get; set; }
         [Required]
         public string Fase { get; set; }
         [Required]
-        public Periode Periode { get; set; }
+        public PeriodeViewModel Periode { get; set; }
     }
 }

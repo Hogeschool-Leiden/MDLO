@@ -9,7 +9,13 @@ namespace ModuleFrontend.Api.DAL
         public DbSet<Specialisatie> Specialisaties { get; set; }
         public ModuleContext(DbContextOptions<ModuleContext> options) : base(options)
         {
-
+                
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Module>()
+                .HasIndex(module => module.ModuleCode)
+                .IsUnique();
         }
     }
 }

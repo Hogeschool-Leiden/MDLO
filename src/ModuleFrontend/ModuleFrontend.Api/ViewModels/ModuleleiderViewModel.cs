@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ModuleFrontend.Api
+namespace ModuleFrontend.Api.ViewModels
 {
-    public class Moduleleider
+    public class ModuleleiderViewModel
     {
         public long Id { get; set; }
         [Required]

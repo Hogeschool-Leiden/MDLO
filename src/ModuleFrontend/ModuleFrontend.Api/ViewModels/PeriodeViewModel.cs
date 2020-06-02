@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ModuleFrontend.Api.Models
+namespace ModuleFrontend.Api.ViewModels
 {
-    public class Periode
+    public class PeriodeViewModel
     {
         public long Id { get; set; }
         [Required]
