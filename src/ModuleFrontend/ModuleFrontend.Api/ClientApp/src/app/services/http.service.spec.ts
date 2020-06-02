@@ -4,10 +4,11 @@ import { HttpService } from './http.service';
 
 describe('HttpService', () => {
   let service: HttpService;
-
+  let httpClientSpy: {get: jasmine.Spy};
   beforeEach(() => {
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get'])
     TestBed.configureTestingModule({});
-    service = TestBed.inject(HttpService);
+    service = new HttpService(<any> httpClientSpy, 'url');
   });
 
   it('should be created', () => {

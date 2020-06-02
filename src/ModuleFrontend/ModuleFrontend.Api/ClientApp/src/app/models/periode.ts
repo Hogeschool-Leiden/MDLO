@@ -1,4 +1,4 @@
 export interface Periode {
-    Id: number
-    PeriodeNummer: number
+    id: number
+    periodeNummer: number
 }

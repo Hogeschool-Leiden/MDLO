@@ -1,6 +1,6 @@
 export interface Moduleleider {
-     Id: number  
-     Naam: string  
-     Email: string  
-     Telefoonnummer: string  
+     id: number  
+     naam: string  
+     email: string  
+     telefoonnummer: string  
 }

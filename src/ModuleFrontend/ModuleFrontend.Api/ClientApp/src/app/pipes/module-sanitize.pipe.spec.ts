@@ -46,12 +46,32 @@ describe('ModuleSanitizePipe', () => {
       formatief: true,
       kwalitatief: "",
       kwantitatief: true,
-      examinatoren: ""
+      examinatoren: "Studenten"
     }
 
     let result = pipe.transform(jsonValue);
-    expect(result.aanbevolenVoor).toBe([{Code: "SE", Id: undefined, Naam: "Software Engineering"}])
-    expect(result.verplichtVoor).toBe([{Code: "SE", Id: undefined, Naam: "Software Engineering"}])
-    expect()
+    expect(result.aanbevolenVoor).toEqual([{code: "FICT", id: undefined, naam: "Forensische IT"}])
+    expect(result.verplichtVoor).toEqual([{code: "SE", id: undefined, naam: "Software Engineering"}])
+    expect(result.moduleNaam).toBe("correcteNaam");
+    expect(result.moduleCode).toBe("correcteCode");
+    expect(result.aantalEc).toBe(3);
+    expect(result.studiejaar).toBe("correctJaar");
+    expect(result.moduleleider).toEqual({id: undefined, naam: "correcteNaam", email: "correctEmail", telefoonnummer: "correctTelefoonnummer"});
+    expect(result.studiefase).toEqual({id: undefined, fase: "correcteFase", periode: {id: undefined, periodeNummer: 4}});
+    expect(result.beschrijvingLeerdoelen).toBe("correcteBeschrijving");
+    expect(result.inhoudelijkeBeschrijving).toBe("correcteBeschrijving");
+    expect(result.eindeisen).toBe("correcteEindeisen");
+    expect(result.contacturenWerkvormen).toBe("correcteContacturen");
+    expect(result.toetsvorm).toBe("correcteToetsvorm");
+    expect(result.voorwaardenVoldoende).toBe("correcteVoorwaarde");
+    expect(result.letOp).toBe("correcteLetop");
+    expect(result.summatief).toBe(false);
+    expect(result.formatief).toBe(true);
+    expect(result.kwalitatief).toBe(false);
+    expect(result.kwantitatief).toBe(true);
+    expect(result.examinatoren).toBe("Studenten");
+
+    
+
   });
 });

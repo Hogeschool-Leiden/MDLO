@@ -12,6 +12,7 @@ import { MaterialModule } from './material/material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ModuleEditorComponent } from './components/module-editor/module-editor.component';
 import { ModuleAanmakenComponent } from './pages/module-aanmaken/module-aanmaken.component';
+import { ModuleSanitizePipe } from './pipes/module-sanitize.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ModuleAanmakenComponent } from './pages/module-aanmaken/module-aanmaken
     NavMenuComponent,
     HomeComponent,
     ModuleEditorComponent,
-    ModuleAanmakenComponent
+    ModuleAanmakenComponent,
+    ModuleSanitizePipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -31,7 +33,7 @@ import { ModuleAanmakenComponent } from './pages/module-aanmaken/module-aanmaken
     AppRoutingModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [ModuleSanitizePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,5 +1,5 @@
 export interface Specialisatie {
-    Id: number
-    Naam: string
-    Code: string
+    id: number
+    naam: string
+    code: string
 }

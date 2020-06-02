@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import { Module } from '../../models/module';
+import { ModuleSanitizePipe } from 'src/app/pipes/module-sanitize.pipe';
 
 @Component({
   selector: 'app-module-editor',
@@ -9,7 +10,7 @@ import { Module } from '../../models/module';
   styleUrls: ['./module-editor.component.css']
 })
 export class ModuleEditorComponent {
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private sanitizePipe: ModuleSanitizePipe) {
 
   }
 
@@ -31,16 +32,16 @@ export class ModuleEditorComponent {
       periode: new FormControl(''),
     }),
     verplichtVoor: new FormGroup({
-      SE: new FormControl(''),
-      FICT: new FormControl(''),
-      BDAM: new FormControl(''),
-      IAT: new FormControl(''),
+      SE: new FormControl(false),
+      FICT: new FormControl(false),
+      BDAM: new FormControl(false),
+      IAT: new FormControl(false),
     }),
     aanbevolenVoor: new FormGroup({
-      SE: new FormControl(''),
-      FICT: new FormControl(''),
-      BDAM: new FormControl(''),
-      IAT: new FormControl(''),
+      SE: new FormControl(false),
+      FICT: new FormControl(false),
+      BDAM: new FormControl(false),
+      IAT: new FormControl(false),
     }),
     beschrijvingLeerdoelen: new FormControl(''),
     inhoudelijkeBeschrijving: new FormControl(''),
@@ -58,7 +59,7 @@ export class ModuleEditorComponent {
 
   onSubmit() {
     this.jsonValue = this.moduleForm.value as Module;
-    this.httpService.postModule(this.moduleForm.value as Module).subscribe(
+    this.httpService.postModule(this.sanitizePipe.transform(this.moduleForm.value)).subscribe(
       data =>{
         this.jsonValueReturnes = data as Module;
       }, err =>{

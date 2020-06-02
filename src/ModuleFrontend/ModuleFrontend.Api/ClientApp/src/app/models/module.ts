@@ -3,7 +3,7 @@ import { Studiefase } from "./studiefase";
 import { Specialisatie } from "./specialisatie";
 
 export interface Module {
-    Id: number
+    id: number
     moduleNaam: string
     moduleCode: string
     aantalEc: number
