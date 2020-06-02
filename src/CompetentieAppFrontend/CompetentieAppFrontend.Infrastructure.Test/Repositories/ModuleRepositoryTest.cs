@@ -179,7 +179,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var result = repository.GetAllModules().First();
 
             // Assert
-            Assert.AreEqual("2018/2019",result.Cohort.CohortNaam);
+            Assert.AreEqual("2018-2019",result.Cohort.CohortNaam);
         }
     }
 }

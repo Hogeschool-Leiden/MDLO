@@ -362,7 +362,7 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                 .AddRange(new Cohort
                 {
                     Id = 1,
-                    CohortNaam = "2018/2019",
+                    CohortNaam = "2018-2019",
                     StartDatum = new DateTime(2019, 9, 3)
                 });
 

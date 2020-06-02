@@ -48,7 +48,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 PeriodeNummer = 1,
                 SpecialisatieNaam = "Propedeuse",
-                CohortNaam = "2018/2019"
+                CohortNaam = "2018-2019"
             });
 
             // Assert
@@ -69,7 +69,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 PeriodeNummer = 1,
                 SpecialisatieNaam = "Propedeuse",
-                CohortNaam = "2018/2019"
+                CohortNaam = "2018-2019"
             });
 
             // Assert
@@ -90,7 +90,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 PeriodeNummer = 1,
                 SpecialisatieNaam = "Propedeuse",
-                CohortNaam = "2018/2019"
+                CohortNaam = "2018-2019"
             });
 
             // Assert
@@ -111,7 +111,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 PeriodeNummer = 1,
                 SpecialisatieNaam = "Propedeuse",
-                CohortNaam = "2018/2019"
+                CohortNaam = "2018-2019"
             });
 
             // Assert
@@ -132,7 +132,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 PeriodeNummer = 1,
                 SpecialisatieNaam = "Propedeuse",
-                CohortNaam = "2018/2019"
+                CohortNaam = "2018-2019"
             });
 
             // Assert
@@ -154,7 +154,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 PeriodeNummer = 1,
                 SpecialisatieNaam = "Propedeuse",
-                CohortNaam = "2018/2019"
+                CohortNaam = "2018-2019"
             });
 
             // Assert
@@ -173,7 +173,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 PeriodeNummer = 5,
                 SpecialisatieNaam = "Forensische ICT",
-                CohortNaam = "2018/2019"
+                CohortNaam = "2018-2019"
             });
 
             // Assert
@@ -192,7 +192,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 PeriodeNummer = 5,
                 SpecialisatieNaam = "Propedeuse",
-                CohortNaam = "2018/2019"
+                CohortNaam = "2018-2019"
             });
 
             // Assert
@@ -211,11 +211,11 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 PeriodeNummer = 1,
                 SpecialisatieNaam = "Propedeuse",
-                CohortNaam = "2018/2019"
+                CohortNaam = "2018-2019"
             }).First();
 
             // Assert
-            Assert.AreEqual("2018/2019", result.Module.Cohort.CohortNaam);
+            Assert.AreEqual("2018-2019", result.Module.Cohort.CohortNaam);
         }
     }
 }
