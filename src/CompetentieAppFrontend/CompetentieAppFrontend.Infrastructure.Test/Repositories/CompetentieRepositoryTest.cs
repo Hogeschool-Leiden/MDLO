@@ -44,7 +44,12 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var repository = new CompetentieRepository(context);
 
             // Act
-            var result = repository.GetAllCompetentiesByCriteria(1, "Propedeuse");
+            var result = repository.GetAllCompetentiesByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = 1,
+                SpecialisatieNaam = "Propedeuse",
+                CohortNaam = "2018/2019"
+            });
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(IList<Competentie>));
@@ -60,8 +65,13 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var repository = new CompetentieRepository(context);
 
             // Act
-            var result = repository.GetAllCompetentiesByCriteria(1, "Propedeuse");
-            
+            var result = repository.GetAllCompetentiesByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = 1,
+                SpecialisatieNaam = "Propedeuse",
+                CohortNaam = "2018/2019"
+            });
+
             // Assert
             Assert.IsTrue(result.Any(competentie => competentie.ModuleId == moduleId));
         }
@@ -76,8 +86,13 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var repository = new CompetentieRepository(context);
 
             // Act
-            var result = repository.GetAllCompetentiesByCriteria(1, "Propedeuse");
-            
+            var result = repository.GetAllCompetentiesByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = 1,
+                SpecialisatieNaam = "Propedeuse",
+                CohortNaam = "2018/2019"
+            });
+
             // Assert
             Assert.IsTrue(result.Any(competentie => competentie.BeheersingsNiveau.Id == beheersingsNiveauId));
         }
@@ -92,12 +107,18 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var repository = new CompetentieRepository(context);
 
             // Act
-            var result = repository.GetAllCompetentiesByCriteria(1, "Propedeuse");
-            
+            var result = repository.GetAllCompetentiesByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = 1,
+                SpecialisatieNaam = "Propedeuse",
+                CohortNaam = "2018/2019"
+            });
+
             // Assert
-            Assert.IsTrue(result.Any(competentie => competentie.BeheersingsNiveau.Activiteit.ActiviteitNaam == activiteitNaam));
+            Assert.IsTrue(result.Any(competentie =>
+                competentie.BeheersingsNiveau.Activiteit.ActiviteitNaam == activiteitNaam));
         }
-        
+
         [DataTestMethod]
         [DataRow("gebruikersinteractie")]
         public void GetCompetentiesByCriteria_Should_Include_ArchitectuurLaag(string architectuurLaagNaam)
@@ -107,12 +128,18 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var repository = new CompetentieRepository(context);
 
             // Act
-            var result = repository.GetAllCompetentiesByCriteria(1, "Propedeuse");
-            
+            var result = repository.GetAllCompetentiesByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = 1,
+                SpecialisatieNaam = "Propedeuse",
+                CohortNaam = "2018/2019"
+            });
+
             // Assert
-            Assert.IsTrue(result.Any(competentie => competentie.BeheersingsNiveau.ArchitectuurLaag.ArchitectuurLaagNaam == architectuurLaagNaam));
+            Assert.IsTrue(result.Any(competentie =>
+                competentie.BeheersingsNiveau.ArchitectuurLaag.ArchitectuurLaagNaam == architectuurLaagNaam));
         }
-        
+
         [DataTestMethod]
         [DataRow("IOPR")]
         [DataRow("IUML")]
@@ -123,8 +150,13 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var repository = new CompetentieRepository(context);
 
             // Act
-            var result = repository.GetAllCompetentiesByCriteria(1, "Propedeuse");
-            
+            var result = repository.GetAllCompetentiesByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = 1,
+                SpecialisatieNaam = "Propedeuse",
+                CohortNaam = "2018/2019"
+            });
+
             // Assert
             Assert.IsTrue(result.Any(competentie => competentie.Module.ModuleCode == moduleCode));
         }
@@ -137,8 +169,13 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var repository = new CompetentieRepository(context);
 
             // Act
-            var result = repository.GetAllCompetentiesByCriteria(5, "Forensische ICT");
-            
+            var result = repository.GetAllCompetentiesByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = 5,
+                SpecialisatieNaam = "Forensische ICT",
+                CohortNaam = "2018/2019"
+            });
+
             // Assert
             Assert.IsFalse(result.Any());
         }
@@ -151,10 +188,34 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var repository = new CompetentieRepository(context);
 
             // Act
-            var result = repository.GetAllCompetentiesByCriteria(5, "Propedeuse");
-            
+            var result = repository.GetAllCompetentiesByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = 5,
+                SpecialisatieNaam = "Propedeuse",
+                CohortNaam = "2018/2019"
+            });
+
             // Assert
             Assert.IsTrue(result.Any());
+        }
+
+        [TestMethod]
+        public void GetAllCompetentiesByCriteria_Should_Include_Cohort()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new CompetentieRepository(context);
+
+            // Act
+            var result = repository.GetAllCompetentiesByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = 1,
+                SpecialisatieNaam = "Propedeuse",
+                CohortNaam = "2018/2019"
+            }).First();
+
+            // Assert
+            Assert.AreEqual("2018/2019", result.Module.Cohort.CohortNaam);
         }
     }
 }

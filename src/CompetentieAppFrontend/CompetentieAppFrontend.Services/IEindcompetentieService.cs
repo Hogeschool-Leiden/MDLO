@@ -1,7 +1,9 @@
+using CompetentieAppFrontend.Infrastructure.Repositories;
+
 namespace CompetentieAppFrontend.Services
 {
     public interface IEindcompetentieService
     {
-        Matrix<Eindniveau> GetEindcompetentieMatrixByCriteria(int periodeNummer, string specialisatieNaam);
+        Matrix<Eindniveau> GetEindcompetentieMatrixByCriteria(ICompetentieRepository.Criteria criteria);
     }
 }

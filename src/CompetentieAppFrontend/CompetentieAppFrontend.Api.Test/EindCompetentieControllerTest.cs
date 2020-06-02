@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CompetentieAppFrontend.Api.Controllers;
+using CompetentieAppFrontend.Infrastructure.Repositories;
 using CompetentieAppFrontend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,7 +24,7 @@ namespace CompetentieAppFrontend.Api.Test
             _loggerMock = new Mock<ILogger<EindCompetentieController>>();
 
             _eindCompetentieService
-                .Setup(service => service.GetEindcompetentieMatrixByCriteria(It.IsAny<int>(), It.IsAny<string>()))
+                .Setup(service => service.GetEindcompetentieMatrixByCriteria(It.IsAny<ICompetentieRepository.Criteria>()))
                 .Returns(new Matrix<Eindniveau>(new List<string>(), new List<string>(),
                     new List<IMatrixable<Eindniveau>>()));
         }
@@ -74,7 +75,7 @@ namespace CompetentieAppFrontend.Api.Test
             var controller = new EindCompetentieController(_loggerMock.Object, _eindCompetentieService.Object);
 
             // Act
-            var result = controller.GetCompetentieMatrix("Propedeuse", 1);
+            var result = controller.GetCompetentieMatrix("Propedeuse", 1, "2019/2020");
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(Matrix<Eindniveau>));
@@ -123,7 +124,7 @@ namespace CompetentieAppFrontend.Api.Test
                 ?.Template;
 
             // Assert
-            Assert.AreEqual("{specialisatieNaam}/{periodeNummer}", result);
+            Assert.AreEqual("{specialisatieNaam}/{periodeNummer}/{cohortNaam}", result);
         }
 
         [DataTestMethod]
@@ -158,11 +159,11 @@ namespace CompetentieAppFrontend.Api.Test
             var controller = new EindCompetentieController(_loggerMock.Object, _eindCompetentieService.Object);
 
             // Act
-            var result = controller.GetCompetentieMatrix(specialisatieNaam, periodeNummer);
+            var result = controller.GetCompetentieMatrix(specialisatieNaam, periodeNummer, "2019/2020");
 
             // Assert
             _eindCompetentieService.Verify(service =>
-                service.GetEindcompetentieMatrixByCriteria(periodeNummer, specialisatieNaam));
+                service.GetEindcompetentieMatrixByCriteria(It.IsAny<ICompetentieRepository.Criteria>()));
         }
     }
 }

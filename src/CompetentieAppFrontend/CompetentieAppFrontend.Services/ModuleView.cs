@@ -4,6 +4,7 @@ namespace CompetentieAppFrontend.Services
 {
     public class ModuleView
     {
+        public string CohortNaam { get; set; }
         public IEnumerable<string> Specialisaties { get; set; }
         public string ModuleCode { get; set; }
         public IEnumerable<int> Perioden { get; set; }

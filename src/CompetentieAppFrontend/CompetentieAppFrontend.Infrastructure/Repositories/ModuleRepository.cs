@@ -30,6 +30,7 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
                 .Include(module => module.Studiefasen)
                 .ThenInclude(studiefase => studiefase.Periode)
                 .Include(module => module.Eindeisen)
+                .Include(module => module.Cohort)
                 .ToList();
         }
     }

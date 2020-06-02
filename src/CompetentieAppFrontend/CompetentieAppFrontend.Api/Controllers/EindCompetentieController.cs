@@ -1,3 +1,4 @@
+using CompetentieAppFrontend.Infrastructure.Repositories;
 using CompetentieAppFrontend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,14 +20,19 @@ namespace CompetentieAppFrontend.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{specialisatieNaam}/{periodeNummer}")]
+        [Route("{specialisatieNaam}/{periodeNummer}/{cohortNaam}")]
         public Matrix<Eindniveau> GetCompetentieMatrix([FromRoute] string specialisatieNaam,
-            [FromRoute] int periodeNummer)
+            [FromRoute] int periodeNummer, [FromRoute] string cohortNaam)
         {
             _logger.LogInformation(
                 $"Request received, specialisatie naam: {specialisatieNaam} and periode nummer: {periodeNummer}");
 
-            return _service.GetEindcompetentieMatrixByCriteria(periodeNummer, specialisatieNaam);
+            return _service.GetEindcompetentieMatrixByCriteria(new ICompetentieRepository.Criteria
+            {
+                PeriodeNummer = periodeNummer,
+                SpecialisatieNaam = specialisatieNaam,
+                CohortNaam = cohortNaam
+            });
         }
     }
 }

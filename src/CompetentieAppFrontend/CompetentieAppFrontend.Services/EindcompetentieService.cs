@@ -18,10 +18,10 @@ namespace CompetentieAppFrontend.Services
             _matrixService = matrixService;
         }
 
-        public Matrix<Eindniveau> GetEindcompetentieMatrixByCriteria(int periodeNummer, string specialisatieNaam)
+        public Matrix<Eindniveau> GetEindcompetentieMatrixByCriteria(ICompetentieRepository.Criteria criteria)
         {
-            _logger.LogTrace($"Retrieving competentie-matrix: {specialisatieNaam} in periode: {periodeNummer}");
-            var competenties = _competentieRepository.GetAllCompetentiesByCriteria(periodeNummer, specialisatieNaam);
+            _logger.LogTrace($"Retrieving competentie-matrix: {criteria.SpecialisatieNaam} in periode: {criteria.PeriodeNummer}");
+            var competenties = _competentieRepository.GetAllCompetentiesByCriteria(criteria);
             return _matrixService.CreateCompetentieMatrix(competenties);
         }
     }

@@ -5,6 +5,13 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 {
     public interface ICompetentieRepository
     {
-        IList<Competentie> GetAllCompetentiesByCriteria(int periodeNummer, string specialisatieNaam);
+        IList<Competentie> GetAllCompetentiesByCriteria(Criteria criteria);
+        
+        public struct Criteria
+        {
+            public int PeriodeNummer { get; set; }
+            public string SpecialisatieNaam { get; set; }
+            public string CohortNaam { get; set; }
+        }
     }
 }

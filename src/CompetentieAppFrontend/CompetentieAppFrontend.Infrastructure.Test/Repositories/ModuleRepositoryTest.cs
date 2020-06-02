@@ -167,5 +167,19 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             // Assert
             Assert.IsTrue(result.Eindeisen.Any(eindeis => eindeis.EindeisBeschrijving.Equals("Deze module is erg moeilijk.")));
         }
+
+        [TestMethod]
+        public void GetAllModules_Should_Include_Cohort()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new ModuleRepository(context);
+
+            // Act
+            var result = repository.GetAllModules().First();
+
+            // Assert
+            Assert.AreEqual("2018/2019",result.Cohort.CohortNaam);
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace CompetentieAppFrontend.Services.Test
             _loggerMock = new Mock<ILogger<EindcompetentieService>>();
 
             _competentieRepositoryMock
-                .Setup(repository => repository.GetAllCompetentiesByCriteria(It.IsAny<int>(), It.IsAny<string>()))
+                .Setup(repository => repository.GetAllCompetentiesByCriteria(It.IsAny<ICompetentieRepository.Criteria>()))
                 .Returns(new List<Competentie>());
 
             _eindcompetentieMatrixService
@@ -31,13 +31,13 @@ namespace CompetentieAppFrontend.Services.Test
         }
 
         [DataTestMethod]
-        [DataRow(1, "Interactie technologie")]
-        [DataRow(2, "Software engineering")]
-        [DataRow(3, "Business data management")]
-        [DataRow(5, "Forensische ict")]
-        [DataRow(7, "Interactie technologie")]
+        [DataRow(1, "Interactie technologie", "2018/2019")]
+        [DataRow(2, "Software engineering", "2018/2019")]
+        [DataRow(3, "Business data management", "2019/2020")]
+        [DataRow(5, "Forensische ict", "2021/2022")]
+        [DataRow(7, "Interactie technologie", "2020/2021")]
         public void GetEindCompetentieMatrix_Should_Return_Typeof_CompetentieMatrix(int periodeNummer,
-            string specialisatieNaam)
+            string specialisatieNaam, string cohortNaam)
         {
             // Arrange
             var eindCompetentieMatrixService = new EindcompetentieService(
@@ -48,20 +48,25 @@ namespace CompetentieAppFrontend.Services.Test
 
             // Act
             var result =
-                eindCompetentieMatrixService.GetEindcompetentieMatrixByCriteria(periodeNummer, specialisatieNaam);
+                eindCompetentieMatrixService.GetEindcompetentieMatrixByCriteria(new ICompetentieRepository.Criteria
+                {
+                    PeriodeNummer = periodeNummer,
+                    SpecialisatieNaam = specialisatieNaam,
+                    CohortNaam = cohortNaam
+                });
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(Matrix<Eindniveau>));
         }
 
         [DataTestMethod]
-        [DataRow(1, "Interactie technologie")]
-        [DataRow(2, "Software engineering")]
-        [DataRow(3, "Business data management")]
-        [DataRow(5, "Forensische ict")]
-        [DataRow(7, "Interactie technologie")]
+        [DataRow(1, "Interactie technologie", "2018/2019")]
+        [DataRow(2, "Software engineering", "2018/2019")]
+        [DataRow(3, "Business data management", "2019/2020")]
+        [DataRow(5, "Forensische ict", "2021/2022")]
+        [DataRow(7, "Interactie technologie", "2020/2021")]
         public void GetEindCompetentieMatrix_Should_Call_GetAllCompetentiesByCriteria_On_IEindCompetentieRepository(
-            int periodeNummer, string specialisatieNaam)
+            int periodeNummer, string specialisatieNaam, string cohortNaam)
         {
             // Arrange
             var eindCompetentieMatrixService = new EindcompetentieService(
@@ -72,11 +77,16 @@ namespace CompetentieAppFrontend.Services.Test
 
             // Act
             var result =
-                eindCompetentieMatrixService.GetEindcompetentieMatrixByCriteria(periodeNummer, specialisatieNaam);
+                eindCompetentieMatrixService.GetEindcompetentieMatrixByCriteria(new ICompetentieRepository.Criteria
+                {
+                    PeriodeNummer = periodeNummer,
+                    SpecialisatieNaam = specialisatieNaam,
+                    CohortNaam = cohortNaam
+                });
 
             // Assert
             _competentieRepositoryMock.Verify(repository =>
-                repository.GetAllCompetentiesByCriteria(periodeNummer, specialisatieNaam));
+                repository.GetAllCompetentiesByCriteria(It.IsAny<ICompetentieRepository.Criteria>()));
         }
     }
 }

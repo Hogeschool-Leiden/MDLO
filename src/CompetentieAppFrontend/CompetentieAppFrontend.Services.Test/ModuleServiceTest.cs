@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CompetentieAppFrontend.Domain;
@@ -67,6 +68,11 @@ namespace CompetentieAppFrontend.Services.Test
                                     Niveau = 1
                                 }
                             }
+                        },
+                        Cohort = new Cohort
+                        {
+                            CohortNaam = "Studiejaar 2019/2020",
+                            StartDatum = new DateTime(2019, 9, 3)
                         }
                     },
                     new Module
@@ -110,6 +116,11 @@ namespace CompetentieAppFrontend.Services.Test
                                     Niveau = 2
                                 }
                             }
+                        },
+                        Cohort = new Cohort
+                        {
+                            CohortNaam = "Studiejaar 2019/2020",
+                            StartDatum = new DateTime(2019, 9, 3)
                         }
                     }
                 });
@@ -238,6 +249,23 @@ namespace CompetentieAppFrontend.Services.Test
 
             // Assert
             Assert.IsFalse(result.Any(matrix => matrix.Matrix.Equals(null)));
+        }
+
+        [TestMethod]
+        public void GetAllModules_Should_Have_CohortNaam()
+        {
+            // Arrange
+            var moduleService = new ModuleService(
+                _loggerMock.Object,
+                _niveauMatrixService.Object,
+                _moduleRepositoryMock.Object
+            );
+
+            // Act
+            var result = moduleService.GetAllModules();
+
+            // Assert
+            Assert.IsTrue(result.All(view => view.CohortNaam.Equals("Studiejaar 2019/2020")));
         }
     }
 }

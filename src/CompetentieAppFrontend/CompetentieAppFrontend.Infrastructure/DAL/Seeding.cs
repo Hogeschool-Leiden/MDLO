@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using CompetentieAppFrontend.Domain;
 
@@ -190,7 +191,7 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                     },
                     new BeheersingsNiveau
                     {
-                        Id = 10, 
+                        Id = 10,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 5,
                         Niveau = 1
@@ -276,7 +277,7 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                         Niveau = 1
                     }
                 });
-            
+
             context.BeheersingsNiveaus
                 .AddRange(new[]
                 {
@@ -316,7 +317,7 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                         Niveau = 1
                     }
                 });
-            
+
             context.BeheersingsNiveaus
                 .AddRange(new[]
                 {
@@ -357,6 +358,14 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                     }
                 });
 
+            context.Cohorts
+                .AddRange(new Cohort
+                {
+                    Id = 1,
+                    CohortNaam = "2018/2019",
+                    StartDatum = new DateTime(2019, 9, 3)
+                });
+
             context.Modules
                 .AddRange(new[]
                 {
@@ -365,21 +374,24 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                         Id = 1,
                         ModuleCode = "IOPR",
                         ModuleNaam = "Object georienteerd programeren",
-                        Studiepunten = 3
+                        Studiepunten = 3,
+                        CohortId = 1
                     },
                     new Module
                     {
                         Id = 2,
                         ModuleCode = "IOPR2",
                         ModuleNaam = "Object georienteerd programeren 2",
-                        Studiepunten = 3
+                        Studiepunten = 3,
+                        CohortId = 1
                     },
                     new Module
                     {
                         Id = 3,
                         ModuleCode = "IUML",
                         ModuleNaam = "UML",
-                        Studiepunten = 3
+                        Studiepunten = 3,
+                        CohortId = 1
                     }
                 });
 
@@ -436,7 +448,7 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                     }
                 });
 
-            context.AddRange(new[]
+            context.Eindeisen.AddRange(new[]
             {
                 new Eindeis
                 {

@@ -28,6 +28,7 @@ namespace CompetentieAppFrontend.Services
 
             return modules.Select(module => new ModuleView
             {
+                CohortNaam = module.Cohort.CohortNaam,
                 Specialisaties = module.Studiefasen.Select(studiefase => studiefase.Specialisatie.SpecialisatieNaam),
                 ModuleCode = module.ModuleCode,
                 Matrix = _matrixService.CreateCompetentieMatrix(module.Competenties),
