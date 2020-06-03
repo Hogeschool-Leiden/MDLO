@@ -1,45 +1,62 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using Miffy.MicroServices.Events;
+using ModuleDomainService.Domain.Commands;
+using ModuleDomainService.Domain.Events;
 
 namespace ModuleDomainService.Domain
 {
     public class Module
     {
-        private Guid _id;
         private string _code;
         private string _naam;
         private string _studieJaar;
-        private int _ec;
-        private bool _boekVerplicht;
-        private int _lesUren;
-        private Video _video;
-        private Slide _slide;
-        private Allen _allen;
-        private IEnumerable<Specialisatie> _specialisaties;
-        private List<Specialisatie> _specialisatie;
-        private List<Competentie> _competenties;
+        private int _aantalEC;
+        private ModuleLeider _moduleLeider;
+        private Studiefase _studiefase;
+        private Status _status;
+        private List<string> _leerdoelen;
+        private Voorkennis _voorkennis;
+        private Competenties _competenties;
+        private string _beschrijvingLeerdoelen;
+        private string _inhoudelijkeBeschrijving;
+        private string _eindeisen;
+        private string _contacturenEnWerkvormen;
+        private Beoordeling _beoordeling;
+        private List<Examinator> _examinatoren;
 
-        private Module() => Changes = new List<IEvent>();
+        private Module() => Changes = new List<DomainEvent>();
 
-        public Module(IEnumerable<IEvent> events) : this()
+        public Module(CreeerModuleCommand command)
         {
-            foreach (var @event in events)
+            Apply(new ModuleGecreeerd
+            {
+            });
+        }
+
+        public Module(IEnumerable<DomainEvent> events) : this() =>
+            events.ToList().ForEach(@event =>
             {
                 Mutate(@event);
                 Version++;
-            }
-        }
+            });
 
-        public int Version { get; }
+        public string Id => $"{_code}:{_studieJaar}";
 
-        public List<IEvent> Changes { get; }
+        public int Version { get; private set; }
 
-        private void Apply(IEvent @event)
+        public List<DomainEvent> Changes { get; }
+
+        private void Apply(DomainEvent @event)
         {
             Changes.Add(@event);
             Mutate(@event);
         }
 
-        private void Mutate(IEvent @event) => ((dynamic) this).When((dynamic) @event);
+        private void Mutate(DomainEvent @event) => ((dynamic) this).When((dynamic) @event);
+
+        private void When(ModuleGecreeerd @event)
+        {
+        }
     }
 }

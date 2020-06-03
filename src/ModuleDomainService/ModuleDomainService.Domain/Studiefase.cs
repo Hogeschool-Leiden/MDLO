@@ -1,8 +1,7 @@
 namespace ModuleDomainService.Domain
 {
-    public enum Slide
+    public class Studiefase
     {
-        PPT,
-        PDF
+        
     }
 }

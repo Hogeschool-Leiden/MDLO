@@ -1,6 +1,6 @@
 namespace ModuleDomainService.Domain
 {
-    public interface IEvent
+    public class Voorkennis
     {
         
     }

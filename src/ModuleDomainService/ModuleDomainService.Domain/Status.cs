@@ -1,8 +1,7 @@
 namespace ModuleDomainService.Domain
 {
-    public enum Video
+    public class Status
     {
-        MS,
-        YT
+        
     }
 }

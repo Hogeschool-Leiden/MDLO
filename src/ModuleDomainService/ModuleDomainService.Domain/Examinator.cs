@@ -1,8 +1,7 @@
 namespace ModuleDomainService.Domain
 {
-    public enum Allen
+    public class Examinator
     {
-        V,
-        K
+        
     }
 }
