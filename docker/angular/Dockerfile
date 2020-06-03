@@ -4,7 +4,7 @@ ARG sln
 WORKDIR /app
 COPY ${source} .
 RUN dotnet restore
-RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
+RUN curl -sL https://deb.nodesource.com/setup_12.x |  bash -
 RUN apt-get install -y nodejs
 RUN dotnet publish ${sln} -c Release -o output
 
