@@ -13,7 +13,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class ModulesComponent implements OnInit {
   displayedColumns = ['module', 'specialisation', 'period', 'matrix', 'endRequirements'];
-  dataSource = new MatTableDataSource(MODULE_DATA);
+  dataSource: MatTableDataSource<any>;
   pageWidthInPixels;
   columnRemoveName: string = 'endRequirements';
   fullColumnSize: number = 5;
@@ -30,7 +30,7 @@ export class ModulesComponent implements OnInit {
     this.clearModuleData();
     this.getDataFromDB();
     this.onPageResize();
-    this.dataSource.sort = this.sort;
+    this.setDataSource();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -73,7 +73,7 @@ export class ModulesComponent implements OnInit {
     return this.pageWidthInPixels < 1155;
   }
 
-  applyFilter($event: KeyboardEvent) {
+  applyFilter() {
     const filterValue = (event.target as HTMLInputElement).value;
     this.setColumnsToFilter();
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -111,6 +111,11 @@ export class ModulesComponent implements OnInit {
         }
       );
     }
+  }
+
+  setDataSource(){
+    this.dataSource = new MatTableDataSource(MODULE_DATA);
+    this.dataSource.sort = this.sort;
   }
 
   clearModuleData() {
