@@ -21,9 +21,9 @@ export class CompetenciesComponent implements OnInit {
   amountOfPeriodsInPropedeuse: number = 3;
   competenceMatrix;
   dbPeriod: number;
-  // dbUrl: string = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
+  dbUrl: string = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
 
-  dbUrl:string = '/eindcompetentie/Propedeuse/1';
+  // dbUrl:string = '/eindcompetentie/Propedeuse/1';
 
 
   constructor(private http: HttpClient) {
@@ -71,11 +71,16 @@ export class CompetenciesComponent implements OnInit {
   }
 
   getMatrixDataFromDB() {
+    // this gives dynamic url instead of the default.
     this.getPeriodeInDbFormat();
+
+
+    // use db instead of mock
     this.http.get(this.dbUrl).toPromise().then(data => {
       this.competenceMatrix = data;
     });
-    // get from db but now use mock \/
+
+    // mockdata instead of db
     // this.competenceMatrix = mockJson;
   }
 
