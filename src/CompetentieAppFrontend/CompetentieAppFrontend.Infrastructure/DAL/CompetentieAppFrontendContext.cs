@@ -18,13 +18,22 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
         public DbSet<ArchitectuurLaag> ArchitectuurLagen { get; set; }
         public DbSet<BeheersingsNiveau> BeheersingsNiveaus { get; set; }
         public DbSet<Activiteit> Activiteiten { get; set; }
+        public DbSet<Eindeis> Eindeisen { get; set; }
+        public DbSet<Cohort> Cohorts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .ApplyConfiguration(new CompetentieConfiguration())
                 .ApplyConfiguration(new BeheersingsNiveauConfiguration())
-                .ApplyConfiguration(new StudiefaseConfiguration());
+                .ApplyConfiguration(new StudiefaseConfiguration())
+                .ApplyConfiguration(new EindeisConfiguration())
+                .ApplyConfiguration(new ActiviteitConfiguration())
+                .ApplyConfiguration(new ArchitectuurLaagConfiguration())
+                .ApplyConfiguration(new ModuleConfiguration())
+                .ApplyConfiguration(new PeriodeConfiguration())
+                .ApplyConfiguration(new SpecialisatieConfiguration())
+                .ApplyConfiguration(new CohortConfiguration());
         }
     }
 }

@@ -30,12 +30,14 @@ namespace CompetentieAppFrontend.Api
             });
             services.AddTransient<IArchitectuurLaagRepository, ArchitectuurLaagRepository>();
             services.AddTransient<IActiviteitRepository, ActiviteitRepository>();
-            services.AddTransient<IEindCompetentieRepository, EindCompetentieRepository>();
-            services.AddTransient<IEindCompetentieMatrixService, EindCompetentieMatrixService>();
-
+            services.AddTransient<ICompetentieRepository, CompetentieRepository>();
+            services.AddTransient<IEindcompetentieService, EindcompetentieService>();
+            services.AddTransient<IModuleRepository, ModuleRepository>();
+            services.AddTransient<IModuleService, ModuleService>();
+            services.AddTransient<IMatrixService<int>, NiveauMatrixService>();
+            services.AddTransient<IMatrixService<Eindniveau>, EindcompetentieMatrixService>();
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-            
             services.UseRabbitMq();
             services.UseMicroserviceHost();
         }
@@ -46,7 +48,7 @@ namespace CompetentieAppFrontend.Api
             serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureDeleted();
             serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureCreated();
             serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().EnsureDataSeeded();
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

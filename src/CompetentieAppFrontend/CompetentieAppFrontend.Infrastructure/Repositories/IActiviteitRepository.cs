@@ -4,6 +4,6 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 {
     public interface IActiviteitRepository
     {
-        IEnumerable<string> GetAllActiviteitNamen();
+        IList<string> GetAllActiviteitNamen();
     }
 }
