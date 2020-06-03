@@ -1,66 +1,13 @@
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using CompetentieAppFrontend.Domain;
-using CompetentieAppFrontend.Infrastructure.DAL;
-using CompetentieAppFrontend.Infrastructure.Repositories;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CompetentieAppFrontend.Infrastructure.Test
+namespace CompetentieAppFrontend.Infrastructure.DAL
 {
-    [TestClass]
-    public class MatrixRepositoryTest
+    public static class Seeding
     {
-        private const string DATA_SOURCE = "DataSource=:memory:";
-        private static SqliteConnection _connection;
-        private static DbContextOptions<CompetentieAppFrontendContext> _options;
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc)
+        public static void EnsureDataSeeded(this CompetentieAppFrontendContext context)
         {
-            _connection = new SqliteConnection(DATA_SOURCE);
-            _connection.Open();
-            _options = new DbContextOptionsBuilder<CompetentieAppFrontendContext>()
-                .UseSqlite(_connection).Options;
-
-            using var context = new CompetentieAppFrontendContext(_options);
-            context.Database.EnsureCreated();
-        }
-
-        [ClassCleanup]
-        public static void ClassCleanup()
-        {
-            _connection.Close();
-        }
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            using var context = new CompetentieAppFrontendContext(_options);
-            context.Set<Module>().RemoveRange(context.Set<Module>());
-            context.SaveChanges();
-            LoadData();
-        }
-
-        [TestMethod]
-        public void GetCompetentieMatrix_Should_Return_Typeof_IEnumerable_Of_EindCompetentie()
-        {
-            // Arrange
-            using var context = new CompetentieAppFrontendContext(_options);
-            var repository = new EindCompetentieRepository(context);
-
-            // Act
-            var result = repository.GetEindCompetenties(1, "Properdeuse");
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(IEnumerable<EindCompetentie>));
-        }
-
-        private static void LoadData()
-        {
-            using var context = new CompetentieAppFrontendContext(_options);
-
             context.Activiteiten
                 .AddRange(new[]
                 {
@@ -127,7 +74,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                     new Specialisatie
                     {
                         Id = 1,
-                        SpecialisatieNaam = "Properdeuse"
+                        SpecialisatieNaam = "Propedeuse"
                     },
                     new Specialisatie
                     {
@@ -176,30 +123,35 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 1,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 2,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 3,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 4,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 5,
                         ArchitectuurLaagId = 1,
                         ActiviteitId = 5,
                         Niveau = 1
@@ -211,30 +163,35 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 6,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 7,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 8,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 9,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 10,
                         ArchitectuurLaagId = 2,
                         ActiviteitId = 5,
                         Niveau = 1
@@ -246,30 +203,35 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 11,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 12,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 13,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 14,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 15,
                         ArchitectuurLaagId = 3,
                         ActiviteitId = 5,
                         Niveau = 1
@@ -281,30 +243,35 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 16,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 17,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 18,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 19,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 20,
                         ArchitectuurLaagId = 4,
                         ActiviteitId = 5,
                         Niveau = 1
@@ -316,34 +283,87 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                 {
                     new BeheersingsNiveau
                     {
+                        Id = 21,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 1,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 22,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 2,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 23,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 3,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 24,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 4,
                         Niveau = 1
                     },
                     new BeheersingsNiveau
                     {
+                        Id = 25,
                         ArchitectuurLaagId = 5,
                         ActiviteitId = 5,
                         Niveau = 1
                     }
+                });
+
+            context.BeheersingsNiveaus
+                .AddRange(new[]
+                {
+                    new BeheersingsNiveau
+                    {
+                        Id = 26,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 1,
+                        Niveau = 3
+                    },
+                    new BeheersingsNiveau
+                    {
+                        Id = 27,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 2,
+                        Niveau = 3
+                    },
+                    new BeheersingsNiveau
+                    {
+                        Id = 28,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 3,
+                        Niveau = 3
+                    },
+                    new BeheersingsNiveau
+                    {
+                        Id = 29,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 4,
+                        Niveau = 3
+                    },
+                    new BeheersingsNiveau
+                    {
+                        Id = 30,
+                        ArchitectuurLaagId = 1,
+                        ActiviteitId = 5,
+                        Niveau = 3
+                    }
+                });
+
+            context.Cohorts
+                .AddRange(new Cohort
+                {
+                    Id = 1,
+                    CohortNaam = "2018-2019",
+                    StartDatum = new DateTime(2019, 9, 3)
                 });
 
             context.Modules
@@ -354,21 +374,24 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                         Id = 1,
                         ModuleCode = "IOPR",
                         ModuleNaam = "Object georienteerd programeren",
-                        Studiepunten = 3
+                        Studiepunten = 3,
+                        CohortId = 1
                     },
                     new Module
                     {
                         Id = 2,
                         ModuleCode = "IOPR2",
                         ModuleNaam = "Object georienteerd programeren 2",
-                        Studiepunten = 3
+                        Studiepunten = 3,
+                        CohortId = 1
                     },
                     new Module
                     {
                         Id = 3,
                         ModuleCode = "IUML",
                         ModuleNaam = "UML",
-                        Studiepunten = 3
+                        Studiepunten = 3,
+                        CohortId = 1
                     }
                 });
 
@@ -390,7 +413,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                     new Studiefase
                     {
                         ModuleId = 3,
-                        PeriodeId = 2,
+                        PeriodeId = 1,
                         SpecialisatieId = 1
                     }
                 });
@@ -421,9 +444,25 @@ namespace CompetentieAppFrontend.Infrastructure.Test
                     new Competentie
                     {
                         ModuleId = 3,
-                        BeheersingsNiveauId = 5
+                        BeheersingsNiveauId = 26
                     }
                 });
+
+            context.Eindeisen.AddRange(new[]
+            {
+                new Eindeis
+                {
+                    Id = 1,
+                    ModuleId = 1,
+                    EindeisBeschrijving = "Deze module is erg moeilijk."
+                },
+                new Eindeis
+                {
+                    Id = 2,
+                    ModuleId = 1,
+                    EindeisBeschrijving = "Het is onmogelijk deze module te halen."
+                }
+            });
 
             context.SaveChanges();
         }
