@@ -3,7 +3,7 @@ import {DebugElement, SimpleChange} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {CompetenceMatrixComponent} from "./competence-matrix.component";
 // @ts-ignore
-import mockJson from './../../../assets/mock-data/mock-matrix-json.json';
+import mockJson from './../../../assets/mock-data/eindcompetentie-mock.json';
 
 
 describe('CompetenceMatrixComponent', () => {

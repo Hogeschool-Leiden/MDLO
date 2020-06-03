@@ -19,6 +19,7 @@ export class ModulesComponent implements OnInit {
   fullColumnSize: number = 5;
   showListUnderMatrix: boolean = true;
   moduleData;
+  dbUrl: string = '/modules';
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -93,9 +94,9 @@ export class ModulesComponent implements OnInit {
       this.injectDataInTable();
     });
 
-    //mockdata
-    this.moduleData = moduleMock;
-    this.injectDataInTable();
+    // //mockdata
+    // this.moduleData = moduleMock;
+    // this.injectDataInTable();
   }
 
   injectDataInTable() {

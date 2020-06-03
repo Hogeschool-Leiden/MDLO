@@ -1,16 +1,17 @@
 import {async, ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
-import {DebugElement} from "@angular/core";
-import {By} from "@angular/platform-browser";
 import {CompetenciesComponent} from "./competencies.component";
+import {ModulesComponent} from "../modules/modules.component";
+import {CompetenceMatrixComponent} from "./competence-matrix/competence-matrix.component";
+import {HttpClientModule} from "@angular/common/http";
 
 describe('CompetenciesComponent', () => {
   let component: CompetenciesComponent;
   let fixture: ComponentFixture<CompetenciesComponent>;
-  let de: DebugElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CompetenciesComponent]
+      declarations: [ CompetenciesComponent , CompetenceMatrixComponent],
+      imports:[HttpClientModule]
     })
       .compileComponents();
   }));
@@ -19,7 +20,6 @@ describe('CompetenciesComponent', () => {
     fixture = TestBed.createComponent(CompetenciesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    de = fixture.debugElement;
   });
 
   it('should create', () => {
