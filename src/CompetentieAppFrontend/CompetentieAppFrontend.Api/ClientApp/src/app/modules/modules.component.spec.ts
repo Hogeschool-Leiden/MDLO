@@ -24,8 +24,6 @@ describe('ModuleComponent', () => {
   });
 
   it('should create', () => {
-    console.log('WOW');
-    console.log(component);
     expect(component).toBeTruthy();
   });
 });
