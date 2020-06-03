@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompetentieAppFrontend.Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompetentieAppFrontend.IntegrationTest", "CompetentieAppFrontend.IntegrationTest\CompetentieAppFrontend.IntegrationTest.csproj", "{D5CDA67F-9387-4449-9926-77CCA80D25E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompetentieAppFrontend.Api.Test", "CompetentieAppFrontend.Api.Test\CompetentieAppFrontend.Api.Test.csproj", "{5536B8D0-EF9C-4522-A5AF-E00FABF03540}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,5 +116,17 @@ Global
 		{D5CDA67F-9387-4449-9926-77CCA80D25E9}.Release|x64.Build.0 = Release|Any CPU
 		{D5CDA67F-9387-4449-9926-77CCA80D25E9}.Release|x86.ActiveCfg = Release|Any CPU
 		{D5CDA67F-9387-4449-9926-77CCA80D25E9}.Release|x86.Build.0 = Release|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Debug|x64.Build.0 = Debug|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Debug|x86.Build.0 = Debug|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Release|x64.ActiveCfg = Release|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Release|x64.Build.0 = Release|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Release|x86.ActiveCfg = Release|Any CPU
+		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

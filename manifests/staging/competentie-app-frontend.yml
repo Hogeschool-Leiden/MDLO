@@ -4,7 +4,7 @@ metadata:
   name: competentie-app-frontend-secret
   namespace: staging
 data:
-  connectionString: VXNlciBJRD1wb3N0Z3JlcztQYXNzd29yZD1yNHE4bzc4cTc4Mjc4bHJpTFVPMzI0OVU4UjM7SG9zdD1wb3N0Z3Jlcy1zdmM7UG9ydD01NDMyO0RhdGFiYXNlPUZyb250ZW5kU2VydmljZURiOwo=
+  connectionString: VXNlciBJRD1wb3N0Z3JlcztQYXNzd29yZD1jOEx5WmZzYWNwdnU7SG9zdD1wb3N0Z3JlcztQb3J0PTU0MzI7RGF0YWJhc2U9RnJvbnRlbmRTZXJ2aWNlU3RhZ2luRGI7
   url: YW1xcDovL3JhYmJpdG1xLWFkbWluOm5tY25qa2xoYWk3YTNramhramxsamVhaGZAcmFiYml0bXE=
   exchange: TURMTw==
   queue: Q29tcGV0ZW50aWVBcHA=
@@ -61,7 +61,7 @@ spec:
                   name: competentie-app-frontend-secret
                   key: loglevel
           name: frontend-service
-          image: wimdegroot/competentie-app-frontend:v0.0.5
+          image: wimdegroot/competentie-app-frontend:v0.0.6
           imagePullPolicy: Always
           ports:
             - containerPort: 80
