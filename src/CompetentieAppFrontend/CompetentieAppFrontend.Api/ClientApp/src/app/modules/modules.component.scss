@@ -31,11 +31,8 @@
 
 .spec-list-item {
   height: 15px !important;
+  font-size: 12px;
 }
-
-// :host /deep/ .mat-list-item-content {
-//   padding: 0!important;
-// }
 
 .mat-cell, .mat-row {
   align-items: normal;

@@ -17,10 +17,10 @@
     <ng-container matColumnDef="specialisation">
       <mat-header-cell *matHeaderCellDef [ngClass]="'specCell'"> Spec</mat-header-cell>
       <mat-cell *matCellDef="let moduleData" [ngClass]="'specCell'">
-        <mat-list dense class="spec-list">
-          <mat-list-item class="spec-list-item"
-                         *ngFor="let specialisation of moduleData.specialisation"> {{specialisation}}</mat-list-item>
-        </mat-list>
+        <ul class="spec-list">
+          <li class="spec-list-item"
+                         *ngFor="let specialisation of moduleData.specialisation"> {{specialisation}}</li>
+        </ul>
       </mat-cell>
     </ng-container>
 
