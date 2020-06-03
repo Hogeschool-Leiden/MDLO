@@ -29,6 +29,7 @@ namespace ModuleDomainService.Application
                 .RegisterDependencies(services)
                 .WithQueueName(Environment.GetEnvironmentVariable("BROKER_QUEUE_NAME"))
                 .WithBusContext(context)
+                .UseConventions()
                 .CreateHost();
             
             services.AddSingleton(context);

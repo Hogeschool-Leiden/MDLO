@@ -3,15 +3,15 @@ using ModuleDomainService.Domain;
 using ModuleDomainService.Domain.Commands;
 using ModuleDomainService.Infrastructure.Repositories;
 
-namespace ModuleDomainService.Application.CommandHandlers
+namespace ModuleDomainService.Application.CommandListeners
 {
-    public class ModuleCommandHandler
+    public class ModuleCommandListener
     {
         private readonly IModuleRepository _moduleRepository;
 
-        public ModuleCommandHandler(IModuleRepository moduleRepository) => _moduleRepository = moduleRepository;
+        public ModuleCommandListener(IModuleRepository moduleRepository) => _moduleRepository = moduleRepository;
 
-        [CommandListener("ModuleDomainService.Module.CreeerModule")]
+        [CommandListener("ModuleDomain.Module.CreeerModule")]
         public CreeerModuleResponse CreeerModule(CreeerModuleCommand command)
         {
             var module = new Module(command);

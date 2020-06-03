@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModuleDomainService.Domain.Abstractions\ModuleDomainService.Domain.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Miffy.Microservices" Version="2.4.0" />
   </ItemGroup>
 
