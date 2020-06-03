@@ -3,7 +3,7 @@ import {DebugElement, SimpleChange} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {CompetenceMatrixComponent} from "./competence-matrix.component";
 // @ts-ignore
-import mockJson from './../../../assets/mock-data/mock-matrix-json.json';
+import mockJson from './../../../assets/mock-data/eindcompetentie-mock.json';
 
 
 describe('CompetenceMatrixComponent', () => {
@@ -31,8 +31,6 @@ describe('CompetenceMatrixComponent', () => {
 
   it('should unhide the matrix.', function () {
     expect(component.showMatrix).toBeFalsy();
-    component.year = 2;
-    component.period = 4;
     component.specialisation = 'Software Engineering';
     component.competenceMatrix = mockJson;
     component.setDisplayMatrix();
@@ -40,8 +38,6 @@ describe('CompetenceMatrixComponent', () => {
   });
 
   it('Matrix should have headers', function () {
-    component.year = 2;
-    component.period = 4;
     component.specialisation = 'Software Engineering';
     component.competenceMatrix = mockJson;
     component.setDisplayMatrix();
@@ -50,8 +46,6 @@ describe('CompetenceMatrixComponent', () => {
   });
 
   it('matrix body should set values', function () {
-    component.year = 2;
-    component.period = 4;
     component.specialisation = 'Software Engineering';
     component.competenceMatrix = mockJson;
     component.setDisplayMatrix();
@@ -61,8 +55,6 @@ describe('CompetenceMatrixComponent', () => {
 
   it('reset matrix should put whole display matrix to nulls', function () {
     // fill it first
-    component.year = 2;
-    component.period = 4;
     component.specialisation = 'Software Engineering';
     component.competenceMatrix = mockJson;
     component.setDisplayMatrix();

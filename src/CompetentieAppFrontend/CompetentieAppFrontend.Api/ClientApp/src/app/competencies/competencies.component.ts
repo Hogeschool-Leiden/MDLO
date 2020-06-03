@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSliderChange} from "@angular/material/slider";
 // @ts-ignore  its only mock-data
-import mockJson from './../../assets/mock-data/mock-matrix-json.json';
+import mockJson from './../../assets/mock-data/eindcompetentie-mock.json';
 import {HttpClient} from "@angular/common/http";
 
 @Component({
@@ -14,6 +14,9 @@ export class CompetenciesComponent implements OnInit {
   period: number = 1;
   specialisations: string[] = ['Propedeuse', 'Software Engineering', 'Interactie Technologie', 'Business Data Management', 'Forensiche ICT'];
   specialisation: string;
+  cohorts: string[] = [];
+  cohort: string;
+  firstYear: number = 2015;
   sliderMin: number = 1;
   sliderMax: number = 3.75;
   showSlider: boolean = false;
@@ -21,10 +24,7 @@ export class CompetenciesComponent implements OnInit {
   amountOfPeriodsInPropedeuse: number = 3;
   competenceMatrix;
   dbPeriod: number;
-  dbUrl: string = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
-
-  // dbUrl:string = '/eindcompetentie/Propedeuse/1';
-
+  dbUrl: string;
 
   constructor(private http: HttpClient) {
   }
@@ -48,7 +48,6 @@ export class CompetenciesComponent implements OnInit {
         this.period = 4;
         break;
     }
-
   }
 
   specialisationChosen() {
@@ -71,20 +70,16 @@ export class CompetenciesComponent implements OnInit {
   }
 
   getMatrixDataFromDB() {
-    // this gives dynamic url instead of the default.
     this.getPeriodeInDbFormat();
 
-
-    // use db instead of mock
     this.http.get(this.dbUrl).toPromise().then(data => {
       this.competenceMatrix = data;
     });
 
-    // mockdata instead of db
     // this.competenceMatrix = mockJson;
   }
 
-  getPeriodeInDbFormat(){
+  getPeriodeInDbFormat() {
     if (this.isSpecialisationPropedeuse()) {
       this.dbPeriod = this.period;
     } else {
@@ -95,9 +90,33 @@ export class CompetenciesComponent implements OnInit {
   }
 
   updateDbUrl() {
-    this.dbUrl = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod;
+    this.dbUrl = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod + '/' + this.cohort;
+  }
+
+  getCohorts() {
+    let year: number = this.getYearValue();
+
+    while (year > this.firstYear) {
+      let cohort = this.createCohort(year);
+      this.cohorts.push(cohort);
+      year = year - 1;
+    }
+    this.setCurrentCohort();
+  }
+
+  getYearValue() {
+    return new Date().getFullYear() + 1;
+  }
+
+  createCohort(year) {
+    return (year - 1).toString()+ '-' + year.toString();
+  }
+
+  setCurrentCohort() {
+    this.cohort = this.cohorts[1];
   }
 
   ngOnInit() {
+    this.getCohorts();
   }
 }
