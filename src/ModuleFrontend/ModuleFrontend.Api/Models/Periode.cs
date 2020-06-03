@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ModuleFrontend.Api.Models
+﻿namespace ModuleFrontend.Api.Models
 {
     public class Periode
     {
-        public long Id { get; set; }
-        [Required]
+        public long PeriodeId { get; set; }
         public int PeriodeNummer { get; set; }
 
     }

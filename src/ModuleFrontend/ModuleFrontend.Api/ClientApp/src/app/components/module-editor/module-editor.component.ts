@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import { Module } from '../../models/module';
 import { ModuleSanitizePipe } from 'src/app/pipes/module-sanitize.pipe';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { config } from 'process';
 
 @Component({
   selector: 'app-module-editor',
@@ -10,22 +12,20 @@ import { ModuleSanitizePipe } from 'src/app/pipes/module-sanitize.pipe';
   styleUrls: ['./module-editor.component.css']
 })
 export class ModuleEditorComponent {
-  constructor(private httpService: HttpService, private sanitizePipe: ModuleSanitizePipe) {
+  constructor(private snackBar: MatSnackBar, private httpService: HttpService, private sanitizePipe: ModuleSanitizePipe) {
 
   }
 
-  jsonValue = null;
-  jsonValueReturnes = null;
   moduleForm = new FormGroup({
     id: new FormControl({ value: '', disabled: true }),
-    moduleNaam: new FormControl(''),
-    moduleCode: new FormControl(''),
-    aantalEc: new FormControl(''),
-    studiejaar: new FormControl(''),
+    moduleNaam: new FormControl('', Validators.required),
+    moduleCode: new FormControl('', Validators.required),
+    aantalEc: new FormControl('', Validators.required),
+    studiejaar: new FormControl('', Validators.required),
     moduleleider: new FormGroup({
-      naam: new FormControl(''),
-      email: new FormControl(''),
-      telefoonnummer: new FormControl(''),
+      naam: new FormControl('', [Validators.minLength(2), Validators.required]),
+      email: new FormControl('', [Validators.email, Validators.required]),
+      telefoonnummer: new FormControl('', [Validators.minLength(10), Validators.required]),
     }),
     studiefase: new FormGroup({
       fase: new FormControl(''),
@@ -58,12 +58,12 @@ export class ModuleEditorComponent {
   })
 
   onSubmit() {
-    this.jsonValue = this.moduleForm.value as Module;
     this.httpService.postModule(this.sanitizePipe.transform(this.moduleForm.value)).subscribe(
-      data =>{
-        this.jsonValueReturnes = data as Module;
-      }, err =>{
-        console.log(err);
+      data => {
+      }, err => {
+        if (err.error[0].errors[0].errorMessage.includes("Duplicate ModuleCode")) {
+          var snackBarRef = this.snackBar.open('Modulecode bestaat al.', '', { duration: 3000 });
+        }
       }
     )
   }

@@ -10,28 +10,30 @@
             Modulenaam:
         </mat-label>
         <input matInput type="string" formControlName="moduleNaam">
-
+        <mat-error>Modulenaam is verplicht</mat-error>
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Modulecode:
         </mat-label>
         <input matInput type="string" formControlName="moduleCode">
-
+        <mat-error>Modulecode is verplicht</mat-error>
     </mat-form-field>
     <mat-form-field>
         <mat-label>
             Aantal EC:
         </mat-label>
         <input matInput type="number" formControlName="aantalEc">
+        <mat-error>Aantal EC is verplicht</mat-error>
     </mat-form-field>
-
     <mat-form-field>
         <mat-label>
             Studiejaar:
         </mat-label>
         <input matInput type="string" formControlName="studiejaar">
+        <mat-error>Studiejaar is verplicht</mat-error>
     </mat-form-field>
+
 
     <br>
     <h3>Moduleleider</h3>
@@ -41,18 +43,21 @@
                 Naam:
             </mat-label>
             <input matInput type="string" formControlName="naam">
+            <mat-error>Naam is verplicht</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>
                 Email:
             </mat-label>
             <input matInput type="string" formControlName="email">
+            <mat-error>Email is verplicht</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>
                 Telefoonnummer:
             </mat-label>
             <input matInput type="string" formControlName="telefoonnummer">
+            <mat-error>Telefoonnummer is verplicht</mat-error>
         </mat-form-field>
 
     </div>
@@ -64,12 +69,14 @@
                 Fase:
             </mat-label>
             <input matInput type="string" formControlName="fase">
+            <mat-error>Studiefase is verplicht</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>
                 Periode:
             </mat-label>
             <input matInput type="number" formControlName="periode">
+            <mat-error>Periode is verplicht</mat-error>
         </mat-form-field>
 
     </div>
@@ -204,6 +211,3 @@
 
     <button mat-button type="submit" [disabled]="!moduleForm.valid">Creeer module</button>
 </form>
-
-<pre>{{jsonValue | json}}</pre>
-<pre>{{jsonValueReturnes | json}}</pre>

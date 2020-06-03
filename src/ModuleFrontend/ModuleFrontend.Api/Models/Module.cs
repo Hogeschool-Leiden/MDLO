@@ -4,7 +4,7 @@ namespace ModuleFrontend.Api.Models
 {
     public class Module
     {
-        public long Id { get; set; }
+        public long ModuleId { get; set; }
         public string ModuleNaam { get; set; }
         public string ModuleCode { get; set; }
         public int AantalEc { get; set; }
