@@ -31,10 +31,7 @@
 
 .spec-list-item {
   height: 15px !important;
-}
-
-:host /deep/ .mat-list-item-content {
-  padding: 0!important;
+  font-size: 12px;
 }
 
 .mat-cell, .mat-row {
