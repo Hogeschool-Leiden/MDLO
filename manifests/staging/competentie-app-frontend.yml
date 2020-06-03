@@ -61,7 +61,7 @@ spec:
                   name: competentie-app-frontend-secret
                   key: loglevel
           name: frontend-service
-          image: wimdegroot/competentie-app-frontend:v0.0.6
+          image: wimdegroot/competentie-app-frontend:v0.0.9
           imagePullPolicy: Always
           ports:
             - containerPort: 80

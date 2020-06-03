@@ -90,7 +90,7 @@ export class CompetenciesComponent implements OnInit {
   }
 
   updateDbUrl() {
-    this.dbUrl = '/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod + '/' + this.cohort;
+    this.dbUrl = '/api/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod + '/' + this.cohort;
   }
 
   getCohorts() {

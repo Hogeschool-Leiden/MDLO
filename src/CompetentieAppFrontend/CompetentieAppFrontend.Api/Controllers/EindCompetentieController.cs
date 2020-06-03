@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace CompetentieAppFrontend.Api.Controllers
 {
     [ApiController]
-    [Route("eindcompetentie")]
+    [Route("api/eindcompetentie")]
     public class EindCompetentieController
     {
         private ILogger<EindCompetentieController> _logger;

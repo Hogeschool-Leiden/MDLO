@@ -19,7 +19,7 @@ export class ModulesComponent implements OnInit {
   fullColumnSize: number = 5;
   showListUnderMatrix: boolean = true;
   moduleData;
-  dbUrl: string = '/modules';
+  dbUrl: string = '/api/modules';
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
