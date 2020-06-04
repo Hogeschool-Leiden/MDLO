@@ -1,0 +1,32 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false, 
+    "anonymousAuthentication": true, 
+    "iisExpress": {
+      "applicationUrl": "http://localhost:16002",
+      "sslPort": 44393
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "ModuleDomainService.Application": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost",
+        "BROKER_EXCHANGE_NAME": "MDLO",
+        "DB_CONNECTION_STRING": "User ID=postgres;Password=root;Host=postgres;Port=5432;Database=ModuleDomainDb;",
+        "BROKER_QUEUE_NAME": "ModuleDomain",
+        "LOG_LEVEL": "Trace"
+      }
+    }
+  }
+}
