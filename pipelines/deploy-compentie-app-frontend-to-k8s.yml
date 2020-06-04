@@ -15,28 +15,28 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'Minor2019Registry'
-  imageRepository: 'macedonieje-frontend-service'
-  containerRegistry: 'minor2019.azurecr.io'
+  dockerRegistryServiceConnection: 'Container registry connection'
+  imageRepository: 'competentie-app-frontend'
+  containerRegistry: 'mdlo.azurecr.io'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'minor20191672b099-auth'
-  solutionPath: 'src/FrontendService'
-  projectPath: '$(solutionPath)/FrontendService'
-  dockerfilePath: '$(solutionPath)/FrontendService/Dockerfile'
+  imagePullSecret: 'mdlo-auth'
+  solutionPath: 'src/CompetentieAppFrontend'
+  projectPath: '$(solutionPath)/CompetentieAppFrontend.Api'
+  dockerfilePath: 'src/docker/angular/Dockerfile'
   buildConfiguration: 'Release'
-  angularProject: $(solutionPath)/FrontendService/ClientApp
+  angularProject: '$(projectPath)/ClientApp'
   relativeAngularProject: ClientApp
   testProjects: |
-    $(solutionPath)/FrontendService.Test
-    $(solutionPath)/FrontendService.Spec
+    $(solutionPath)/CompetentieAppFrontend.Infrastructure.Test
+    $(solutionPath)/CompetentieAppFrontend/CompetentieAppFrontend.Services.Test
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   buildvmImageName: 'windows-latest'
-  projectKey: Macedonieje:frontend-service
-  projectName: Macedonieje Frontend Service
+  projectKey: MDLO:competentie-app
+  projectName: MDLO Competentie App
 
   # Website URL
-  APP_URL: http://macedonieje.maartenprojecten.nl
+  APP_URL: http://competenties.staging.mdlo.nl
 
   # Technical variable
   NODE_PATH: 'C:\npm\prefix\node_modules'
@@ -58,7 +58,7 @@ stages:
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         displayName: Prepare SonarQube
         inputs:
-          SonarQube: 'SonarQube Service Connection'
+          SonarQube: 'Sonarcloud connection'
           scannerMode: 'MSBuild'
           projectKey: $(projectKey)
           projectName: $(projectName)
@@ -97,7 +97,7 @@ stages:
         displayName: Breaking build with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
-          SonarQube: 'SonarQube Service Connection'
+          SonarQube: 'Sonarcloud connection'
 
       - task: DotNetCoreCLI@2
         displayName: 'dotnet publish'
@@ -126,15 +126,24 @@ stages:
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:
-          artifact: FrontendService
+          artifact: CompetentieAppFrondend
           path: $(projectPath)/obj/Docker/publish
 
       - task: Docker@2
         inputs:
           containerRegistry: '$(dockerRegistryServiceConnection)'
           repository: '$(imageRepository)'
-          command: 'buildAndPush'
-          Dockerfile: '$(projectPath)/Dockerfile'
+          command: 'build'
+          Dockerfile: 'src/docker/angular/Dockerfile'
+          tags: |
+            $(tag)
+            latest
+          arguments: '--build-arg source=src/CompetentieAppFrontend --build-arg sln=CompetentieAppFrontend.sln --build-arg runnable=CompetentieAppFrontend.Api.dll'
+      - task: Docker@2
+        inputs:
+          containerRegistry: '$(dockerRegistryServiceConnection)'
+          repository: '$(imageRepository)'
+          command: 'push'
           tags: |
             $(tag)
             latest
@@ -155,7 +164,7 @@ stages:
           - task: KubernetesManifest@0
             displayName: Create imagePullSecret
             inputs:
-              namespace: macedonieje
+              namespace: staging
               action: createSecret
               secretName: $(imagePullSecret)
               dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
@@ -163,28 +172,28 @@ stages:
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
-              namespace: macedonieje
+              namespace: staging
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/*.yaml
+                manifests/staging/competentie-app-frontend.yml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
-- stage: IntegrationTests
-  displayName: Integration Tests
-  dependsOn: Deploy
-  jobs:
-  - job: IntegrationTest
-    displayName: Integration Test
-    condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
-    pool:
-       vmImage: $(buildvmImageName)
-    steps:
-      - script: npm install -g typescript @angular/cli
-        workingDirectory: $(angularProject)
-        displayName: Install typescript and angular CLI
+# - stage: IntegrationTests
+#   displayName: Integration Tests
+#   dependsOn: Deploy
+#   jobs:
+#   - job: IntegrationTest
+#     displayName: Integration Test
+#     condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+#     pool:
+#        vmImage: $(buildvmImageName)
+#     steps:
+#       - script: npm install -g typescript @angular/cli
+#         workingDirectory: $(angularProject)
+#         displayName: Install typescript and angular CLI
 
-      - script: npm install && npm run e2e
-        displayName: 'Run npm install and npm run e2e'
-        workingDirectory: $(angularProject)
+#       - script: npm install && npm run e2e
+#         displayName: 'Run npm install and npm run e2e'
+#         workingDirectory: $(angularProject)
