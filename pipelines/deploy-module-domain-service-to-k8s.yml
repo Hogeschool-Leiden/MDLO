@@ -89,7 +89,7 @@ stages:
           command: publish
           publishWebProjects: false
           projects: $(projectPath)/*.csproj
-          arguments: '--configuration Release --self-contained -f "netcoreapp3.0" -r "linux-x64" --output "$(projectPath)/obj/Docker/publish"'
+          arguments: '--configuration Release --self-contained -f "netcoreapp3.1" -r "linux-x64" --output "$(projectPath)/obj/Docker/publish"'
           zipAfterPublish: false
           modifyOutputPath: false
 
@@ -118,11 +118,11 @@ stages:
           containerRegistry: '$(dockerRegistryServiceConnection)'
           repository: '$(imageRepository)'
           command: 'build'
-          Dockerfile: '$(projectPath)/Dockerfile'
+          Dockerfile: 'docker/normal/Dockerfile'
           tags: |
             $(tag)
             latest
-          arguments: '--build-arg source=$(projectPath)/obj/Docker/publish --build-arg runnable=CompetentieAppFrontend.Api.dll'
+          arguments: '--build-arg source=$(projectPath)/obj/Docker/publish --build-arg runnable=ModuleDomainService.Application.dll'
 
       - task: Docker@2
         inputs:
@@ -139,7 +139,7 @@ stages:
     condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
     pool:
       vmImage: $(vmImageName)
-    environment: 'MDLO.mdlo'
+    environment: 'MDLO.staging'
     strategy:
       runOnce:
         deploy:
@@ -147,19 +147,19 @@ stages:
           - task: KubernetesManifest@0
             displayName: Create imagePullSecret
             inputs:
-              namespace: macedonieje
-              action: createSecret
-              secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              action: 'createSecret'
+              kubernetesServiceConnection: 'MDLO-mdlo-staging-1591281470325'
+              namespace: 'macedonieje'
+              secretType: 'dockerRegistry'
+              secretName: '$(imagePullSecret)'
+              dockerRegistryEndpoint: '$(dockerRegistryServiceConnection)'
 
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
-              namespace: staging
-              action: deploy
-              manifests: |
-                manifests/staging/deploy-module-domain-service-to-k8s.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
+              action: 'deploy'
+              kubernetesServiceConnection: 'MDLO-mdlo-staging-1591281470325'
+              namespace: 'staging'
+              manifests: 'manifests/staging/deploy-module-domain-service-to-k8s.yml'
+              containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+              imagePullSecrets: '$(imagePullSecret)'
