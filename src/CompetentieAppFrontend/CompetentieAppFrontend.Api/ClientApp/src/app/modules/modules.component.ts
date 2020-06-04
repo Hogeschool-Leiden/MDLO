@@ -17,7 +17,7 @@ export class ModulesComponent implements OnInit {
   pageWidthInPixels;
   columnRemoveName: string = 'endRequirements';
   fullColumnSize: number = 5;
-  showListUnderMatrix: boolean = true;
+  showEndRequirementsUnderMatrix: boolean = true;
   moduleData;
   dbUrl: string = '/modules';
 
@@ -33,6 +33,20 @@ export class ModulesComponent implements OnInit {
     this.setDataSource();
   }
 
+  clearModuleData() {
+    MODULE_DATA.length = 0;
+  }
+
+  getDataFromDB() {
+    this.http.get(this.dbUrl).toPromise().then(data =>{
+      this.moduleData = data;
+      this.injectDataInTable();
+    });
+
+    // this.moduleData = moduleMock;  // this is mockdata
+    // this.injectDataInTable();
+  }
+
   @HostListener('window:resize', ['$event'])
   onPageResize() {
     this.pageWidthInPixels = window.innerWidth;
@@ -40,13 +54,17 @@ export class ModulesComponent implements OnInit {
   }
 
   resizeTableToFitScreen() {
-    if (this.isScreenToSmallToFitTable()) {
+    if (this.isScreenTooSmallToFitTable()) {
       this.removeColumn();
-      this.addListUnderMatrix();
+      this.displayEndRequirementsUnderMatrix();
     } else {
       this.addColumn();
-      this.removeListUnderMatrix();
+      this.removeEndRequirementsUnderMatrix();
     }
+  }
+
+  isScreenTooSmallToFitTable() {
+    return this.pageWidthInPixels < 1155;
   }
 
   private removeColumn() {
@@ -55,48 +73,37 @@ export class ModulesComponent implements OnInit {
     }
   }
 
+  private displayEndRequirementsUnderMatrix() {
+    this.showEndRequirementsUnderMatrix = true;
+  }
+
   private addColumn() {
     if (this.displayedColumns.length ! < this.fullColumnSize) {
       this.displayedColumns.push(this.columnRemoveName);
     }
   }
 
-  private addListUnderMatrix() {
-    this.showListUnderMatrix = true;
+  private removeEndRequirementsUnderMatrix() {
+    this.showEndRequirementsUnderMatrix = false;
   }
 
-  private removeListUnderMatrix() {
-    this.showListUnderMatrix = false;
-  }
 
-  isScreenToSmallToFitTable() {
-    return this.pageWidthInPixels < 1155;
+  setDataSource(){
+    this.dataSource = new MatTableDataSource(MODULE_DATA);
+    this.dataSource.sort = this.sort;
   }
 
   applyFilter() {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.setColumnsToFilter();
+    this.specifyWhatColumnsToFilter();
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  setColumnsToFilter() {
-    //specifies what column the filter looks at.
+  specifyWhatColumnsToFilter() {
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
       return data.specialisation.includes(filter) || data.module.toLowerCase().includes(filter) ||
         data.period.toString().includes(filter);
     }
-  }
-
-  getDataFromDB() {
-    //DBdata
-    this.http.get(this.dbUrl).toPromise().then(data =>{
-      this.moduleData = data;
-      this.injectDataInTable();
-    });
-
-    // //mockdata
-    // this.moduleData = moduleMock;
-    // this.injectDataInTable();
   }
 
   injectDataInTable() {
@@ -111,15 +118,6 @@ export class ModulesComponent implements OnInit {
         }
       );
     }
-  }
-
-  setDataSource(){
-    this.dataSource = new MatTableDataSource(MODULE_DATA);
-    this.dataSource.sort = this.sort;
-  }
-
-  clearModuleData() {
-    MODULE_DATA.length = 0;
   }
 }
 

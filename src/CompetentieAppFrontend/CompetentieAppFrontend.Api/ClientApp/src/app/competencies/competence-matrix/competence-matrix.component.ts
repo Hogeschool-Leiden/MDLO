@@ -1,6 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
-
 @Component({
   selector: 'app-competence-matrix',
   templateUrl: './competence-matrix.component.html',
@@ -13,7 +12,7 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
 
   displayMatrixOffset: number = 1;
   showMatrix: boolean = false;
-  displayeMatrix: any[][] = [
+  displayMatrix: any[][] = [
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
     [null, null, null, null, null, null],
@@ -29,16 +28,29 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.setDisplayMatrix();
+    this.setupDisplayMatrix();
   }
 
-  setDisplayMatrix() {
+  setupDisplayMatrix() {
     if (this.competenceMatrix !== undefined) {
       this.resetMatrix();
-      this.showMatrix = true;
+      this.showMatrixOnScreen();
       this.setHeaders();
       this.setBody();
     }
+  }
+
+  resetMatrix() {
+    for (let i = 0; i < this.displayMatrix.length; i++) {
+      for (let j = 0; j < this.displayMatrix[i].length; j++) {
+        this.displayMatrix[i][j] = null;
+      }
+    }
+  }
+
+  private showMatrixOnScreen(){
+    this.showMatrix = true;
+
   }
 
   private setHeaders() {
@@ -47,14 +59,14 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
   }
 
   private setActivityHeaders() {
-    for (let i = 0; i < this.displayeMatrix.length - 1; i++) {
-      this.displayeMatrix[i + 1][0] = this.competenceMatrix.xHeaders[i];
+    for (let i = 0; i < this.displayMatrix.length - 1; i++) {
+      this.displayMatrix[i + 1][0] = this.competenceMatrix.xHeaders[i];
     }
   }
 
   private setArchitectureHeaders() {
-    for (let i = 0; i < this.displayeMatrix[0].length - 1; i++) {
-      this.displayeMatrix[0][i + 1] = this.competenceMatrix.yHeaders[i];
+    for (let i = 0; i < this.displayMatrix[0].length - 1; i++) {
+      this.displayMatrix[0][i + 1] = this.competenceMatrix.yHeaders[i];
     }
   }
 
@@ -71,19 +83,14 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
   private setCellInfo(matrixElement, y, x) {
     y += this.displayMatrixOffset;
     x += this.displayMatrixOffset;
-    if (matrixElement.value.niveau === undefined){
-      this.displayeMatrix[y][x] = matrixElement.value;
-    } else {
-      this.displayeMatrix[y][x] = matrixElement.value.niveau;
-    }
+    this.displayMatrix[y][x] = CompetenceMatrixComponent.getCorrectCompetenceValue(matrixElement);
   }
 
-  resetMatrix(){
-    for (let i = 0; i < this.displayeMatrix.length;i++){
-      for (let j = 0; j < this.displayeMatrix[i].length;j++){
-        this.displayeMatrix[i][j] = null;
-      }
+  private static getCorrectCompetenceValue(matrixElement) {
+    if (matrixElement.value.niveau === undefined) {
+      return matrixElement.value;
     }
+    return matrixElement.value.niveau;
   }
 
   getCellColor(stringValue: string) {

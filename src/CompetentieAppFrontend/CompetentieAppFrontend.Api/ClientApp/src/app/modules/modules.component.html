@@ -7,7 +7,7 @@
 </div>
 
 <div class="table-container">
-  <mat-table matSort [dataSource]="dataSource" [ngClass]="{smallTableStyle: showListUnderMatrix}">
+  <mat-table matSort [dataSource]="dataSource" [ngClass]="{smallTableStyle: showEndRequirementsUnderMatrix}">
 
     <ng-container matColumnDef="module">
       <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="'smallCell'"> Module</mat-header-cell>
@@ -34,7 +34,7 @@
       <mat-cell *matCellDef="let moduleData" [ngClass]="'matrixCell'">
         <div>
           <app-competence-matrix [competenceMatrix]="moduleData.matrix" style="font-size: 75%;"></app-competence-matrix>
-          <div *ngIf="showListUnderMatrix">
+          <div *ngIf="showEndRequirementsUnderMatrix">
             <p><b>Eindeisen</b></p>
             <ul style="padding:  0">
               <li class="endRequirement-list-item"
