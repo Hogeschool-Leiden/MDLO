@@ -95,11 +95,12 @@ stages:
         inputs:
           pollingTimeoutSec: '300'
 
-      - task: sonar-buildbreaker@8
+      - task: sonarcloud-buildbreaker@2
         displayName: Breaking build with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
-          SonarQube: 'Sonarqube connection'
+          SonarCloud: 'Sonarcloud connection'
+          organization: 'hogeschool-leiden'
 
       - task: DotNetCoreCLI@2
         displayName: 'dotnet publish'
