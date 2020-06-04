@@ -29,11 +29,8 @@ namespace ModuleDomainService.Infrastructure.Repositories
         {
             if (!module.Changes.Any()) return;
             
-            _eventStore.AppendToStream(
-                $"module:{module.Id}",
-                module.Version,
-                module.Changes);
-            
+            _eventStore.AppendToStream(new EventStream($"module:{module.Id}",module.Version, module.Changes));
+
             module.Changes.ForEach(@event => _eventPublisher.Publish(@event));
         }
     }

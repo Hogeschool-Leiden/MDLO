@@ -19,14 +19,22 @@ namespace ModuleDomainService.Infrastructure.DAL
                 .Where(@event => @event.Stream.Id.Equals(streamId))
                 .OrderBy(@event => @event.Stream.Version)
                 .ToList();
-            var version = events.Max(@event => @event.Stream.Version);
-            var domainEvents = events.Select(@event => JsonConvert.DeserializeObject<DomainEvent>(@event.Payload));
-            return new EventStream(streamId, version, domainEvents);
+
+            return ToEventStream(streamId, events);
         }
 
-        public void AppendToStream(string streamId, int version, IEnumerable<DomainEvent> events)
+        public void AppendToStream(EventStream eventStream)
         {
-            _context.Events.AddRange(events.Select(@event => new Event
+            // TODO: Refactor
+            var events = eventStream.Events.Select(domainEvent =>
+                SerializeEvent(eventStream.Id, eventStream.Version, domainEvent));
+            _context.Events.AddRange(events);
+            _context.SaveChanges();
+        }
+
+        private static Event SerializeEvent(string streamId, int version, DomainEvent domainEvent)
+        {
+            return new Event
             {
                 Id = $"{streamId}:{++version}:{nameof(ModuleGecreeerd)}",
                 Stream = new Stream
@@ -34,10 +42,18 @@ namespace ModuleDomainService.Infrastructure.DAL
                     Id = streamId,
                     Version = version
                 },
-                Type = @event.Type,
-                Payload = JsonConvert.SerializeObject(@event)
-            }));
-            _context.SaveChanges();
+                Type = domainEvent.Type,
+                Payload = JsonConvert.SerializeObject(domainEvent)
+            };
+        }
+
+        private static EventStream ToEventStream(string streamId, IReadOnlyCollection<Event> events)
+        {
+            var version = events.Max(@event => @event.Stream.Version);
+
+            var domainEvents = events.Select(@event => JsonConvert.DeserializeObject<DomainEvent>(@event.Payload));
+
+            return new EventStream(streamId, version, domainEvents);
         }
     }
 }

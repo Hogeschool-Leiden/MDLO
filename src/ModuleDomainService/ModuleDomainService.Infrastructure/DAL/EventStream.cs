@@ -20,7 +20,7 @@ namespace ModuleDomainService.Infrastructure.DAL
 
         public string Id { get; }
 
-        public int Version { get; }
+        public int Version { get; set; }
 
         public IEnumerable<DomainEvent> Events => _events;
     }

@@ -10,8 +10,8 @@ namespace ModuleDomainService.Domain
     {
         private string _code;
         private string _naam;
-        private string _studieJaar;
-        private int _aantalEC;
+        private string _studiejaar;
+        private int _aantalEc;
         private ModuleLeider _moduleLeider;
         private Studiefase _studiefase;
         private Status _status;
@@ -20,32 +20,42 @@ namespace ModuleDomainService.Domain
         private Competenties _competenties;
         private string _beschrijvingLeerdoelen;
         private string _inhoudelijkeBeschrijving;
-        private string _eindeisen;
+        private IEnumerable<string> _eindeisen;
         private string _contacturenEnWerkvormen;
         private Beoordeling _beoordeling;
         private List<Examinator> _examinatoren;
 
         private Module() => Changes = new List<DomainEvent>();
 
-        public Module(CreeerModuleCommand command)
+        public Module(CreeerModuleCommand creeerModuleCommand) => Creeer(creeerModuleCommand);
+
+        public Module(IEnumerable<DomainEvent> events) : this() => CreeerFromExistingEvents(events);
+
+        public string Id => $"{_code}:{_studiejaar}";
+
+        public int Version { get; private set; }
+
+        public List<DomainEvent> Changes { get; }
+
+        private void Creeer(CreeerModuleCommand creeerModuleCommand)
         {
             Apply(new ModuleGecreeerd
             {
+                ModuleNaam = creeerModuleCommand.ModuleNaam,
+                ModuleCode = creeerModuleCommand.ModuleCode,
+                AantalEc = creeerModuleCommand.AantalEc,
+                Studiejaar = creeerModuleCommand.Studiejaar
             });
         }
 
-        public Module(IEnumerable<DomainEvent> events) : this() =>
+        private void CreeerFromExistingEvents(IEnumerable<DomainEvent> events)
+        {
             events.ToList().ForEach(@event =>
             {
                 Mutate(@event);
                 Version++;
             });
-
-        public string Id => $"{_code}:{_studieJaar}";
-
-        public int Version { get; private set; }
-
-        public List<DomainEvent> Changes { get; }
+        }
 
         private void Apply(DomainEvent @event)
         {
@@ -57,6 +67,10 @@ namespace ModuleDomainService.Domain
 
         private void When(ModuleGecreeerd @event)
         {
+            _naam = @event.ModuleNaam;
+            _code = @event.ModuleCode;
+            _aantalEc = @event.AantalEc;
+            _studiejaar = @event.Studiejaar;
         }
     }
 }
