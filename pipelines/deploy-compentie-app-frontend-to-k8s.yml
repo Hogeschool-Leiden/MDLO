@@ -54,18 +54,20 @@ stages:
         workingDirectory: $(angularProject)
         displayName: Install typescript and angular CLI
 
-      - task: SonarQubePrepare@4
-        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+      - task: SonarCloudPrepare@1
         displayName: Prepare SonarQube
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
-          SonarQube: 'Sonarqube connection'
+          SonarCloud: 'Sonarcloud connection'
+          organization: 'hogeschool-leiden'
           scannerMode: 'MSBuild'
           projectKey: '$(projectKey)'
           projectName: '$(projectName)'
           extraProperties: |
             sonar.exclusions=**\*.js,**\bootstrap*.css,**\DataTables\**\*.css,**\roslyn\*,**\Global.asax.cs,**\Migrations\**,**.spec.**,**e2e**,**/environment.**,**app-routing.module.ts
-            sonar.typescript.tsconfigPath=$(relativeAngularProject)/tsconfig.json
-            sonar.typescript.lcov.reportPaths=$(relativeAngularProject)/coverage/lcov.info
+                        sonar.typescript.tsconfigPath=$(relativeAngularProject)/tsconfig.json
+                        sonar.typescript.lcov.reportPaths=$(relativeAngularProject)/coverage/lcov.info
+
       - task: DotNetCoreCLI@2
         displayName: 'dotnet build'
         inputs:
@@ -83,11 +85,11 @@ stages:
         displayName: 'Run npm install and npm run test-nowatch'
         workingDirectory: $(angularProject)
 
-      - task: SonarQubeAnalyze@4
+      - task: SonarCloudAnalyze@1
         displayName: Analyze with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
-
-      - task: SonarQubePublish@4
+      
+      - task: SonarCloudPublish@1
         displayName: Publish with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
