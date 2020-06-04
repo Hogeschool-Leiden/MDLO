@@ -1,0 +1,157 @@
+# Deploy to Azure Kubernetes Service
+# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  paths:
+    include:
+      - src/BestelService/*
+  branches:
+    include:
+      - master
+      
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'Minor2019Registry'
+  imageRepository: 'macedonieje-bestel-service'
+  containerRegistry: 'minor2019.azurecr.io'
+  tag: '$(Build.BuildId)'
+  imagePullSecret: 'minor20191672b099-auth'
+  solutionPath: 'src/BestelService'
+  projectPath: '$(solutionPath)/BestelService'
+  dockerfilePath: '$(solutionPath)/BestelService/Dockerfile'
+  integrationTestPath: '$(solutionPath)/BestelService.Test.Integration'
+  buildConfiguration: 'Release'
+  testProjects: |
+    $(solutionPath)/BestelService.Test
+    $(solutionPath)/BestelService.Spec
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  buildvmImageName: 'windows-latest'
+  projectKey: Macedonieje:bestel-service
+  projectName: Macedonieje Bestel Service
+
+stages:
+- stage: Build
+  displayName: Build and Analyze
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(buildvmImageName)
+    steps:
+      - task: SonarQubePrepare@4
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+        displayName: Prepare SonarQube
+        inputs:
+          SonarQube: 'SonarQube Service Connection'
+          scannerMode: 'MSBuild'
+          projectKey: $(projectKey)
+          projectName: $(projectName)
+          extraProperties: sonar.exclusions=**\*.js,**\bootstrap*.css,**\DataTables\**\*.css,**\roslyn\*,**\Global.asax.cs,**\Migrations\**
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet build'
+        inputs:
+          projects: '$(projectPath)/*.csproj'
+          arguments: '--configuration $(BuildConfiguration)'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet test'
+        inputs:
+          command: test
+          projects: $(testProjects)
+          arguments: '--configuration $(BuildConfiguration) --collect:"Code Coverage"'
+
+
+      - task: SonarQubeAnalyze@4
+        displayName: Analyze with SonarQube
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+
+      - task: SonarQubePublish@4
+        displayName: Publish with SonarQube
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+        inputs:
+          pollingTimeoutSec: '300'
+
+      - task: sonar-buildbreaker@8
+        displayName: Breaking build with SonarQube
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+        inputs:
+          SonarQube: 'SonarQube Service Connection'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet publish'
+        inputs:
+          command: publish
+          publishWebProjects: false
+          projects: $(projectPath)/*.csproj
+          arguments: '--configuration Release --self-contained -f "netcoreapp3.0" -r "linux-x64" --output "$(projectPath)/obj/Docker/publish"'
+          zipAfterPublish: false
+          modifyOutputPath: false
+
+      - publish: '$(solutionPath)/manifests'
+        artifact: manifests
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          path: $(projectPath)/obj/Docker/publish
+          artifact: BestelService
+
+  - job: Publish
+    displayName: Publish
+    dependsOn: Build
+    condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: BestelService
+          path: $(projectPath)/obj/Docker/publish
+
+      - task: Docker@2
+        inputs:
+          containerRegistry: '$(dockerRegistryServiceConnection)'
+          repository: '$(imageRepository)'
+          command: 'buildAndPush'
+          Dockerfile: '$(projectPath)/Dockerfile'
+          tags: |
+            $(tag)
+            latest
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'Macedonieje.macedonieje'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              namespace: macedonieje
+              action: createSecret
+              secretName: $(imagePullSecret)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              namespace: macedonieje
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/manifests/*.yaml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(imageRepository):$(tag)
