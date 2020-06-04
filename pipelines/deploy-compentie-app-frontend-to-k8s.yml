@@ -17,7 +17,7 @@ variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'Container registry connection'
   imageRepository: 'competentie-app-frontend'
-  containerRegistry: 'mdlo.azurecr.io'
+  containerRegistry: 'hsleidenmdlo.azurecr.io'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'mdlo-auth'
   solutionPath: 'src/CompetentieAppFrontend'
