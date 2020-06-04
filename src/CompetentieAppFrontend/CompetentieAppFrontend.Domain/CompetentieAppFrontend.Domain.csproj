@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <ProjectGuid>1AA9876C-F631-4CA6-85B8-1C7833775CB8</ProjectGuid>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ProjectGuid>097c8298-b72d-4ef4-b4aa-97318f311bf2</ProjectGuid>
   </PropertyGroup>
 
 </Project>
