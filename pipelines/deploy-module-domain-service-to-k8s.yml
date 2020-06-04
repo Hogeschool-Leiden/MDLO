@@ -5,7 +5,7 @@
 trigger:
   paths:
     include:
-      - src/BestelService/*
+      - src/ModuleDomainService/**
   branches:
     include:
       - master
@@ -15,24 +15,25 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'Minor2019Registry'
-  imageRepository: 'macedonieje-bestel-service'
-  containerRegistry: 'minor2019.azurecr.io'
+  dockerRegistryServiceConnection: 'Container registry connection'
+  imageRepository: 'module-domain-service'
+  containerRegistry: 'mdlo.azurecr.io'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'minor20191672b099-auth'
-  solutionPath: 'src/BestelService'
-  projectPath: '$(solutionPath)/BestelService'
-  dockerfilePath: '$(solutionPath)/BestelService/Dockerfile'
-  integrationTestPath: '$(solutionPath)/BestelService.Test.Integration'
+  imagePullSecret: 'mdlo-auth'
+  solutionPath: 'src/ModuleDomainService'
+  projectPath: '$(solutionPath)/ModuleDomainService.Application'
+  dockerfilePath: 'docker/normal/Dockerfile'
+  integrationTestPath: '$(solutionPath)/ModuleDomainService.IntegrationTest'
   buildConfiguration: 'Release'
   testProjects: |
-    $(solutionPath)/BestelService.Test
-    $(solutionPath)/BestelService.Spec
+    $(solutionPath)/ModuleDomainService.Application.Test
+    $(solutionPath)/ModuleDomainService.Domain.Test
+    $(solutionPath)/ModuleDomainService.Infrastructure.Test
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   buildvmImageName: 'windows-latest'
-  projectKey: Macedonieje:bestel-service
-  projectName: Macedonieje Bestel Service
+  projectKey: MDLO:module-domain-service
+  projectName: MDLO Module Domain Service
 
 stages:
 - stage: Build
@@ -47,7 +48,7 @@ stages:
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         displayName: Prepare SonarQube
         inputs:
-          SonarQube: 'SonarQube Service Connection'
+          SonarQube: 'Sonarcloud connection'
           scannerMode: 'MSBuild'
           projectKey: $(projectKey)
           projectName: $(projectName)
@@ -66,7 +67,6 @@ stages:
           projects: $(testProjects)
           arguments: '--configuration $(BuildConfiguration) --collect:"Code Coverage"'
 
-
       - task: SonarQubeAnalyze@4
         displayName: Analyze with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
@@ -81,7 +81,7 @@ stages:
         displayName: Breaking build with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
-          SonarQube: 'SonarQube Service Connection'
+          SonarQube: 'Sonarcloud connection'
 
       - task: DotNetCoreCLI@2
         displayName: 'dotnet publish'
@@ -93,13 +93,13 @@ stages:
           zipAfterPublish: false
           modifyOutputPath: false
 
-      - publish: '$(solutionPath)/manifests'
+      - publish: 'manifests'
         artifact: manifests
 
       - task: PublishPipelineArtifact@1
         inputs:
           path: $(projectPath)/obj/Docker/publish
-          artifact: BestelService
+          artifact: ModuleDomainService
 
   - job: Publish
     displayName: Publish
@@ -110,18 +110,26 @@ stages:
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:
-          artifact: BestelService
+          artifact: ModuleDomainService
           path: $(projectPath)/obj/Docker/publish
 
       - task: Docker@2
         inputs:
           containerRegistry: '$(dockerRegistryServiceConnection)'
           repository: '$(imageRepository)'
-          command: 'buildAndPush'
+          command: 'build'
           Dockerfile: '$(projectPath)/Dockerfile'
           tags: |
             $(tag)
             latest
+          arguments: '--build-arg source=$(projectPath)/obj/Docker/publish --build-arg runnable=CompetentieAppFrontend.Api.dll'
+
+      - task: Docker@2
+        inputs:
+          containerRegistry: '$(dockerRegistryServiceConnection)'
+          repository: '$(containerRegistry)'
+          command: 'push'
+
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
@@ -131,7 +139,7 @@ stages:
     condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
     pool:
       vmImage: $(vmImageName)
-    environment: 'Macedonieje.macedonieje'
+    environment: 'MDLO.mdlo'
     strategy:
       runOnce:
         deploy:
@@ -147,10 +155,10 @@ stages:
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
-              namespace: macedonieje
+              namespace: staging
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/*.yaml
+                manifests/staging/deploy-module-domain-service-to-k8s.yml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
