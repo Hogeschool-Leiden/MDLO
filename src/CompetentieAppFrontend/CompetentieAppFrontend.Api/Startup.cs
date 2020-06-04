@@ -30,24 +30,27 @@ namespace CompetentieAppFrontend.Api
             });
             services.AddTransient<IArchitectuurLaagRepository, ArchitectuurLaagRepository>();
             services.AddTransient<IActiviteitRepository, ActiviteitRepository>();
-            services.AddTransient<IEindCompetentieRepository, EindCompetentieRepository>();
-            services.AddTransient<IEindCompetentieMatrixService, EindCompetentieMatrixService>();
-
+            services.AddTransient<ICompetentieRepository, CompetentieRepository>();
+            services.AddTransient<IEindcompetentieService, EindcompetentieService>();
+            services.AddTransient<IModuleRepository, ModuleRepository>();
+            services.AddTransient<IModuleService, ModuleService>();
+            services.AddTransient<IMatrixService<int>, NiveauMatrixService>();
+            services.AddTransient<IMatrixService<Eindniveau>, EindcompetentieMatrixService>();
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-            
             services.UseRabbitMq();
             services.UseMicroserviceHost();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureDeleted();
+            serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureCreated();
+            serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().EnsureDataSeeded();
+
             if (env.IsDevelopment())
             {
-                using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-                serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureDeleted();
-                serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureCreated();
-                serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().EnsureDataSeeded();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -69,7 +72,7 @@ namespace CompetentieAppFrontend.Api
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "api/{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>

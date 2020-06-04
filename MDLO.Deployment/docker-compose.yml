@@ -6,6 +6,8 @@ services:
        BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
        BROKER_EXCHANGE_NAME: CompetentieApp
        DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
+       BROKER_QUEUE_NAME: FrontendService
+       ENVIRONMENT: DEVELOPMENT
     depends_on:
       - servicebus
       - database
@@ -23,6 +25,8 @@ services:
       BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
       BROKER_EXCHANGE_NAME: CompetentieApp
       DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
+      BROKER_QUEUE_NAME: ModuleDomeinService
+      ENVIRONMENT: DEVELOPMENT
     depends_on:
       - servicebus
       - database

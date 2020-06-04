@@ -1,35 +1,40 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSliderChange} from "@angular/material/slider";
 // @ts-ignore  its only mock-data
-import mockJson from './../../assets/mock-data/mock-matrix-json.json';
+import mockJson from './../../assets/mock-data/eindcompetentie-mock.json';
 import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-competencies',
   templateUrl: './competencies.component.html',
-  styleUrls: ['./competencies.component.css']
+  styleUrls: ['./competencies.component.scss']
 })
 export class CompetenciesComponent implements OnInit {
   year: number = 1;
   period: number = 1;
   specialisations: string[] = ['Propedeuse', 'Software Engineering', 'Interactie Technologie', 'Business Data Management', 'Forensiche ICT'];
   specialisation: string;
+  cohorts: string[] = [];
+  cohort: string;
+  firstYear: number = 2015;
   sliderMin: number = 1;
   sliderMax: number = 3.75;
   showSlider: boolean = false;
+  amountOfPeriodsInYear: number = 4;
+  amountOfPeriodsInPropedeuse: number = 3;
   competenceMatrix;
-  dbUrl:string = 'http://date.jsontest.com/';
-
+  dbPeriod: number;
+  dbUrl: string;
 
   constructor(private http: HttpClient) {
   }
 
-  updateSliderValue(event: MatSliderChange) {
+  updateSliderValue(sliderValue) {
     // removes decimals to create the years.
-    this.year = Math.floor(event.value);
+    this.year = Math.floor(sliderValue);
 
     // uses the decimals to create periods.
-    switch (event.value - this.year) {
+    switch (sliderValue - this.year) {
       case 0:
         this.period = 1;
         break;
@@ -43,7 +48,6 @@ export class CompetenciesComponent implements OnInit {
         this.period = 4;
         break;
     }
-
   }
 
   specialisationChosen() {
@@ -66,13 +70,53 @@ export class CompetenciesComponent implements OnInit {
   }
 
   getMatrixDataFromDB() {
-    // this.http.get(this.dbUrl).toPromise().then(data => {
-    //   this.competenceMatrix = data;
-    // });
-    // get from db but now use mock \/
-    this.competenceMatrix = mockJson;
+    this.getPeriodeInDbFormat();
+
+    this.http.get(this.dbUrl).toPromise().then(data => {
+      this.competenceMatrix = data;
+    });
+
+    // this.competenceMatrix = mockJson;
   }
 
-  ngOnInit(){
+  getPeriodeInDbFormat() {
+    if (this.isSpecialisationPropedeuse()) {
+      this.dbPeriod = this.period;
+    } else {
+      // it removes the 3 propedeuse periods and converts years in 4 periods.
+      this.dbPeriod = (this.year - 1) * this.amountOfPeriodsInYear - this.amountOfPeriodsInPropedeuse + this.period;
+    }
+    this.updateDbUrl();
+  }
+
+  updateDbUrl() {
+    this.dbUrl = '/api/eindcompetentie/' + this.specialisation + '/' + this.dbPeriod + '/' + this.cohort;
+  }
+
+  getCohorts() {
+    let year: number = this.getYearValue();
+
+    while (year > this.firstYear) {
+      let cohort = this.createCohort(year);
+      this.cohorts.push(cohort);
+      year = year - 1;
+    }
+    this.setCurrentCohort();
+  }
+
+  getYearValue() {
+    return new Date().getFullYear() + 1;
+  }
+
+  createCohort(year) {
+    return (year - 1).toString()+ '-' + year.toString();
+  }
+
+  setCurrentCohort() {
+    this.cohort = this.cohorts[1];
+  }
+
+  ngOnInit() {
+    this.getCohorts();
   }
 }

@@ -2,6 +2,8 @@ name: Deploy to aks
 
 on:
   push:
+    branches:
+      - release
     paths:
       - src/CompetentieAppFrontend/**
     branches:
