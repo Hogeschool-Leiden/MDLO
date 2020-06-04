@@ -81,7 +81,7 @@ stages:
         displayName: Breaking build with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
-          SonarQube: 'Sonarcloud connection'
+          SonarQube: 'Sonarqube connection'
 
       - task: DotNetCoreCLI@2
         displayName: 'dotnet publish'
