@@ -5,7 +5,9 @@ on:
     branches:
       - release
     paths:
-      - 'src/CompetentieAppFrontend/**'
+      - src/CompetentieAppFrontend/**
+    branches:
+      - release
     tags:
       - 'v*.*.*'
     
