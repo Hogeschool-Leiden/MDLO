@@ -141,7 +141,7 @@ stages:
           tags: |
             $(tag)
             latest
-          arguments: '--build-arg runnable=CompetentieAppFrontend.Api.dll'
+          arguments: '--buid-arg source=$(Pipeline.Workspace)/src/CompetentieAppFrontend/CompetentieAppFrontend.Api/obj/Docker/publish --build-arg runnable=CompetentieAppFrontend.Api.dll'
       - task: Docker@2
         inputs:
           containerRegistry: '$(dockerRegistryServiceConnection)'
