@@ -157,7 +157,7 @@ stages:
     condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
     pool:
       vmImage: $(vmImageName)
-    environment: 'MDLO.mdlo'
+    environment: 'MDLO.staging'
     strategy:
       runOnce:
         deploy:
