@@ -22,7 +22,7 @@ variables:
   imagePullSecret: 'mdlo-auth'
   solutionPath: 'src/CompetentieAppFrontend'
   projectPath: '$(solutionPath)/CompetentieAppFrontend.Api'
-  dockerfilePath: 'src/docker/angular/Dockerfile'
+  dockerfilePath: 'docker/angular/Dockerfile'
   buildConfiguration: 'Release'
   angularProject: '$(projectPath)/ClientApp'
   relativeAngularProject: ClientApp
@@ -137,7 +137,7 @@ stages:
           containerRegistry: '$(dockerRegistryServiceConnection)'
           repository: '$(imageRepository)'
           command: 'build'
-          Dockerfile: 'src/docker/angular/Dockerfile'
+          Dockerfile: '$(dockerfilePath)'
           tags: |
             $(tag)
             latest
