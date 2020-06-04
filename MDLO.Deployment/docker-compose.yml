@@ -1,17 +1,54 @@
 version: '3'
-
+# Used only for local testing.
 services:
-  demo-service:
+  frontend-service:
+    environment: 
+       BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
+       BROKER_EXCHANGE_NAME: CompetentieApp
+       DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
+       BROKER_QUEUE_NAME: FrontendService
+       ENVIRONMENT: DEVELOPMENT
+    depends_on:
+      - servicebus
+      - database
     build:
-      context: "./../Demo"
-      dockerfile: "./Demo.Deployment/Dockerfile"
+      dockerfile: "../../docker/angular/Dockerfile"
+      args: 
+        sln: CompetentieAppFrontend.sln
+        source: .
+        runnable: CompetentieAppFrontend.Api.dll
+      context: "../src/CompetentieAppFrontend/"
     ports:
       - 80:80
-  demo-frontend-service:
+  module-domein-service:
+    environment: 
+      BROKER_CONNECTION_STRING: amqp://guest:guest@servicebus
+      BROKER_EXCHANGE_NAME: CompetentieApp
+      DB_CONNECTION_STRING: Server=database;Port=5432;Database=module-domein-db;User Id=postgres;Password=verygoodrootpassword;
+      BROKER_QUEUE_NAME: ModuleDomeinService
+      ENVIRONMENT: DEVELOPMENT
+    depends_on:
+      - servicebus
+      - database
     build:
-      context: "./../DemoFrontend"
-      dockerfile: "./DemoFrontend.Deployment/Dockerfile"
-      args:
-        source: ../DemoFrontend/DemoFrontend.Api
+      dockerfile: "../../docker/normal/Dockerfile"
+      args: 
+        sln: ModuleDomeinService.sln
+        source: .
+        runnable: ModuleDomeinService.Api.dll
+      context: "../src/ModuleDomeinService/"
     ports:
       - 8080:80
+  servicebus:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+  database:
+    image: postgres:12.3-alpine
+    environment: 
+      POSTGRES_PASSWORD: verygoodrootpassword
+    volumes:
+      - /c/data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

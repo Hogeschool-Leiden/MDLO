@@ -1,9 +1,14 @@
 <header>
   <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-  >
+    class="navbar navbar-expand-sm navbar-toggleable-sm
+    navbar-dark bg-primary border-bottom box-shadow mb-3">
+
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">CompetentieAppFrontend.Api</a>
+
+      <!--      title-->
+      <a class="navbar-brand custom-brand" [routerLink]="['/']">Opleiding Informatica</a>
+
+      <!--      mobile button-->
       <button
         class="navbar-toggler"
         type="button"
@@ -11,31 +16,31 @@
         data-target=".navbar-collapse"
         aria-label="Toggle navigation"
         [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
+        (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <!--      buttons/links-->
       <div
         class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
-        [ngClass]="{ show: isExpanded }"
-      >
+        [ngClass]="{ show: isExpanded }">
         <ul class="navbar-nav flex-grow">
           <li
             class="nav-item"
             [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+            [routerLinkActiveOptions]="{ exact: true }">
+            <button mat-button class="link-button" [routerLink]="['/competencies']">Eindcompetenties</button>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            [routerLinkActiveOptions]="{ exact: true }">
+            <button mat-button class="link-button" [routerLink]="['/modules']">Modules</button>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            [routerLinkActiveOptions]="{ exact: true }">
+            <button mat-button class="link-button" [routerLink]="['/admin']">Admin pagina</button>
           </li>
         </ul>
       </div>

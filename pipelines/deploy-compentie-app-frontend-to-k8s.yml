@@ -1,0 +1,183 @@
+# Deploy to Azure Kubernetes Service
+# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  paths:
+    include:
+      - src/CompetentieAppFrontend/**
+  branches:
+    include:
+      - master
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'Container registry connection'
+  imageRepository: 'competentie-app-frontend'
+  containerRegistry: 'hsleidenmdlo.azurecr.io'
+  tag: '$(Build.BuildId)'
+  imagePullSecret: 'mdlo-auth'
+  solutionPath: 'src/CompetentieAppFrontend'
+  projectPath: '$(solutionPath)/CompetentieAppFrontend.Api'
+  dockerfilePath: 'src/docker/angular/Dockerfile'
+  buildConfiguration: 'Release'
+  angularProject: '$(projectPath)/ClientApp'
+  relativeAngularProject: ClientApp
+  testProjects: |
+    $(solutionPath)/CompetentieAppFrontend.Infrastructure.Test
+    $(solutionPath)/CompetentieAppFrontend/CompetentieAppFrontend.Services.Test
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  buildvmImageName: 'windows-latest'
+  projectKey: MDLO:competentie-app
+  projectName: MDLO Competentie App
+
+  # Website URL
+  APP_URL: http://competenties.staging.mdlo.nl
+
+  # Technical variable
+  NODE_PATH: 'C:\npm\prefix\node_modules'
+
+stages:
+- stage: Build
+  displayName: Build and Analyze
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(buildvmImageName)
+    steps:
+      - script: npm install -g typescript @angular/cli
+        workingDirectory: $(angularProject)
+        displayName: Install typescript and angular CLI
+
+      - task: SonarQubePrepare@4
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+        displayName: Prepare SonarQube
+        inputs:
+          SonarQube: 'Sonarqube connection'
+          scannerMode: 'MSBuild'
+          projectKey: '$(projectKey)'
+          projectName: '$(projectName)'
+          extraProperties: |
+            sonar.exclusions=**\*.js,**\bootstrap*.css,**\DataTables\**\*.css,**\roslyn\*,**\Global.asax.cs,**\Migrations\**,**.spec.**,**e2e**,**/environment.**,**app-routing.module.ts
+            sonar.typescript.tsconfigPath=$(relativeAngularProject)/tsconfig.json
+            sonar.typescript.lcov.reportPaths=$(relativeAngularProject)/coverage/lcov.info
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet build'
+        inputs:
+          projects: '$(projectPath)/*.csproj'
+          arguments: '--configuration $(BuildConfiguration)'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet test'
+        inputs:
+          command: test
+          projects: $(testProjects)
+          arguments: '--configuration $(BuildConfiguration) --collect:"Code Coverage"'
+
+      - script: npm install && npm run test-nowatch
+        displayName: 'Run npm install and npm run test-nowatch'
+        workingDirectory: $(angularProject)
+
+      - task: SonarQubeAnalyze@4
+        displayName: Analyze with SonarQube
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+
+      - task: SonarQubePublish@4
+        displayName: Publish with SonarQube
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+        inputs:
+          pollingTimeoutSec: '300'
+
+      - task: sonar-buildbreaker@8
+        displayName: Breaking build with SonarQube
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+        inputs:
+          SonarQube: 'Sonarqube connection'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet publish'
+        inputs:
+          command: publish
+          publishWebProjects: false
+          projects: $(projectPath)/*.csproj
+          arguments: '--configuration Release --self-contained -f "netcoreapp3.1" -r "linux-x64" --output "$(projectPath)/obj/Docker/publish"'
+          zipAfterPublish: false
+          modifyOutputPath: false
+
+      - publish: 'manifests'
+        artifact: manifests
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          path: $(projectPath)/obj/Docker/publish
+          artifact: CompetentieAppFrontend
+
+  - job: Publish
+    displayName: Publish
+    dependsOn: Build
+    condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: CompetentieAppFrontend
+          path: $(projectPath)/obj/Docker/publish
+
+      - task: Docker@2
+        inputs:
+          containerRegistry: '$(dockerRegistryServiceConnection)'
+          repository: '$(imageRepository)'
+          command: 'build'
+          Dockerfile: 'src/docker/angular/Dockerfile'
+          tags: |
+            $(tag)
+            latest
+          arguments: '--build-arg source=$(projectPath)/obj/Docker/publish --build-arg runnable=CompetentieAppFrontend.Api.dll'
+      - task: Docker@2
+        inputs:
+          containerRegistry: '$(dockerRegistryServiceConnection)'
+          repository: '$(imageRepository)'
+          command: 'push'
+          tags: |
+            $(tag)
+            latest
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'MDLO.staging'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: 'createSecret'
+              kubernetesServiceConnection: 'MDLO-mdlo-staging-1591281470325'
+              namespace: 'staging'
+              secretType: 'dockerRegistry'
+              secretName: '$(imagePullSecret)'
+              dockerRegistryEndpoint: '$(dockerRegistryServiceConnection)'
+
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'MDLO-mdlo-staging-1591281470325'
+              namespace: 'staging'
+              manifests: 'manifests/staging/competentie-app-frontend.yml'
+              containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+              imagePullSecrets: '$(imagePullSecret)'

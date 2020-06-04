@@ -1,7 +1,11 @@
+using System;
+using CompetentieAppFrontend.Infrastructure.DAL;
+using CompetentieAppFrontend.Infrastructure.Repositories;
+using CompetentieAppFrontend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,20 +21,34 @@ namespace CompetentieAppFrontend.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            services.AddDbContext<CompetentieAppFrontendContext>(builder =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
+                                  throw new ArgumentNullException());
             });
+            services.AddTransient<IArchitectuurLaagRepository, ArchitectuurLaagRepository>();
+            services.AddTransient<IActiviteitRepository, ActiviteitRepository>();
+            services.AddTransient<ICompetentieRepository, CompetentieRepository>();
+            services.AddTransient<IEindcompetentieService, EindcompetentieService>();
+            services.AddTransient<IModuleRepository, ModuleRepository>();
+            services.AddTransient<IModuleService, ModuleService>();
+            services.AddTransient<IMatrixService<int>, NiveauMatrixService>();
+            services.AddTransient<IMatrixService<Eindniveau>, EindcompetentieMatrixService>();
+            services.AddControllersWithViews();
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+            services.UseRabbitMq();
+            services.UseMicroserviceHost();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureDeleted();
+            serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().Database.EnsureCreated();
+            serviceScope.ServiceProvider.GetService<CompetentieAppFrontendContext>().EnsureDataSeeded();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -38,7 +56,6 @@ namespace CompetentieAppFrontend.Api
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -55,14 +72,11 @@ namespace CompetentieAppFrontend.Api
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "api/{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())

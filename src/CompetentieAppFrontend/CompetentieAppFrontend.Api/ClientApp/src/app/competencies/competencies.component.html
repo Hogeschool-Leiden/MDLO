@@ -1,0 +1,35 @@
+<div class="dropdown-container text-align">
+  <mat-form-field style="width: 225px; margin-right: 5px">
+    <mat-label>Cohort</mat-label>
+    <mat-select [(value)]="cohort">
+      <mat-option *ngFor="let coh of cohorts" [value]="coh"
+                  (click)="updateSliderValue(this.sliderMin);getMatrixDataFromDB();"
+      >Cohort: {{coh}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field style="width: 225px">
+    <mat-label>Specialisatie</mat-label>
+    <mat-select [(value)]="specialisation">
+      <mat-option *ngFor="let spec of specialisations" [value]="spec"
+                  (click)=" specialisationChosen(); updateSliderValue(this.sliderMin);getMatrixDataFromDB();"
+      >{{spec}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<app-competence-matrix class="matrix-container"
+                       [specialisation]="specialisation"
+                       [competenceMatrix]="competenceMatrix"></app-competence-matrix>
+
+<div class="text-align" *ngIf="showSlider">
+  <mat-slider (input)="updateSliderValue($event.value)"
+              (change)="updateSliderValue($event.value); getMatrixDataFromDB()"
+              min="{{sliderMin}}" max="{{sliderMax}}"
+              [value]="sliderMin"
+              step="0.25"
+              style="width: 300px"
+              id="periodSlider"
+  ></mat-slider>
+  <p>jaar: {{year}}, periode: {{period}}</p>
+</div>
+
