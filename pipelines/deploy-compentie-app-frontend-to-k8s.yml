@@ -22,7 +22,7 @@ variables:
   imagePullSecret: 'mdlo-auth'
   solutionPath: 'src/CompetentieAppFrontend'
   projectPath: '$(solutionPath)/CompetentieAppFrontend.Api'
-  dockerfilePath: 'docker/angular/Dockerfile'
+  dockerfilePath: '$(projectPath)/Dockerfile'
   buildConfiguration: 'Release'
   angularProject: '$(projectPath)/ClientApp'
   relativeAngularProject: ClientApp
@@ -141,7 +141,7 @@ stages:
           tags: |
             $(tag)
             latest
-          arguments: '--build-arg source=$(projectPath)/obj/Docker/publish --build-arg runnable=CompetentieAppFrontend.Api.dll'
+          arguments: '--build-arg runnable=CompetentieAppFrontend.Api.dll'
       - task: Docker@2
         inputs:
           containerRegistry: '$(dockerRegistryServiceConnection)'
