@@ -102,7 +102,6 @@ export class ModulesComponent implements OnInit {
     this.showEndRequirementsUnderMatrix = false;
   }
 
-
   setDataSource(){
     this.dataSource = new MatTableDataSource(this.MODULE_DATA);
     this.dataSource.sort = this.sort;
