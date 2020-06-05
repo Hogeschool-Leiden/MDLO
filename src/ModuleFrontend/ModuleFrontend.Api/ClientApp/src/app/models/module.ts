@@ -1,6 +1,7 @@
 import { Moduleleider } from "./module-leider";
 import { Studiefase } from "./studiefase";
 import { Specialisatie } from "./specialisatie";
+import { Matrix } from "./matrix";
 
 export interface Module {
     id: number
@@ -12,6 +13,7 @@ export interface Module {
     studiefase: Studiefase
     verplichtVoor: Specialisatie[]
     aanbevolenVoor: Specialisatie[]
+    competenties: Matrix
     beschrijvingLeerdoelen: string
     inhoudelijkeBeschrijving: string
     eindeisen: string

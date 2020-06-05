@@ -131,9 +131,118 @@
             IAT:
         </mat-label>
         <mat-checkbox formControlName="IAT"></mat-checkbox>
-
-
     </div>
+
+    <h3>Competenties</h3>
+    <div formGroupName="competenties" >
+        <table id="competentiematrix">
+            <tr>
+                <th class="columnWidth"></th>
+                <th>gebruiksinteractie</th>
+                <th>organisatieprocessen</th>
+                <th>infrastructuur</th>
+                <th>software</th>
+                <th>hardware interfacing</th>
+            </tr>
+
+            <tr>
+                <td>analyseren</td>
+
+                <td>
+                        <input matInput type="number" formControlName="GIAN">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="BPAN">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="ISAN">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="SWAN">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="HIAN">
+                </td>
+            </tr>
+
+            <tr>
+                <td>adviseren</td>
+                <td>
+                        <input matInput type="number" formControlName="GIAD">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="BPAD">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="ISAD">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="SWAD">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="HIAD">
+                </td>
+            </tr>
+
+            <tr>
+                <td>ontwerpen</td>
+                <td>
+                        <input matInput type="number" formControlName="GION">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="BPON">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="ISON">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="SWON">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="HION">
+                </td>
+            </tr>
+
+            <tr>
+                <td>realiseren</td>
+                <td>
+                        <input matInput type="number" formControlName="GIRE">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="BPRE">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="ISRE">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="SWRE">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="HIRE">
+                </td>
+            </tr>
+
+            <tr>
+                <td>beheren</td>
+                <td>
+                        <input matInput type="number" formControlName="GIBE">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="BPBE">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="ISBE">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="SWBE">
+                </td>
+                <td>
+                        <input matInput type="number" formControlName="HIBE">
+                </td>
+            </tr>
+        </table>
+    </div>
+
     <mat-form-field>
         <mat-label>
             Beschrijving leerdoelen:
@@ -209,5 +318,8 @@
         <input matInput type="textarea" formControlName="examinatoren">
     </mat-form-field>
 
-    <button mat-button type="submit" [disabled]="!moduleForm.valid">Creeer module</button>
+    <button mat-button type="submit" [disabled]="moduleForm.valid">Creeer module</button>
 </form>
+
+<pre>{{jsonValue | json}} </pre>
+<pre>{{jsonValueAfterPipe | json}} </pre>
