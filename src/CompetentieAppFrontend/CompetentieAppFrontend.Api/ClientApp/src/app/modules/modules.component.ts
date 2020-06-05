@@ -19,6 +19,7 @@ export class ModulesComponent implements OnInit {
   fullColumnSize: number = 5;
   showEndRequirementsUnderMatrix: boolean = true;
   moduleData;
+  MODULE_DATA: ModuleModel[] = [];
   dbUrl: string = '/modules';
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -34,17 +35,31 @@ export class ModulesComponent implements OnInit {
   }
 
   clearModuleData() {
-    MODULE_DATA.length = 0;
+    this.MODULE_DATA.length = 0;
   }
 
   getDataFromDB() {
-    this.http.get(this.dbUrl).toPromise().then(data =>{
-      this.moduleData = data;
-      this.injectDataInTable();
-    });
+    // this.http.get(this.dbUrl).toPromise().then(data =>{
+    //   this.moduleData = data;
+    //   this.injectDataInTable();
+    // });
 
-    // this.moduleData = moduleMock;  // this is mockdata
-    // this.injectDataInTable();
+    this.moduleData = moduleMock;  // this is mockdata
+    this.injectDataInTable();
+  }
+
+  injectDataInTable() {
+    for (let i = 0; i < this.moduleData.length; i++) {
+      this.MODULE_DATA.push(
+        {
+          specialisation: this.moduleData[i].specialisaties,
+          module: this.moduleData[i].moduleCode,
+          period: this.moduleData[i].perioden,
+          matrix: this.moduleData[i].matrix,
+          endRequirements: this.moduleData[i].eindeisen
+        }
+      );
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -89,7 +104,7 @@ export class ModulesComponent implements OnInit {
 
 
   setDataSource(){
-    this.dataSource = new MatTableDataSource(MODULE_DATA);
+    this.dataSource = new MatTableDataSource(this.MODULE_DATA);
     this.dataSource.sort = this.sort;
   }
 
@@ -105,20 +120,6 @@ export class ModulesComponent implements OnInit {
         data.period.toString().includes(filter);
     }
   }
-
-  injectDataInTable() {
-    for (let i = 0; i < this.moduleData.length; i++) {
-      MODULE_DATA.push(
-        {
-          specialisation: this.moduleData[i].specialisaties,
-          module: this.moduleData[i].moduleCode,
-          period: this.moduleData[i].perioden,
-          matrix: this.moduleData[i].matrix,
-          endRequirements: this.moduleData[i].eindeisen
-        }
-      );
-    }
-  }
 }
 
 export interface ModuleModel {
@@ -128,5 +129,3 @@ export interface ModuleModel {
   matrix: any;//TODO: use matrix
   endRequirements: string[];
 }
-
-let MODULE_DATA: ModuleModel[] = [];
