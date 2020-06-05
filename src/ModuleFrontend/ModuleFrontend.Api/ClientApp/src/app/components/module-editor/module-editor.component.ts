@@ -5,6 +5,7 @@ import { Module } from '../../models/module';
 import { ModuleSanitizePipe } from 'src/app/pipes/module-sanitize.pipe';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { config } from 'process';
+import { Cohort } from 'src/app/models/cohort';
 
 @Component({
   selector: 'app-module-editor',
@@ -15,12 +16,14 @@ export class ModuleEditorComponent {
   constructor(private snackBar: MatSnackBar, private httpService: HttpService, private sanitizePipe: ModuleSanitizePipe) {
 
   }
+  availableCohorts: Cohort[] =[{ naam: "2017/2018", beginjaar: "2017/2018" }, { naam: "2018/2019", beginjaar: "2018/2019" }, { naam: "2019/2020", beginjaar: "2019/2020" },]
   jsonValue: null;
   jsonValueAfterPipe: null;
   moduleForm = new FormGroup({
     id: new FormControl({ value: '', disabled: true }),
     moduleNaam: new FormControl('', Validators.required),
     moduleCode: new FormControl('', Validators.required),
+    cohort: new FormControl(''),
     aantalEc: new FormControl('', Validators.required),
     studiejaar: new FormControl('', Validators.required),
     moduleleider: new FormGroup({

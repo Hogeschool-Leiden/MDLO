@@ -19,6 +19,16 @@
         <input matInput type="string" formControlName="moduleCode">
         <mat-error>Modulecode is verplicht</mat-error>
     </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Cohort</mat-label>
+        <mat-select formControlName="cohort">
+            <mat-option *ngFor="let item of availableCohorts" [value]="item.beginjaar" >
+                {{ item.naam }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
     <mat-form-field>
         <mat-label>
             Aantal EC:
@@ -134,7 +144,7 @@
     </div>
 
     <h3>Competenties</h3>
-    <div formGroupName="competenties" >
+    <div formGroupName="competenties">
         <table id="competentiematrix">
             <tr>
                 <th class="columnWidth"></th>
@@ -149,95 +159,95 @@
                 <td>analyseren</td>
 
                 <td>
-                        <input matInput type="number" formControlName="GIAN">
+                    <input matInput type="number" formControlName="GIAN">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="BPAN">
+                    <input matInput type="number" formControlName="BPAN">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="ISAN">
+                    <input matInput type="number" formControlName="ISAN">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="SWAN">
+                    <input matInput type="number" formControlName="SWAN">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="HIAN">
+                    <input matInput type="number" formControlName="HIAN">
                 </td>
             </tr>
 
             <tr>
                 <td>adviseren</td>
                 <td>
-                        <input matInput type="number" formControlName="GIAD">
+                    <input matInput type="number" formControlName="GIAD">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="BPAD">
+                    <input matInput type="number" formControlName="BPAD">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="ISAD">
+                    <input matInput type="number" formControlName="ISAD">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="SWAD">
+                    <input matInput type="number" formControlName="SWAD">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="HIAD">
+                    <input matInput type="number" formControlName="HIAD">
                 </td>
             </tr>
 
             <tr>
                 <td>ontwerpen</td>
                 <td>
-                        <input matInput type="number" formControlName="GION">
+                    <input matInput type="number" formControlName="GION">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="BPON">
+                    <input matInput type="number" formControlName="BPON">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="ISON">
+                    <input matInput type="number" formControlName="ISON">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="SWON">
+                    <input matInput type="number" formControlName="SWON">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="HION">
+                    <input matInput type="number" formControlName="HION">
                 </td>
             </tr>
 
             <tr>
                 <td>realiseren</td>
                 <td>
-                        <input matInput type="number" formControlName="GIRE">
+                    <input matInput type="number" formControlName="GIRE">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="BPRE">
+                    <input matInput type="number" formControlName="BPRE">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="ISRE">
+                    <input matInput type="number" formControlName="ISRE">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="SWRE">
+                    <input matInput type="number" formControlName="SWRE">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="HIRE">
+                    <input matInput type="number" formControlName="HIRE">
                 </td>
             </tr>
 
             <tr>
                 <td>beheren</td>
                 <td>
-                        <input matInput type="number" formControlName="GIBE">
+                    <input matInput type="number" formControlName="GIBE">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="BPBE">
+                    <input matInput type="number" formControlName="BPBE">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="ISBE">
+                    <input matInput type="number" formControlName="ISBE">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="SWBE">
+                    <input matInput type="number" formControlName="SWBE">
                 </td>
                 <td>
-                        <input matInput type="number" formControlName="HIBE">
+                    <input matInput type="number" formControlName="HIBE">
                 </td>
             </tr>
         </table>

@@ -12,6 +12,7 @@ describe('ModuleSanitizePipe', () => {
     let jsonValue = {
       moduleNaam: "correcteNaam",
       moduleCode: "correcteCode",
+      cohort: "2019/2020",
       aantalEc: "3",
       studiejaar: "correctJaar",
       moduleleider: {
@@ -100,5 +101,8 @@ describe('ModuleSanitizePipe', () => {
     expect(result.examinatoren).toBe("Studenten");
     expect(result.competenties.cells[0][1]).toBe(3);
     expect(result.competenties.cells[3][3]).toBe(1);
+    expect(result.cohort.beginjaar).toBe("2019/2020");
+    expect(result.cohort.naam).toBe("2019/2020");
+
   });
 });

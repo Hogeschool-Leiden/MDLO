@@ -16,6 +16,7 @@ export class ModuleSanitizePipe implements PipeTransform {
       id: undefined,
       moduleNaam: unsanitizedValue.moduleNaam,
       moduleCode: unsanitizedValue.moduleCode,
+      cohort: { naam: unsanitizedValue.cohort, beginjaar: unsanitizedValue.cohort },
       aantalEc: parseInt(unsanitizedValue.aantalEc),
       studiejaar: unsanitizedValue.studiejaar,
       moduleleider: { id: undefined, naam: unsanitizedValue.moduleleider.naam, email: unsanitizedValue.moduleleider.email, telefoonnummer: unsanitizedValue.moduleleider.telefoonnummer },
@@ -72,35 +73,35 @@ export class ModuleSanitizePipe implements PipeTransform {
       mtx.cells[index] = new Array(5);
     }
 
-    mtx.cells[0][0]=unsanitizedMatrixJson.GIAN;
-    mtx.cells[0][1]=unsanitizedMatrixJson.GIAD;
-    mtx.cells[0][2]=unsanitizedMatrixJson.GION;
-    mtx.cells[0][3]=unsanitizedMatrixJson.GIRE;
-    mtx.cells[0][4]=unsanitizedMatrixJson.GIBE;
+    mtx.cells[0][0] = unsanitizedMatrixJson.GIAN;
+    mtx.cells[0][1] = unsanitizedMatrixJson.GIAD;
+    mtx.cells[0][2] = unsanitizedMatrixJson.GION;
+    mtx.cells[0][3] = unsanitizedMatrixJson.GIRE;
+    mtx.cells[0][4] = unsanitizedMatrixJson.GIBE;
 
-    mtx.cells[1][0]=unsanitizedMatrixJson.BPAN;
-    mtx.cells[1][1]=unsanitizedMatrixJson.BPAD;
-    mtx.cells[1][2]=unsanitizedMatrixJson.BPON;
-    mtx.cells[1][3]=unsanitizedMatrixJson.BPRE;
-    mtx.cells[1][4]=unsanitizedMatrixJson.BPBE;
+    mtx.cells[1][0] = unsanitizedMatrixJson.BPAN;
+    mtx.cells[1][1] = unsanitizedMatrixJson.BPAD;
+    mtx.cells[1][2] = unsanitizedMatrixJson.BPON;
+    mtx.cells[1][3] = unsanitizedMatrixJson.BPRE;
+    mtx.cells[1][4] = unsanitizedMatrixJson.BPBE;
 
-    mtx.cells[2][0]=unsanitizedMatrixJson.ISAN;
-    mtx.cells[2][1]=unsanitizedMatrixJson.ISAD;
-    mtx.cells[2][2]=unsanitizedMatrixJson.ISON;
-    mtx.cells[2][3]=unsanitizedMatrixJson.ISRE;
-    mtx.cells[2][4]=unsanitizedMatrixJson.ISBE;
+    mtx.cells[2][0] = unsanitizedMatrixJson.ISAN;
+    mtx.cells[2][1] = unsanitizedMatrixJson.ISAD;
+    mtx.cells[2][2] = unsanitizedMatrixJson.ISON;
+    mtx.cells[2][3] = unsanitizedMatrixJson.ISRE;
+    mtx.cells[2][4] = unsanitizedMatrixJson.ISBE;
 
-    mtx.cells[3][0]=unsanitizedMatrixJson.SWAN;
-    mtx.cells[3][1]=unsanitizedMatrixJson.SWAD;
-    mtx.cells[3][2]=unsanitizedMatrixJson.SWON;
-    mtx.cells[3][3]=unsanitizedMatrixJson.SWRE;
-    mtx.cells[3][4]=unsanitizedMatrixJson.SWBE;
+    mtx.cells[3][0] = unsanitizedMatrixJson.SWAN;
+    mtx.cells[3][1] = unsanitizedMatrixJson.SWAD;
+    mtx.cells[3][2] = unsanitizedMatrixJson.SWON;
+    mtx.cells[3][3] = unsanitizedMatrixJson.SWRE;
+    mtx.cells[3][4] = unsanitizedMatrixJson.SWBE;
 
-    mtx.cells[4][0]=unsanitizedMatrixJson.HIAN;
-    mtx.cells[4][1]=unsanitizedMatrixJson.HIAD;
-    mtx.cells[4][2]=unsanitizedMatrixJson.HION;
-    mtx.cells[4][3]=unsanitizedMatrixJson.HIRE;
-    mtx.cells[4][4]=unsanitizedMatrixJson.HIBE;
+    mtx.cells[4][0] = unsanitizedMatrixJson.HIAN;
+    mtx.cells[4][1] = unsanitizedMatrixJson.HIAD;
+    mtx.cells[4][2] = unsanitizedMatrixJson.HION;
+    mtx.cells[4][3] = unsanitizedMatrixJson.HIRE;
+    mtx.cells[4][4] = unsanitizedMatrixJson.HIBE;
 
 
     return mtx;
