@@ -65,4 +65,3 @@ describe('ModuleComponent', () => {
     expect(component.MODULE_DATA.length).toEqual(3);
   });
 });
-

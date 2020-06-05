@@ -65,7 +65,7 @@ namespace CompetentieAppFrontend.Api.Test
             var result = controller.GetType().GetCustomAttribute<RouteAttribute>()?.Template;
 
             // Assert
-            Assert.AreEqual("eindcompetentie", result);
+            Assert.AreEqual("api/eindcompetentie", result);
         }
 
         [TestMethod]

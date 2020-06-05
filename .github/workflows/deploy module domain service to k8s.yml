@@ -1,0 +1,123 @@
+name: Deploy to aks
+
+on:
+  push:
+    paths:
+        - src/ModuleDomainService/**
+        tags:
+          - 'v*.*.*'
+        branches:
+          - master
+    
+jobs:
+  code-quality:
+    runs-on: [linux, self-hosted]
+    name: SonarQube quality check
+    env: 
+      SONAR_TOKEN: ${{ secrets.SONAR_DEMO_API_TOKEN }}
+      SONAR_HOST: ${{ secrets.SONAR_HOST }}
+      PROJECT: ModuleDomainService
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '9.0.4'
+          java-package: jdk
+          architecture: x64
+      - uses: actions/checkout@v2
+      - name: Setup dotnet install
+        uses: actions/setup-dotnet@v1
+        with: 
+          dotnet-version: '3.1.100'
+      - name: Install SonarQube scanner
+        run: |
+          echo "::set-env name=PATH::${PATH}:${HOME}/.dotnet/tools"
+      - name: Attach SonarQube to project
+        run: dotnet sonarscanner begin /k:"$PROJECT" /d:sonar.host.url="http://145.97.16.187:9000/" /d:sonar.login="$SONAR_TOKEN"
+      - name: Build solution
+        run: dotnet build $PROJECT/$PROJECT.sln
+      - name: Sending analyzed data to SonarQube
+        run: dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+  
+  mutation-testing:
+    name: Stryker mutation testing
+    runs-on: [ubuntu-latest]
+    env:
+      CONFIG_FILE: config/module-domain-service/stryker-config.json
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: Install Stryker mutator
+      run: dotnet tool install -g dotnet-stryker
+    - name: Run Stryker on project
+      run: dotnet stryker -cp $CONFIG_FILE 
+  
+  rollout:
+    name: Deploy to k8s
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: value
+      REGISTRY_SECRET_NAME: registry_secret
+      STAGING_NAMESPACE: staging
+      PRODUCTION_NAMESPACE: production
+      MANIFESTS_STAGING_PATH: |
+          manifests/module-domain-service-staging.yml
+      MANIFESTS_PRODUCTION_PATH: |
+          manifests/module-domain-service-production.yml
+      INTEGRATION_TEST_PROJECT: src/Sample/Sample.Test.csproj
+      DOCKERFILE: docker/Dockerfile
+      SOURCE: src/ModuleDomainService
+      SOLUTION: ModuleDomainService.sln
+    steps:
+      - uses: actions/checkout@master
+      - name: Set image tag      
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF:10}
+      - uses: azure/k8s-actions/docker-login@master
+        with:
+          login-server: contoso.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build -f $DOCKERFILE --build-arg source=$SOURCE --build-arg solution=$SOLUTION -t ${{ secrets.REGISTRY_URL }}/$IMAGE_NAME:${{ steps.vars.outputs.tag }} .
+          docker push ${{ secrets.REGISTRY_URL }}/$IMAGE_NAME:${{ steps.vars.outputs.tag }}
+      - uses: azure/k8s-actions/aks-set-context@master
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+      - uses: azure/k8s-actions/k8s-create-secret@master
+        with:
+          namespace: $STAGING_NAMESPACE
+          container-registry-url: ${{ secrets.REGISTRY_URL }}
+          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          secret-name: $REGISTRY_SECRET_NAME
+      - uses: azure/k8s-actions/k8s-deploy@master
+        with:
+          namespace: $STAGING_NAMESPACE
+          manifests: $MANIFESTS_STAGING_PATH
+          images: |
+            ${{ secrets.REGISTRY_URL }}/$IMAGE_NAME:${{ steps.vars.outputs.tag }}
+          imagepullsecrets: |
+            $REGISTRY_SECRET_NAME
+      - uses: actions/setup-dotnet@v1
+        with:
+            dotnet-version: '3.1.100'
+      - name: Run integration tests
+        run: dotnet test $INTEGRATION_TEST_PROJECT
+      - uses: azure/k8s-actions/k8s-create-secret@master
+        with:
+          namespace: $PRODUCTION_NAMESPACE
+          container-registry-url: ${{ secrets.REGISTRY_URL }}
+          container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          secret-name: $REGISTRY_SECRET_NAME
+      - uses: azure/k8s-actions/k8s-deploy@master
+        with:
+          namespace: $PRODUCTION_NAMESPACE
+          manifests: $MANIFESTS_PRODUCTION_PATH
+          images: |
+            ${{ secrets.REGISTRY_URL }}/$IMAGE_NAME:${{ steps.vars.outputs.tag }}
+          imagepullsecrets: |
+            $REGISTRY_SECRET_NAME

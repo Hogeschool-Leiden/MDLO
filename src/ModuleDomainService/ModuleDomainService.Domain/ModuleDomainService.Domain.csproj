@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ProjectGuid>76b22c27-5753-48d9-ab70-3d7eff77d91d</ProjectGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Miffy.Microservices" Version="2.4.0" />
+  </ItemGroup>
+
+</Project>

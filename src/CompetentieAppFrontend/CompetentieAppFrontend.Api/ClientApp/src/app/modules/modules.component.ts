@@ -20,7 +20,7 @@ export class ModulesComponent implements OnInit {
   showEndRequirementsUnderMatrix: boolean = true;
   moduleData;
   MODULE_DATA: ModuleModel[] = [];
-  dbUrl: string = '/modules';
+  dbUrl: string = '/api/modules';
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
