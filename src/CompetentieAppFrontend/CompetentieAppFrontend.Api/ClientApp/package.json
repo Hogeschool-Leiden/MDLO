@@ -1,12 +1,13 @@
 {
   "name": "competentieappfrontend.api",
-  "version": "0.0.0",
+  "version": "0.0.7",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "build:ssr": "ng run CompetentieAppFrontend.Api:server:dev",
     "test": "ng test",
+    "test-nowatch": "ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

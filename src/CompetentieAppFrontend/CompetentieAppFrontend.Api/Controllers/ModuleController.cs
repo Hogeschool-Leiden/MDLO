@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace CompetentieAppFrontend.Api.Controllers
 {
     [ApiController]
-    [Route("modules")]
+    [Route("api/modules")]
     public class ModuleController
     {
         private readonly IModuleService _moduleService;

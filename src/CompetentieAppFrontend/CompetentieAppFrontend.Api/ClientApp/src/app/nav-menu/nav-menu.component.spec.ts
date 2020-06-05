@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavMenuComponent} from "./nav-menu.component";
 import {DebugElement} from "@angular/core";
 import {By} from "@angular/platform-browser";
+import {ModulesComponent} from "../modules/modules.component";
+import {HttpClientModule} from "@angular/common/http";
 
 describe('nav-menu component', () => {
   let component: NavMenuComponent;
@@ -10,7 +12,8 @@ describe('nav-menu component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavMenuComponent]
+      declarations: [ NavMenuComponent],
+      imports:[HttpClientModule]
     })
       .compileComponents();
   }));

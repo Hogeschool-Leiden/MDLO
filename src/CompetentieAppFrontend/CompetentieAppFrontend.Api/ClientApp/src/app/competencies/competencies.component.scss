@@ -1,3 +1,16 @@
 .text-align {
   text-align: center;
 }
+
+
+@media (max-width: 768px) {
+  .matrix-container{
+    font-size: 75%;
+  }
+}
+
+@media (max-width: 566px) {
+  .matrix-container{
+    font-size: 60%;
+  }
+}

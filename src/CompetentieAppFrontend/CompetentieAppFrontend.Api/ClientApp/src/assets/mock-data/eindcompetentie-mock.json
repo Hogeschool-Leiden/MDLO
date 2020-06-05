@@ -1,0 +1,67 @@
+{
+  "xHeaders": [
+    "gebruikersinteractie",
+    "organisatieprocessen",
+    "infrastructuur",
+    "software",
+    "hardware interfacing"
+  ],
+  "yHeaders": [
+    "analyseren",
+    "adviseren",
+    "ontwerpen",
+    "realiseren",
+    "manage & control"
+  ],
+  "cells": [
+    [
+      {
+        "value": {
+          "niveau": 1,
+          "modules": [
+            "IOPR"
+          ]
+        }
+      },
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      {
+        "value": {
+          "niveau": 1,
+          "modules": [
+            "IOPR"
+          ]
+        }
+      }
+    ]
+  ]
+}
