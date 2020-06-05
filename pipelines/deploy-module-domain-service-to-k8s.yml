@@ -160,6 +160,6 @@ stages:
               action: 'deploy'
               kubernetesServiceConnection: 'MDLO-mdlo-staging-1591281470325'
               namespace: 'staging'
-              manifests: '$(Pipeline.Workspace)/manifests/staging/deploy-module-domain-service-to-k8s.yml'
+              manifests: '$(Pipeline.Workspace)/manifests/staging/module-domain-service-staging.yml'
               containers: '$(containerRegistry)/$(imageRepository):$(tag)'
               imagePullSecrets: '$(imagePullSecret)'
