@@ -127,8 +127,11 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: '$(dockerRegistryServiceConnection)'
-          repository: '$(containerRegistry)'
+          repository: '$(imageRepository)'
           command: 'push'
+          tags: |
+            $(tag)
+            latest
 
 - stage: Deploy
   displayName: Deploy stage
