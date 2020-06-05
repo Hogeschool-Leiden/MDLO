@@ -112,7 +112,7 @@ stages:
           zipAfterPublish: false
           modifyOutputPath: false
 
-      - publish: 'manifests'
+      - publish: 'manifests/*'
         artifact: manifests
 
       - task: PublishPipelineArtifact@1
