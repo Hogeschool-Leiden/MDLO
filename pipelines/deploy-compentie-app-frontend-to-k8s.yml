@@ -117,7 +117,7 @@ stages:
 
       - task: PublishPipelineArtifact@1
         inputs:
-          path: $(System.DefaultWorkingDirectory)/obj/Docker/publish
+          path: $(projectPath)/obj/Docker/publish
           artifact: CompetentieAppFrontend
 
   - job: Publish
