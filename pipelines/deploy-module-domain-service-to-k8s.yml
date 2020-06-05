@@ -22,7 +22,7 @@ variables:
   imagePullSecret: 'mdlo-auth'
   solutionPath: 'src/ModuleDomainService'
   projectPath: '$(solutionPath)/ModuleDomainService.Application'
-  dockerfilePath: 'docker/normal/Dockerfile'
+  dockerfilePath: '$(projectPath)/Dockerfile'
   integrationTestPath: '$(solutionPath)/ModuleDomainService.IntegrationTest'
   buildConfiguration: 'Release'
   testProjects: |
@@ -44,11 +44,10 @@ stages:
     pool:
       vmImage: $(buildvmImageName)
     steps:
-      - task: SonarQubePrepare@4
-        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
-        displayName: Prepare SonarQube
+      - task: SonarCloudPrepare@1
         inputs:
-          SonarQube: 'Sonarqube connection'
+          SonarCloud: 'Sonarcloud connection'
+          organization: 'hogeschool-leiden'
           scannerMode: 'MSBuild'
           projectKey: '$(projectKey)'
           projectName: '$(projectName)'
@@ -66,22 +65,23 @@ stages:
           command: test
           projects: $(testProjects)
           arguments: '--configuration $(BuildConfiguration) --collect:"Code Coverage"'
-
-      - task: SonarQubeAnalyze@4
+      
+      - task: SonarCloudAnalyze@1
         displayName: Analyze with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
 
-      - task: SonarQubePublish@4
+      - task: SonarCloudPublish@1
         displayName: Publish with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
           pollingTimeoutSec: '300'
 
-      - task: sonar-buildbreaker@8
+      - task: sonarcloud-buildbreaker@2
         displayName: Breaking build with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
-          SonarQube: 'Sonarqube connection'
+          SonarCloud: 'Sonarcloud connection'
+          organization: 'hogeschool-leiden'
 
       - task: DotNetCoreCLI@2
         displayName: 'dotnet publish'
@@ -118,11 +118,11 @@ stages:
           containerRegistry: '$(dockerRegistryServiceConnection)'
           repository: '$(imageRepository)'
           command: 'build'
-          Dockerfile: 'docker/normal/Dockerfile'
+          Dockerfile: '$(dockerfilePath)'
           tags: |
             $(tag)
             latest
-          arguments: '--build-arg source=$(projectPath)/obj/Docker/publish --build-arg runnable=ModuleDomainService.Application.dll'
+          arguments: '--build-arg runnable=ModuleDomainService.Application.dll'
 
       - task: Docker@2
         inputs:
@@ -149,7 +149,7 @@ stages:
             inputs:
               action: 'createSecret'
               kubernetesServiceConnection: 'MDLO-mdlo-staging-1591281470325'
-              namespace: 'macedonieje'
+              namespace: 'staging'
               secretType: 'dockerRegistry'
               secretName: '$(imagePullSecret)'
               dockerRegistryEndpoint: '$(dockerRegistryServiceConnection)'
@@ -160,6 +160,6 @@ stages:
               action: 'deploy'
               kubernetesServiceConnection: 'MDLO-mdlo-staging-1591281470325'
               namespace: 'staging'
-              manifests: 'manifests/staging/deploy-module-domain-service-to-k8s.yml'
+              manifests: '$(Pipeline.Workspace)/manifests/staging/deploy-module-domain-service-to-k8s.yml'
               containers: '$(containerRegistry)/$(imageRepository):$(tag)'
               imagePullSecrets: '$(imagePullSecret)'
