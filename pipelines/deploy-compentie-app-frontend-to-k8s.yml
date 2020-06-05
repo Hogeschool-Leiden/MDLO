@@ -5,7 +5,7 @@
 trigger:
   paths:
     include:
-      - src/CompetentieAppFrontend/**
+      - src/CompetentieAppFrontend/*
   branches:
     include:
       - master
@@ -22,7 +22,7 @@ variables:
   imagePullSecret: 'mdlo-auth'
   solutionPath: 'src/CompetentieAppFrontend'
   projectPath: '$(solutionPath)/CompetentieAppFrontend.Api'
-  dockerfilePath: 'src/docker/angular/Dockerfile'
+  dockerfilePath: '$(projectPath)/Dockerfile'
   buildConfiguration: 'Release'
   angularProject: '$(projectPath)/ClientApp'
   relativeAngularProject: ClientApp
@@ -54,18 +54,20 @@ stages:
         workingDirectory: $(angularProject)
         displayName: Install typescript and angular CLI
 
-      - task: SonarQubePrepare@4
-        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+      - task: SonarCloudPrepare@1
         displayName: Prepare SonarQube
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
-          SonarQube: 'Sonarqube connection'
+          SonarCloud: 'Sonarcloud connection'
+          organization: 'hogeschool-leiden'
           scannerMode: 'MSBuild'
           projectKey: '$(projectKey)'
           projectName: '$(projectName)'
           extraProperties: |
             sonar.exclusions=**\*.js,**\bootstrap*.css,**\DataTables\**\*.css,**\roslyn\*,**\Global.asax.cs,**\Migrations\**,**.spec.**,**e2e**,**/environment.**,**app-routing.module.ts
-            sonar.typescript.tsconfigPath=$(relativeAngularProject)/tsconfig.json
-            sonar.typescript.lcov.reportPaths=$(relativeAngularProject)/coverage/lcov.info
+                        sonar.typescript.tsconfigPath=$(relativeAngularProject)/tsconfig.json
+                        sonar.typescript.lcov.reportPaths=$(relativeAngularProject)/coverage/lcov.info
+
       - task: DotNetCoreCLI@2
         displayName: 'dotnet build'
         inputs:
@@ -83,21 +85,22 @@ stages:
         displayName: 'Run npm install and npm run test-nowatch'
         workingDirectory: $(angularProject)
 
-      - task: SonarQubeAnalyze@4
+      - task: SonarCloudAnalyze@1
         displayName: Analyze with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
-
-      - task: SonarQubePublish@4
+      
+      - task: SonarCloudPublish@1
         displayName: Publish with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
           pollingTimeoutSec: '300'
 
-      - task: sonar-buildbreaker@8
+      - task: sonarcloud-buildbreaker@2
         displayName: Breaking build with SonarQube
         condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
         inputs:
-          SonarQube: 'Sonarqube connection'
+          SonarCloud: 'Sonarcloud connection'
+          organization: 'hogeschool-leiden'
 
       - task: DotNetCoreCLI@2
         displayName: 'dotnet publish'
@@ -134,11 +137,11 @@ stages:
           containerRegistry: '$(dockerRegistryServiceConnection)'
           repository: '$(imageRepository)'
           command: 'build'
-          Dockerfile: 'src/docker/angular/Dockerfile'
+          Dockerfile: '$(dockerfilePath)'
           tags: |
             $(tag)
             latest
-          arguments: '--build-arg source=$(projectPath)/obj/Docker/publish --build-arg runnable=CompetentieAppFrontend.Api.dll'
+          arguments: '--build-arg runnable=CompetentieAppFrontend.Api.dll'
       - task: Docker@2
         inputs:
           containerRegistry: '$(dockerRegistryServiceConnection)'
@@ -178,6 +181,6 @@ stages:
               action: 'deploy'
               kubernetesServiceConnection: 'MDLO-mdlo-staging-1591281470325'
               namespace: 'staging'
-              manifests: 'manifests/staging/competentie-app-frontend.yml'
+              manifests: '$(Pipeline.Workspace)/manifests/staging/competentie-app-frontend.yml'
               containers: '$(containerRegistry)/$(imageRepository):$(tag)'
               imagePullSecrets: '$(imagePullSecret)'

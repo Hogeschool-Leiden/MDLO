@@ -3,6 +3,6 @@ ARG source
 ARG runnable
 ENV dll=${runnable}
 WORKDIR /app
-COPY --from=BUILDER /app/output .
+COPY ${source:-./obj/Docker/publish} .
 EXPOSE 80
 ENTRYPOINT dotnet ${dll}
