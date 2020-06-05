@@ -16,7 +16,7 @@ export class CompetenciesComponent implements OnInit {
   specialisation: string;
   cohorts: string[] = [];
   cohort: string;
-  firstYear: number = 2015;
+  firstYear: number = 2018;
   sliderMin: number = 1;
   sliderMax: number = 3.75;
   showSlider: boolean = false;
