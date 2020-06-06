@@ -1,7 +1,7 @@
 namespace ModuleDomainService.Domain
 {
-    public class Studiefase
+    public struct Studiefase
     {
-        private int periode;
+        
     }
 }

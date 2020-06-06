@@ -1,6 +1,6 @@
 namespace ModuleDomainService.Domain
 {
-    public class Eindeis
+    public struct Eindeis
     {
         private string _omschrijving;
     }

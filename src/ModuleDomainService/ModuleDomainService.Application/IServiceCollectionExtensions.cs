@@ -1,8 +1,11 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
+using ModuleDomainService.Application.Constants;
+using ModuleDomainService.Infrastructure.DAL;
 using Polly;
 using RabbitMQ.Client.Exceptions;
 
@@ -20,14 +23,14 @@ namespace ModuleDomainService.Application
 
             var loggerFactory = LoggerFactory.Create(configure =>
             {
-                Enum.TryParse(Environment.GetEnvironmentVariable("LOG_LEVEL"), out LogLevel logLevel);
+                Enum.TryParse(Environment.GetEnvironmentVariable(EnvironmentNames.LogLevel), out LogLevel logLevel);
                 configure.AddConsole().SetMinimumLevel(logLevel);
             });
             
             var microserviceHost = new MicroserviceHostBuilder()
                 .SetLoggerFactory(loggerFactory)
                 .RegisterDependencies(services)
-                .WithQueueName(Environment.GetEnvironmentVariable("BROKER_QUEUE_NAME"))
+                .WithQueueName(Environment.GetEnvironmentVariable(EnvironmentNames.BrokerExchangeName))
                 .WithBusContext(context)
                 .UseConventions()
                 .CreateHost();
@@ -35,6 +38,18 @@ namespace ModuleDomainService.Application
             services.AddSingleton(context);
             services.AddSingleton(microserviceHost);
             services.AddHostedService<Miffy>();
+        }
+
+        public static IServiceCollection AddModuleDomainServiceDbContext(this IServiceCollection services)
+        {
+            return services.AddDbContext<ModuleDomainServiceContext>(builder =>
+            {
+                var connectionString = Environment.GetEnvironmentVariable(EnvironmentNames.DbConnectionString);
+                
+                if (connectionString == null) throw new ArgumentNullException($"{nameof(connectionString)} can not be null");
+
+                builder.UseNpgsql(connectionString);
+            });
         }
     }
 }

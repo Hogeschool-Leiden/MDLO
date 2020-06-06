@@ -1,10 +1,12 @@
+using System.Collections.Generic;
 using Miffy.MicroServices.Commands;
+using ModuleDomainService.Domain.Constants;
 
 namespace ModuleDomainService.Domain.Commands
 {
     public class CreeerModuleCommand : DomainCommand
     {
-        public CreeerModuleCommand() : base("ModuleDomain.Module.CreeerModule")
+        public CreeerModuleCommand() : base(DestinationQueueNames.CreeerModule)
         {
         }
 

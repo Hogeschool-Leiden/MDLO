@@ -1,34 +1,30 @@
 using System.Collections.Generic;
-using System.Linq;
 using Miffy.MicroServices.Events;
+using ModuleDomainService.Domain.Abstractions;
 using ModuleDomainService.Domain.Commands;
 using ModuleDomainService.Domain.Events;
 
 namespace ModuleDomainService.Domain
 {
-    public class Module
+    public class Module : AggregateRoot
     {
         private string _code;
         private string _naam;
-        private string _studiejaar;
         private int _aantalEc;
+        private Cohort _cohort;
         private ModuleLeider _moduleLeider;
         private Studiefase _studiefase;
         private Status _status;
         private Competenties _competenties;
         private EindEisen _eindEisen;
 
-        private Module() => Changes = new List<DomainEvent>();
-
         public Module(CreeerModuleCommand creeerModuleCommand) => Creeer(creeerModuleCommand);
 
-        public Module(IEnumerable<DomainEvent> events) : this() => CreeerFromExistingEvents(events);
+        public Module(IEnumerable<DomainEvent> events) : base(events)
+        {
+        }
 
-        public string Id => $"{_code}:{_studiejaar}";
-
-        public int Version { get; private set; }
-
-        public List<DomainEvent> Changes { get; }
+        public override string Id => $"{_code}:{_cohort.Studiejaar}";
 
         private void Creeer(CreeerModuleCommand creeerModuleCommand)
         {
@@ -36,34 +32,23 @@ namespace ModuleDomainService.Domain
             {
                 ModuleNaam = creeerModuleCommand.ModuleNaam,
                 ModuleCode = creeerModuleCommand.ModuleCode,
-                AantalEc = creeerModuleCommand.AantalEc,
-                Studiejaar = creeerModuleCommand.Studiejaar
+                AantalEc = creeerModuleCommand.AantalEc
             });
         }
 
-        private void CreeerFromExistingEvents(IEnumerable<DomainEvent> events)
-        {
-            events.ToList().ForEach(@event =>
-            {
-                Mutate(@event);
-                Version++;
-            });
-        }
-
-        private void Apply(DomainEvent @event)
-        {
-            Changes.Add(@event);
-            Mutate(@event);
-        }
-
-        private void Mutate(DomainEvent @event) => ((dynamic) this).When((dynamic) @event);
+        protected override void Mutate(DomainEvent @event) => ((dynamic) this).When((dynamic) @event);
 
         private void When(ModuleGecreeerd @event)
         {
             _naam = @event.ModuleNaam;
             _code = @event.ModuleCode;
             _aantalEc = @event.AantalEc;
-            _studiejaar = @event.Studiejaar;
+            _cohort = @event.Cohort;
+            _moduleLeider = @event.ModuleLeider;
+            _studiefase = @event.Studiefase;
+            _status = @event.Status;
+            _competenties = @event.Competenties;
+            _eindEisen = @event.Eindeisen;
         }
     }
 }

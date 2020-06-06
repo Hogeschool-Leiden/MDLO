@@ -1,4 +1,5 @@
 using Miffy.MicroServices.Commands;
+using ModuleDomainService.Application.Constants;
 using ModuleDomainService.Domain;
 using ModuleDomainService.Domain.Commands;
 using ModuleDomainService.Infrastructure.Repositories;
@@ -11,7 +12,7 @@ namespace ModuleDomainService.Application.CommandListeners
 
         public ModuleCommandListener(IModuleRepository moduleRepository) => _moduleRepository = moduleRepository;
 
-        [CommandListener("ModuleDomain.Module.CreeerModule")]
+        [CommandListener(QueueNames.CreeerModule)]
         public CreeerModuleResponse CreeerModule(CreeerModuleCommand command)
         {
             var module = new Module(command);

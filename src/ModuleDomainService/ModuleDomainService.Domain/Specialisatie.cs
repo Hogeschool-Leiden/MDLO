@@ -1,6 +1,6 @@
 namespace ModuleDomainService.Domain
 {
-    public class Specialisatie
+    public struct Specialisatie
     {
         private string _naam;
     }

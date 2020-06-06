@@ -12,6 +12,11 @@ namespace ModuleDomainService.Domain.Events
         public string ModuleNaam { get; set; }
         public string ModuleCode { get; set; }
         public int AantalEc { get; set; }
-        public string Studiejaar { get; set; }
+        public Cohort Cohort { get; set; }
+        public ModuleLeider ModuleLeider { get; set; }
+        public Studiefase Studiefase { get; set; }
+        public Status Status { get; set; }
+        public Competenties Competenties { get; set; }
+        public EindEisen Eindeisen { get; set; }
     }
 }
