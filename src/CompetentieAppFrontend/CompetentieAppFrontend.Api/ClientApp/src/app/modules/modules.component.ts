@@ -39,10 +39,11 @@ export class ModulesComponent implements OnInit {
   }
 
   getDataFromDB() {
-    this.http.get(this.dbUrl).toPromise().then(data =>{
+    this.http.get(this.dbUrl).toPromise().then(data => {
       this.moduleData = data;
       this.injectDataInTable();
-    });
+    }).catch(error => console.log(error));
+
 
     // this.moduleData = moduleMock;  // this is mockdata
     // this.injectDataInTable();
@@ -102,7 +103,7 @@ export class ModulesComponent implements OnInit {
     this.showEndRequirementsUnderMatrix = false;
   }
 
-  setDataSource(){
+  setDataSource() {
     this.dataSource = new MatTableDataSource(this.MODULE_DATA);
     this.dataSource.sort = this.sort;
   }
