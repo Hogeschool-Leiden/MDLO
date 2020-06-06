@@ -15,15 +15,8 @@ namespace ModuleDomainService.Domain
         private ModuleLeider _moduleLeider;
         private Studiefase _studiefase;
         private Status _status;
-        private List<string> _leerdoelen;
-        private Voorkennis _voorkennis;
         private Competenties _competenties;
-        private string _beschrijvingLeerdoelen;
-        private string _inhoudelijkeBeschrijving;
-        private IEnumerable<string> _eindeisen;
-        private string _contacturenEnWerkvormen;
-        private Beoordeling _beoordeling;
-        private List<Examinator> _examinatoren;
+        private EindEisen _eindEisen;
 
         private Module() => Changes = new List<DomainEvent>();
 
