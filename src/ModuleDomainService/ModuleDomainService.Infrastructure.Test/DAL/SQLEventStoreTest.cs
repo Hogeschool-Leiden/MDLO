@@ -56,7 +56,7 @@ namespace ModuleDomainService.Infrastructure.Test.DAL
             }));
 
             // Assert
-            Assert.IsTrue(context.Events.Any(@event => @event.Stream.Id.Equals("uniqueId")));
+            Assert.IsTrue(context.Stream.Any(@event => @event.Stream.Id.Equals("uniqueId")));
         }
     }
 }
