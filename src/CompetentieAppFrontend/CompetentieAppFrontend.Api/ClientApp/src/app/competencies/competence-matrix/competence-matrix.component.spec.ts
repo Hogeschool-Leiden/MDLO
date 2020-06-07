@@ -33,38 +33,38 @@ describe('CompetenceMatrixComponent', () => {
     expect(component.showMatrix).toBeFalsy();
     component.specialisation = 'Software Engineering';
     component.competenceMatrix = mockJson;
-    component.setDisplayMatrix();
+    component.setupDisplayMatrix();
     expect(component.showMatrix).toBeTruthy();
   });
 
   it('Matrix should have headers', function () {
     component.specialisation = 'Software Engineering';
     component.competenceMatrix = mockJson;
-    component.setDisplayMatrix();
-    expect(component.displayeMatrix[0][1]).toEqual('analyseren');
-    expect(component.displayeMatrix[1][0]).toEqual('gebruikersinteractie');
+    component.setupDisplayMatrix();
+    expect(component.displayMatrix[0][1]).toEqual('analyseren');
+    expect(component.displayMatrix[1][0]).toEqual('gebruikersinteractie');
   });
 
   it('matrix body should set values', function () {
     component.specialisation = 'Software Engineering';
     component.competenceMatrix = mockJson;
-    component.setDisplayMatrix();
-    expect(component.displayeMatrix[1][1]).toEqual(1);
-    expect(component.displayeMatrix[5][5]).toEqual(1);
+    component.setupDisplayMatrix();
+    expect(component.displayMatrix[1][1]).toEqual(1);
+    expect(component.displayMatrix[5][5]).toEqual(1);
   });
 
   it('reset matrix should put whole display matrix to nulls', function () {
     // fill it first
     component.specialisation = 'Software Engineering';
     component.competenceMatrix = mockJson;
-    component.setDisplayMatrix();
-    expect(component.displayeMatrix[1][1]).toEqual(1);
-    expect(component.displayeMatrix[5][5]).toEqual(1);
+    component.setupDisplayMatrix();
+    expect(component.displayMatrix[1][1]).toEqual(1);
+    expect(component.displayMatrix[5][5]).toEqual(1);
 
     //reset
     component.resetMatrix();
-    expect(component.displayeMatrix[1][1]).toEqual(null);
-    expect(component.displayeMatrix[5][5]).toEqual(null);
+    expect(component.displayMatrix[1][1]).toEqual(null);
+    expect(component.displayMatrix[5][5]).toEqual(null);
   });
 
 });
