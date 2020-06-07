@@ -1,15 +1,15 @@
 using System;
+using CompetentieAppFrontend.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Miffy;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
-using ModuleFrontend.Api.Services;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
-namespace ModuleFrontend.Api
+namespace CompetentieAppFrontend.Api
 {
     public static class IServiceCollectionExtensions
     {

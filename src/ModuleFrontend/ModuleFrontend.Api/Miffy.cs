@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Miffy.MicroServices.Host;
 
-namespace CompetentieAppFrontend.Api
+namespace ModuleFrontend.Api
 {
     public class Miffy : IHostedService
     {
