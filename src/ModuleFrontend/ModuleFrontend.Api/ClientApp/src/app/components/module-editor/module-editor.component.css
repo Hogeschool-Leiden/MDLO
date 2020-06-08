@@ -1,8 +1,4 @@
-/* #moduleForm{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-} */
+
 table
 {
     table-layout: fixed;
@@ -10,15 +6,21 @@ table
 }
 .flex-outer label{
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    flex-grow: 3;
+    flex-wrap: wrap;
+    align-items: center;
 }
+.flex-outer label a{
+    flex-basis: 10rem;
+}
+
 .naastElkaar{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
 }
-.ruimteRechts{
-    flex-grow: 4;
+
+.noWrap{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
