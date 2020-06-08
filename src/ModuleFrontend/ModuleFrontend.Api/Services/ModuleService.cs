@@ -2,7 +2,6 @@
 using ModuleFrontend.Api.Commands;
 using ModuleFrontend.Api.DAL;
 using ModuleFrontend.Api.DTO;
-using ModuleFrontend.Api.Exceptions;
 using ModuleFrontend.Api.Models;
 using ModuleFrontend.Api.ViewModels;
 using System.Collections.Generic;
@@ -22,38 +21,9 @@ namespace ModuleFrontend.Api.Services
 
         public Module AddModule(ModuleViewModel module)
         {
-            bool exists = _moduleContext.Modules.Any(mod => mod.ModuleCode == module.ModuleCode);
-            if (exists)
-            {
-                throw new AlreadyExistsException($"Duplicate ModuleCode: {module.ModuleCode}");
-            }
-            var dbModule = new Module()
-            {
-                ModuleNaam = module.ModuleNaam,
-                ModuleCode = module.ModuleCode,
-                AantalEc = module.AantalEc,
-                Studiejaar = module.Studiejaar,
-                Cohort = module.Cohort,
-                Moduleleider = new Moduleleider() { Email = module.Moduleleider.Email, Naam = module.Moduleleider.Naam, Telefoonnummer = module.Moduleleider.Telefoonnummer },
-                Studiefase = new Studiefase() { Fase = module.Studiefase.Fase, Periode = new Periode() { PeriodeNummer = module.Studiefase.Periode.PeriodeNummer } },
-                VerplichtVoor = new List<Specialisatie>() { },
-                Competenties = module.Competenties,
-                Eindeisen = module.Eindeisen,
-            };
-
-            foreach (var item in module.VerplichtVoor)
-            {
-                dbModule.VerplichtVoor.ToList().Add(new Specialisatie() { Code = item.Code, Naam = item.Naam });
-            }
-
-            //foreach (var item in module.AanbevolenVoor)
-            //{
-            //    dbModule.AanbevolenVoor.ToList().Add(new Specialisatie() { Code = item.Code, Naam = item.Naam });
-            //}
-            return dbModule;
-            //var res = _moduleContext.Modules.Add(dbModule);
-            //_moduleContext.SaveChanges();
-            //return res.Entity;
+            var retrievedModule = SendCreeerModuleCommand(module);
+            _moduleContext.Modules.Add(retrievedModule);
+            return retrievedModule;
         }
 
         public IEnumerable<Module> GetAllModules()
@@ -99,6 +69,7 @@ namespace ModuleFrontend.Api.Services
                 Studiefase = retMod.Studiefase,
                 VerplichtVoor = retMod.VerplichtVoor
             };
+            return returnedModule;
         }
     }
 }
