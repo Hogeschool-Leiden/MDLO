@@ -1,10 +1,13 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild, Inject} from '@angular/core';
 import {CompetenceMatrixComponent} from "../competencies/competence-matrix/competence-matrix.component";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-// @ts-ignore
-import moduleMock from "./../../assets/mock-data/modules-mock.json"
 import {MatSort} from "@angular/material/sort";
 import {HttpClient} from "@angular/common/http";
+// @ts-ignore
+import moduleMock from "./../../assets/mock-data/modules-mock.json"
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {ModulePopupComponent} from "./module-popup/module-popup.component";
+
 
 @Component({
   selector: 'app-modules',
@@ -24,7 +27,7 @@ export class ModulesComponent implements OnInit {
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -39,14 +42,14 @@ export class ModulesComponent implements OnInit {
   }
 
   getDataFromDB() {
-    this.http.get(this.dbUrl).toPromise().then(data => {
-      this.moduleData = data;
-      this.injectDataInTable();
-    }).catch(error => console.log(error));
+    // this.http.get(this.dbUrl).toPromise().then(data => {
+    //   this.moduleData = data;
+    //   this.injectDataInTable();
+    // }).catch(error => console.log(error));
 
 
-    // this.moduleData = moduleMock;  // this is mockdata
-    // this.injectDataInTable();
+    this.moduleData = moduleMock;  // this is mockdata
+    this.injectDataInTable();
   }
 
   injectDataInTable() {
@@ -119,6 +122,12 @@ export class ModulesComponent implements OnInit {
       return data.specialisation.includes(filter) || data.module.toLowerCase().includes(filter) ||
         data.period.toString().includes(filter);
     }
+  }
+
+  openPopup(moduleRowData) {
+    this.dialog.open(ModulePopupComponent, {
+      data: {moduleData: moduleRowData}
+    });
   }
 }
 
