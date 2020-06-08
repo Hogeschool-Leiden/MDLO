@@ -1,0 +1,12 @@
+#moduleForm{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+
+table
+{
+    table-layout: fixed;
+    width: 100%;
+}

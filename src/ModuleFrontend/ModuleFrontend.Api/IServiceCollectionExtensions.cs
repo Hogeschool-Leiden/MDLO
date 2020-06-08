@@ -1,15 +1,16 @@
 using System;
-using CompetentieAppFrontend.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Miffy;
+using Miffy.MicroServices.Commands;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
+using ModuleFrontend.Api.Services;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
-namespace CompetentieAppFrontend.Api
+namespace ModuleFrontend.Api
 {
     public static class IServiceCollectionExtensions
     {
@@ -23,6 +24,7 @@ namespace CompetentieAppFrontend.Api
 
             services.AddSingleton(context);
             services.AddTransient<IModuleService, ModuleService>();
+            services.AddSingleton<ICommandPublisher, CommandPublisher>();
 
         }
 

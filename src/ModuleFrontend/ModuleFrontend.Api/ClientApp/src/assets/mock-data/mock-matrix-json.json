@@ -1,0 +1,59 @@
+{
+  "architectuurLaagNamen": [
+    "gebruikersinteractie",
+    "organisatieprocessen",
+    "infrastructuur",
+    "software",
+    "hardware interfacing"
+  ],
+  "activiteitNamen": [
+    "analyseren",
+    "adviseren",
+    "ontwerpen",
+    "realiseren",
+    "manage & control"
+  ],
+  "matrix": [
+    [
+      {
+        "niveau": 1,
+        "modules": [
+          {
+            "id": 1,
+            "moduleCode": "IOPR",
+            "moduleNaam": "Object georienteerd programeren",
+            "studiepunten": 3,
+            "studiefasen": null,
+            "competenties": 1
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null
+    ],
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+    [
+      null,
+      null,
+      null,
+      null,
+      {
+        "niveau": 1,
+        "modules": [
+          {
+            "id": 1,
+            "moduleCode": "IOPR",
+            "moduleNaam": "Object georienteerd programeren",
+            "studiepunten": 3,
+            "studiefasen": null,
+            "competenties": 1
+          }
+        ]
+      }
+    ]
+  ]
+}
