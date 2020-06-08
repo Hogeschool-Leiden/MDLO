@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import { Module } from '../../models/module';
 import { ModuleSanitizePipe } from 'src/app/pipes/module-sanitize.pipe';
@@ -12,10 +12,15 @@ import { Cohort } from 'src/app/models/cohort';
   templateUrl: './module-editor.component.html',
   styleUrls: ['./module-editor.component.css']
 })
-export class ModuleEditorComponent {
+export class ModuleEditorComponent implements OnInit{
   constructor(private snackBar: MatSnackBar, private httpService: HttpService, private sanitizePipe: ModuleSanitizePipe) {
 
   }
+  ngOnInit(): void {
+    this.addEindeis();
+  }
+  eindeisen=  new FormArray([])
+  
   availableCohorts: Cohort[] =[{ naam: "2017/2018", beginjaar: "2017/2018" }, { naam: "2018/2019", beginjaar: "2018/2019" }, { naam: "2019/2020", beginjaar: "2019/2020" },]
   jsonValue: null;
   jsonValueAfterPipe: null;
@@ -78,7 +83,10 @@ export class ModuleEditorComponent {
     }),
     // beschrijvingLeerdoelen: new FormControl(''),
     // inhoudelijkeBeschrijving: new FormControl(''),
-    eindeisen: new FormControl(''),
+    eindeisen: new FormArray([
+
+    ]),
+    
     // contacturenWerkvormen: new FormControl(''),
     // toetsvorm: new FormControl(''),
     // voorwaardenVoldoende: new FormControl(''),
@@ -102,5 +110,8 @@ export class ModuleEditorComponent {
         }
       }
     )
+  }
+  addEindeis(){
+    this.eindeisen.push(new FormControl(''));
   }
 }
