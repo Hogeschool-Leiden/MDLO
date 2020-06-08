@@ -2,17 +2,18 @@
   <mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Timestamp Column -->
     <ng-container matColumnDef=timeStamp>
-      <mat-header-cell mat-sort-header *matHeaderCellDef> timeStamp </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.timeStamp}} </mat-cell>
+      <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="'timeCell'"> timeStamp</mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="'timeCell'"> {{element.timeStamp}} </mat-cell>
     </ng-container>
 
     <!-- InfoString Column -->
     <ng-container matColumnDef="infoString">
-      <mat-header-cell *matHeaderCellDef> Information </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Information</mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.infoString}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let auditLogRowData; let i = index; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let auditLogRowData; let i = index; columns: displayedColumns;"
+             (click)="openPopup(auditLogRowData)"></mat-row>
   </mat-table>
 </div>

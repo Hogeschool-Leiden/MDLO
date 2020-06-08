@@ -4,6 +4,9 @@ import {MatTableDataSource} from "@angular/material/table";
 import auditMock from "./../../../assets/mock-data/audit-log-mock.json"
 import {HttpClient} from "@angular/common/http";
 import {MatSort, MatSortable} from "@angular/material/sort";
+import {ModulePopupComponent} from "../../modules/module-popup/module-popup.component";
+import {MatDialog} from "@angular/material/dialog";
+import {AuditPopupComponent} from "./audit-popup/audit-popup.component";
 
 @Component({
   selector: 'app-audit-log',
@@ -18,7 +21,7 @@ export class AuditLogComponent implements OnInit {
   auditData: any;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -38,8 +41,14 @@ export class AuditLogComponent implements OnInit {
 
   setDataSource() {
     this.dataSource = new MatTableDataSource(this.auditData);
-    this.sort.sort(({ id: 'timeStamp', start: 'desc'}) as MatSortable);
+    this.sort.sort(({id: 'timeStamp', start: 'desc'}) as MatSortable);
     this.dataSource.sort = this.sort;
   }
 
+  openPopup(auditRowData) {
+    this.dialog.open(AuditPopupComponent, {
+      data: {auditData: auditRowData}
+    });
+
+  }
 }

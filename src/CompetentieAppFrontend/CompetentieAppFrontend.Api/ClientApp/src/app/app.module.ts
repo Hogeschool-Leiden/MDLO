@@ -24,6 +24,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {AuditLogComponent} from './admin/audit-log/audit-log.component';
 import { ModulePopupComponent } from './modules/module-popup/module-popup.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { AuditPopupComponent } from './admin/audit-log/audit-popup/audit-popup.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     AdminComponent,
     CompetenceMatrixComponent,
     AuditLogComponent,
-    ModulePopupComponent
+    ModulePopupComponent,
+    AuditPopupComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
