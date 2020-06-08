@@ -6,7 +6,6 @@ namespace ModuleFrontend.Api.ViewModels
     {
         public long Id { get; set; }
         public string Naam { get; set; }
-        [Required]
         public string Code { get; set; }
     }
 }

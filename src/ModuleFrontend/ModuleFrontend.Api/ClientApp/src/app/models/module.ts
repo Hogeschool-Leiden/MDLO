@@ -8,7 +8,7 @@ export interface Module {
     id: number
     moduleNaam: string
     moduleCode: string
-    cohort: Cohort,
+    cohort: string,
     aantalEc: number
     studiejaar: string
     moduleleider: Moduleleider
@@ -16,16 +16,16 @@ export interface Module {
     verplichtVoor: Specialisatie[]
     aanbevolenVoor: Specialisatie[]
     competenties: Matrix
-    beschrijvingLeerdoelen: string
-    inhoudelijkeBeschrijving: string
+    // beschrijvingLeerdoelen: string
+    // inhoudelijkeBeschrijving: string
     eindeisen: string
-    contacturenWerkvormen: string
-    toetsvorm: string
-    voorwaardenVoldoende: string
-    letOp: string
-    summatief: boolean
-    formatief: boolean
-    kwalitatief: boolean
-    kwantitatief: boolean
-    examinatoren: string
+    // contacturenWerkvormen: string
+    // toetsvorm: string
+    // voorwaardenVoldoende: string
+    // letOp: string
+    // summatief: boolean
+    // formatief: boolean
+    // kwalitatief: boolean
+    // kwantitatief: boolean
+    // examinatoren: string
 }

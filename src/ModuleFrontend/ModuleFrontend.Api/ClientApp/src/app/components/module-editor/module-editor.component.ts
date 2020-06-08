@@ -21,19 +21,19 @@ export class ModuleEditorComponent {
   jsonValueAfterPipe: null;
   moduleForm = new FormGroup({
     id: new FormControl({ value: '', disabled: true }),
-    moduleNaam: new FormControl('', Validators.required),
-    moduleCode: new FormControl('', Validators.required),
+    moduleNaam: new FormControl(''),
+    moduleCode: new FormControl(''),
     cohort: new FormControl(''),
-    aantalEc: new FormControl('', Validators.required),
-    studiejaar: new FormControl('', Validators.required),
+    aantalEc: new FormControl(0),
+    studiejaar: new FormControl(''),
     moduleleider: new FormGroup({
-      naam: new FormControl('', [Validators.minLength(2), Validators.required]),
-      email: new FormControl('', [Validators.email, Validators.required]),
-      telefoonnummer: new FormControl('', [Validators.minLength(10), Validators.required]),
+      naam: new FormControl(''),
+      email: new FormControl(''),
+      telefoonnummer: new FormControl(),
     }),
     studiefase: new FormGroup({
       fase: new FormControl(''),
-      periode: new FormControl(''),
+      periode: new FormControl(0),
     }),
     verplichtVoor: new FormGroup({
       SE: new FormControl(false),
@@ -76,18 +76,18 @@ export class ModuleEditorComponent {
       HIRE: new FormControl(0),
       HIBE: new FormControl(0),
     }),
-    beschrijvingLeerdoelen: new FormControl(''),
-    inhoudelijkeBeschrijving: new FormControl(''),
+    // beschrijvingLeerdoelen: new FormControl(''),
+    // inhoudelijkeBeschrijving: new FormControl(''),
     eindeisen: new FormControl(''),
-    contacturenWerkvormen: new FormControl(''),
-    toetsvorm: new FormControl(''),
-    voorwaardenVoldoende: new FormControl(''),
-    letOp: new FormControl(''),
-    summatief: new FormControl(''),
-    formatief: new FormControl(''),
-    kwalitatief: new FormControl(''),
-    kwantitatief: new FormControl(''),
-    examinatoren: new FormControl(''),
+    // contacturenWerkvormen: new FormControl(''),
+    // toetsvorm: new FormControl(''),
+    // voorwaardenVoldoende: new FormControl(''),
+    // letOp: new FormControl(''),
+    // summatief: new FormControl(''),
+    // formatief: new FormControl(''),
+    // kwalitatief: new FormControl(''),
+    // kwantitatief: new FormControl(''),
+    // examinatoren: new FormControl(''),
   })
 
   onSubmit() {
@@ -98,6 +98,7 @@ export class ModuleEditorComponent {
       }, err => {
         if (err.error[0].errors[0].errorMessage.includes("Duplicate ModuleCode")) {
           var snackBarRef = this.snackBar.open('Modulecode bestaat al.', '', { duration: 3000 });
+          console.log(err);
         }
       }
     )

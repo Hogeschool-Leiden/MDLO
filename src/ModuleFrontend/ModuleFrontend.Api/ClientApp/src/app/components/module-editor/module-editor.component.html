@@ -119,7 +119,7 @@
 
     </div>
     <br>
-    <h3>Aanbevolen voor</h3>
+    <!-- <h3>Aanbevolen voor</h3>
     <div formGroupName="aanbevolenVoor">
 
         <mat-label>
@@ -141,7 +141,7 @@
             IAT:
         </mat-label>
         <mat-checkbox formControlName="IAT"></mat-checkbox>
-    </div>
+    </div> -->
 
     <h3>Competenties</h3>
     <div formGroupName="competenties">
@@ -253,7 +253,7 @@
         </table>
     </div>
 
-    <mat-form-field>
+    <!-- <mat-form-field>
         <mat-label>
             Beschrijving leerdoelen:
         </mat-label>
@@ -265,14 +265,14 @@
         </mat-label>
         <input matInput type="text" formControlName="inhoudelijkeBeschrijving">
 
-    </mat-form-field>
+    </mat-form-field> -->
     <mat-form-field>
         <mat-label>
             Eindeisen:
         </mat-label>
         <input matInput type="text" formControlName="eindeisen">
     </mat-form-field>
-    <mat-form-field>
+    <!-- <mat-form-field>
         <mat-label>
             Contacturen en werkvormen:
         </mat-label>
@@ -326,9 +326,9 @@
             Examinatoren:
         </mat-label>
         <input matInput type="textarea" formControlName="examinatoren">
-    </mat-form-field>
+    </mat-form-field> -->
 
-    <button mat-button type="submit" [disabled]="moduleForm.valid">Creeer module</button>
+    <button mat-button type="submit" [disabled]="!moduleForm.valid">Creeer module</button>
 </form>
 
 <pre>{{jsonValue | json}} </pre>

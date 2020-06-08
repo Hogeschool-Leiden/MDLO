@@ -2,6 +2,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Miffy;
+using Miffy.MicroServices.Commands;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
 using ModuleFrontend.Api.Services;
@@ -23,6 +24,7 @@ namespace ModuleFrontend.Api
 
             services.AddSingleton(context);
             services.AddTransient<IModuleService, ModuleService>();
+            services.AddSingleton<ICommandPublisher, CommandPublisher>();
 
         }
 

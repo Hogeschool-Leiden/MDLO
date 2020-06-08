@@ -37,7 +37,8 @@ namespace ModuleFrontend.Api.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.Values);
-            } else if(module.VerplichtVoor.Count() < 1)
+            }
+            else if (module.VerplichtVoor.Count() < 1)
             {
                 ModelState.AddModelError("VerplichtVoorError", "Een module moet voor minstens één specialisatie verplicht zijn, of een keuzevak zijn.");
                 return BadRequest(ModelState.Values);

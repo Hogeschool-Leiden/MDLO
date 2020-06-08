@@ -31,6 +31,9 @@ namespace ModuleFrontend.Api.DAL
             modelBuilder.Entity<Studiefase>()
                 .HasOne(s => s.Periode)
                 .WithMany();
+
+            modelBuilder.Entity<Module>()
+                .Ignore(m => m.Competenties);
         }
     }
 }

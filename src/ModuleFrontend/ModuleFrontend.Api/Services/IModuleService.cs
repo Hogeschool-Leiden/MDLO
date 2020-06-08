@@ -9,5 +9,6 @@ namespace ModuleFrontend.Api.Services
         Module GetByModuleCode(string modulecode);
         IEnumerable<Module> GetAllModules();
         Module AddModule(ModuleViewModel module);
+        Module SendCreeerModuleCommand(ModuleViewModel module);
     }
 }

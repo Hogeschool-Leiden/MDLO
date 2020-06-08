@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ModuleFrontend.Api.DTO
 {
-    public class Module
+    public class ModuleDTO
     {
         public IEnumerable<Specialisatie> VerplichtVoor { get; set; }
         public string ModuleNaam { get; set; }
@@ -11,5 +11,6 @@ namespace ModuleFrontend.Api.DTO
         public string Cohort { get; set; }
         public string Eindeisen { get; set; }
         public Studiefase Studiefase { get; set; }
+        public Matrix Competenties { get; set; }
     }
 }

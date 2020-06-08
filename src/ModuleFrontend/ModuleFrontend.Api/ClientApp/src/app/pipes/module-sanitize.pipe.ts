@@ -11,12 +11,17 @@ export class ModuleSanitizePipe implements PipeTransform {
   transform(unsanitizedValue: any, ...args: unknown[]): Module {
     let aanbevolenVoor = this.checkIfSpecialisatiesHaveToBeAdded(unsanitizedValue.aanbevolenVoor);
     let verplichtVoor = this.checkIfSpecialisatiesHaveToBeAdded(unsanitizedValue.verplichtVoor);
-
+    if (unsanitizedValue.studiefase.periodeNummer ===""){
+      unsanitizedValue.studiefase.periode = 0;
+    }
+    if(unsanitizedValue.aantalEc ===""){
+      unsanitizedValue.aantalEc = 0;
+    }
     let module: Module = {
       id: undefined,
       moduleNaam: unsanitizedValue.moduleNaam,
       moduleCode: unsanitizedValue.moduleCode,
-      cohort: { naam: unsanitizedValue.cohort, beginjaar: unsanitizedValue.cohort },
+      cohort: unsanitizedValue.cohort,
       aantalEc: parseInt(unsanitizedValue.aantalEc),
       studiejaar: unsanitizedValue.studiejaar,
       moduleleider: { id: undefined, naam: unsanitizedValue.moduleleider.naam, email: unsanitizedValue.moduleleider.email, telefoonnummer: unsanitizedValue.moduleleider.telefoonnummer },
@@ -24,18 +29,18 @@ export class ModuleSanitizePipe implements PipeTransform {
       verplichtVoor: verplichtVoor,
       aanbevolenVoor: aanbevolenVoor,
       competenties: this.getMatrixWithCorrectValues(unsanitizedValue.competenties),
-      beschrijvingLeerdoelen: unsanitizedValue.beschrijvingLeerdoelen,
-      inhoudelijkeBeschrijving: unsanitizedValue.inhoudelijkeBeschrijving,
+      // beschrijvingLeerdoelen: unsanitizedValue.beschrijvingLeerdoelen,
+      // inhoudelijkeBeschrijving: unsanitizedValue.inhoudelijkeBeschrijving,
       eindeisen: unsanitizedValue.eindeisen,
-      contacturenWerkvormen: unsanitizedValue.contacturenWerkvormen,
-      toetsvorm: unsanitizedValue.toetsvorm,
-      voorwaardenVoldoende: unsanitizedValue.voorwaardenVoldoende,
-      letOp: unsanitizedValue.letOp,
-      summatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.summatief),
-      formatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.formatief),
-      kwalitatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.kwalitatief),
-      kwantitatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.kwantitatief),
-      examinatoren: unsanitizedValue.examinatoren
+      // contacturenWerkvormen: unsanitizedValue.contacturenWerkvormen,
+      // toetsvorm: unsanitizedValue.toetsvorm,
+      // voorwaardenVoldoende: unsanitizedValue.voorwaardenVoldoende,
+      // letOp: unsanitizedValue.letOp,
+      // summatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.summatief),
+      // formatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.formatief),
+      // kwalitatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.kwalitatief),
+      // kwantitatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.kwantitatief),
+      // examinatoren: unsanitizedValue.examinatoren
     };
     return module;
   }

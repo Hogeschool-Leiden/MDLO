@@ -1,4 +1,7 @@
-﻿using ModuleFrontend.Api.DAL;
+﻿using Miffy.MicroServices.Commands;
+using ModuleFrontend.Api.Commands;
+using ModuleFrontend.Api.DAL;
+using ModuleFrontend.Api.DTO;
 using ModuleFrontend.Api.Exceptions;
 using ModuleFrontend.Api.Models;
 using ModuleFrontend.Api.ViewModels;
@@ -10,9 +13,11 @@ namespace ModuleFrontend.Api.Services
     public class ModuleService : IModuleService
     {
         private readonly ModuleContext _moduleContext;
-        public ModuleService(ModuleContext context)
+        private readonly ICommandPublisher _publisher;
+        public ModuleService(ModuleContext context, ICommandPublisher publisher)
         {
             _moduleContext = context;
+            _publisher = publisher;
         }
 
         public Module AddModule(ModuleViewModel module)
@@ -28,37 +33,27 @@ namespace ModuleFrontend.Api.Services
                 ModuleCode = module.ModuleCode,
                 AantalEc = module.AantalEc,
                 Studiejaar = module.Studiejaar,
+                Cohort = module.Cohort,
                 Moduleleider = new Moduleleider() { Email = module.Moduleleider.Email, Naam = module.Moduleleider.Naam, Telefoonnummer = module.Moduleleider.Telefoonnummer },
                 Studiefase = new Studiefase() { Fase = module.Studiefase.Fase, Periode = new Periode() { PeriodeNummer = module.Studiefase.Periode.PeriodeNummer } },
-                AanbevolenVoor = new List<Specialisatie>() { },
                 VerplichtVoor = new List<Specialisatie>() { },
-                BeschrijvingLeerdoelen = module.BeschrijvingLeerdoelen,
-                InhoudelijkeBeschrijving = module.InhoudelijkeBeschrijving,
+                Competenties = module.Competenties,
                 Eindeisen = module.Eindeisen,
-                ContacturenWerkvormen = module.ContacturenWerkvormen,
-                Toetsvorm = module.Toetsvorm,
-                VoorwaardenVoldoende = module.VoorwaardenVoldoende,
-                LetOp = module.LetOp,
-                Summatief = module.Summatief,
-                Formatief = module.Formatief,
-                Kwalitatief = module.Kwalitatief,
-                Kwantitatief = module.Kwantitatief,
-                Examinatoren = module.Examinatoren
             };
 
             foreach (var item in module.VerplichtVoor)
             {
-                dbModule.VerplichtVoor.ToList().Add(new Specialisatie() { Code = item.Code, Naam = item.Naam});
+                dbModule.VerplichtVoor.ToList().Add(new Specialisatie() { Code = item.Code, Naam = item.Naam });
             }
 
-            foreach (var item in module.AanbevolenVoor)
-            {
-                dbModule.AanbevolenVoor.ToList().Add(new Specialisatie() { Code = item.Code, Naam = item.Naam });
-            }
-
-            var res = _moduleContext.Modules.Add(dbModule);
-            _moduleContext.SaveChanges();
-            return res.Entity;
+            //foreach (var item in module.AanbevolenVoor)
+            //{
+            //    dbModule.AanbevolenVoor.ToList().Add(new Specialisatie() { Code = item.Code, Naam = item.Naam });
+            //}
+            return dbModule;
+            //var res = _moduleContext.Modules.Add(dbModule);
+            //_moduleContext.SaveChanges();
+            //return res.Entity;
         }
 
         public IEnumerable<Module> GetAllModules()
@@ -70,6 +65,40 @@ namespace ModuleFrontend.Api.Services
         {
             var module = _moduleContext.Modules.Where(m => m.ModuleCode == modulecode).FirstOrDefault();
             return module;
+        }
+
+        public Module SendCreeerModuleCommand(ModuleViewModel module)
+        {
+            var verplichtVoor = new List<Specialisatie>() { };
+            foreach (var specialisatie in module.VerplichtVoor)
+            {
+                verplichtVoor.Add(new Specialisatie() { Code = specialisatie.Code, Naam = specialisatie.Naam });
+            }
+            ModuleDTO moduleToSend = new ModuleDTO()
+            {
+                Cohort = module.Cohort,
+                Competenties = module.Competenties,
+                ModuleCode = module.ModuleCode,
+                ModuleNaam = module.ModuleNaam,
+                Eindeisen = module.Eindeisen,
+                Studiefase = new Studiefase() { Fase = module.Studiefase.Fase, Periode = new Periode() { PeriodeNummer = module.Studiefase.Periode.PeriodeNummer } },
+                VerplichtVoor = verplichtVoor,
+            };
+
+            CreeerModuleCommand command = new CreeerModuleCommand() { Module = moduleToSend };
+
+            CreeerModuleCommandResult res = _publisher.PublishAsync<CreeerModuleCommandResult>(command).Result;
+            var retMod = res.Module;
+            Module returnedModule = new Module()
+            {
+                Cohort = retMod.Cohort,
+                Competenties = retMod.Competenties,
+                ModuleCode = retMod.ModuleCode,
+                ModuleNaam = retMod.ModuleNaam,
+                Eindeisen = retMod.Eindeisen,
+                Studiefase = retMod.Studiefase,
+                VerplichtVoor = retMod.VerplichtVoor
+            };
         }
     }
 }

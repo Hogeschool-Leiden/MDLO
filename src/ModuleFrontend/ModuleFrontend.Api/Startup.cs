@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Miffy.MicroServices.Commands;
 using ModuleFrontend.Api.DAL;
 using ModuleFrontend.Api.Services;
 using ModuleFrontend.Api.Utility;
@@ -32,6 +33,7 @@ namespace ModuleFrontend.Api
                                   throw new ArgumentNullException());
             });
             services.AddTransient<IModuleService, ModuleService>();
+            services.AddSingleton<ICommandPublisher, CommandPublisher>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
