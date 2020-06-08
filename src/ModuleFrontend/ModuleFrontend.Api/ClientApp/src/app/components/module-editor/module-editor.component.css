@@ -1,12 +1,24 @@
-#moduleForm{
+/* #moduleForm{
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-}
-
-
+} */
 table
 {
     table-layout: fixed;
     width: 100%;
+}
+.flex-outer label{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-grow: 3;
+}
+.naastElkaar{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.ruimteRechts{
+    flex-grow: 4;
 }

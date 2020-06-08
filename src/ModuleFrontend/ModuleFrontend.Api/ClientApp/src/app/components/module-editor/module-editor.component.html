@@ -1,149 +1,117 @@
-<form id="moduleForm" [formGroup]="moduleForm" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-        <mat-label>
-            ID
-        </mat-label>
-        <input matInput type="number" formControlName="id">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            Modulenaam:
-        </mat-label>
+<form id="moduleForm" class="flex-outer" [formGroup]="moduleForm" (ngSubmit)="onSubmit()">
+    <label>
+        <a>Modulenaam:</a>
         <input matInput type="string" formControlName="moduleNaam">
-        <mat-error>Modulenaam is verplicht</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            Modulecode:
-        </mat-label>
+    </label>
+
+    <label>
+        Modulecode:
         <input matInput type="string" formControlName="moduleCode">
-        <mat-error>Modulecode is verplicht</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-label>Cohort</mat-label>
-        <mat-select formControlName="cohort">
-            <mat-option *ngFor="let item of availableCohorts" [value]="item.beginjaar">
-                {{ item.naam }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-label>
-            Aantal EC:
-        </mat-label>
+        <span>Modulecode is verplicht</span>
+    </label>
+    <label>
+        Cohort
+        <select (change)="changeCohort($event)" formControlName="cohort">
+            <option value="" disabled>Kies een cohort</option>
+            <option *ngFor="let item of availableCohorts" [ngValue]="item.naam">{{item.naam}}</option>
+        </select>
+    </label>
+    <label>
+        Aantal EC:
         <input matInput type="number" formControlName="aantalEc">
-        <mat-error>Aantal EC is verplicht</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            Studiejaar:
-        </mat-label>
+    </label>
+    <label>
+        Studiejaar:
         <input matInput type="string" formControlName="studiejaar">
-        <mat-error>Studiejaar is verplicht</mat-error>
-    </mat-form-field>
-
+    </label>
 
     <br>
-    <h3>Moduleleider</h3>
-    <div formGroupName="moduleleider">
-        <mat-form-field>
-            <mat-label>
-                Naam:
-            </mat-label>
+    <h5>Moduleleider</h5>
+    <div class="onderElkaar" formGroupName="moduleleider">
+        <label>
+
+            Naam:
+
             <input matInput type="string" formControlName="naam">
-            <mat-error>Naam is verplicht</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>
-                Email:
-            </mat-label>
+        </label>
+        <label>
+
+            Email:
+
             <input matInput type="string" formControlName="email">
-            <mat-error>Email is verplicht</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>
-                Telefoonnummer:
-            </mat-label>
+        </label>
+        <label>
+
+            Telefoonnummer:
+
             <input matInput type="string" formControlName="telefoonnummer">
-            <mat-error>Telefoonnummer is verplicht</mat-error>
-        </mat-form-field>
+        </label>
 
     </div>
     <br>
-    <h3>Studiefase</h3>
-    <div formGroupName="studiefase">
-        <mat-form-field>
-            <mat-label>
-                Fase:
-            </mat-label>
+    <h5>Studiefase</h5>
+    <div class="onderElkaar" formGroupName="studiefase">
+        <label>
+
+            Fase:
+
             <input matInput type="string" formControlName="fase">
-            <mat-error>Studiefase is verplicht</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>
-                Periode:
-            </mat-label>
+        </label>
+        <label>
+
+            Periode:
+
             <input matInput type="number" formControlName="periode">
-            <mat-error>Periode is verplicht</mat-error>
-        </mat-form-field>
+        </label>
 
     </div>
     <br>
-    <h3>Verplicht voor</h3>
-    <div formGroupName="verplichtVoor">
-
-        <mat-label>
-            SE:
-        </mat-label>
-        <mat-checkbox formControlName="SE"></mat-checkbox>
-
-        <mat-label>
-            FICT:
-        </mat-label>
-        <mat-checkbox formControlName="FICT"></mat-checkbox>
 
 
-        <mat-label>
-            BDAM:
-        </mat-label>
-        <mat-checkbox formControlName="BDAM"></mat-checkbox>
+    <div class="naastElkaar">
+        <div class="onderElkaar" formGroupName="verplichtVoor">
+            <h5>Verplicht voor</h5>
+            <div>
+                <label>
+                    SE:
+                    <input type="checkbox" formControlName="SE" />
+                </label>
+                <label>
+                    FICT:
+                    <input type="checkbox" formControlName="FICT" />
+                </label>
+            </div>
+            <div>
+                BDAM:
+                <input type="checkbox" formControlName="BDAM" />
+                IAT:
+                <input type="checkbox" formControlName="IAT" />
+            </div>
+        </div>
 
-        <mat-label>
-            IAT:
-        </mat-label>
-        <mat-checkbox formControlName="IAT"></mat-checkbox>
-
-
-
+        <div class="onderElkaar" formGroupName="aanbevolenVoor">
+            <h5>Aanbevolen voor</h5>
+            <div>
+                <label>
+                    SE:
+                    <input type="checkbox" formControlName="SE" />
+                </label>
+                <label>
+                    FICT:
+                    <input type="checkbox" formControlName="FICT" />
+                </label>
+            </div>
+            <div>
+                BDAM:
+                <input type="checkbox" formControlName="BDAM" />
+                IAT:
+                <input type="checkbox" formControlName="IAT" />
+            </div>
+        </div>
     </div>
-    <br>
-    <!-- <h3>Aanbevolen voor</h3>
-    <div formGroupName="aanbevolenVoor">
 
-        <mat-label>
-            SE:
-        </mat-label>
-        <mat-checkbox formControlName="SE"></mat-checkbox>
 
-        <mat-label>
-            FICT:
-        </mat-label>
-        <mat-checkbox formControlName="FICT"></mat-checkbox>
-
-        <mat-label>
-            BDAM:
-        </mat-label>
-        <mat-checkbox formControlName="BDAM"></mat-checkbox>
-
-        <mat-label>
-            IAT:
-        </mat-label>
-        <mat-checkbox formControlName="IAT"></mat-checkbox>
-    </div> -->
-
-    <h3>Competenties</h3>
+    <h5>Competenties</h5>
     <div formGroupName="competenties">
         <table id="competentiematrix">
             <tr>
@@ -252,86 +220,17 @@
             </tr>
         </table>
     </div>
+    <label>
+        <ng-container formArrayName="eindeisen">
 
-    <!-- <mat-form-field>
-        <mat-label>
-            Beschrijving leerdoelen:
-        </mat-label>
-        <input matInput type="text" formControlName="beschrijvingLeerdoelen">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            Inhoudelijke beschrijving:
-        </mat-label>
-        <input matInput type="text" formControlName="inhoudelijkeBeschrijving">
-
-    </mat-form-field> -->
-    <mat-form-field formArrayName="eindeisen">
-        <mat-label>
             Eindeisen:
-        </mat-label>
+
             <div *ngFor="let control of eindeisen.controls; index as i">
                 <input matInput type="text" [formControl]="eindeisen.controls[i]">
             </div>
-    </mat-form-field>
-    <button mat-button (click)="addEindeis()" >Eindeis toevoegen</button>
-
-    <!-- <mat-form-field>
-        <mat-label>
-            Contacturen en werkvormen:
-        </mat-label>
-        <input matInput type="text" formControlName="contacturenWerkvormen">
-    </mat-form-field>
-
-    <br>
-    <h3>Toetsvorm</h3>
-    <mat-form-field>
-        <mat-label>
-            Toetsvorm:
-        </mat-label>
-        <input matInput type="text" formControlName="toetsvorm">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            Voorwaarden voldoende:
-        </mat-label>
-        <input matInput type="text" formControlName="voorwaardenVoldoende">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>
-            Let Op:
-        </mat-label>
-        <input matInput type="text" formControlName="letOp">
-    </mat-form-field>
-
-
-    <mat-label>
-        Summatief:
-    </mat-label>
-    <mat-checkbox formControlName="summatief"></mat-checkbox>
-
-    <mat-label>
-        Formatief:
-    </mat-label>
-    <mat-checkbox formControlName="formatief"></mat-checkbox>
-
-    <mat-label>
-        Kwalitatief:
-    </mat-label>
-    <mat-checkbox formControlName="kwalitatief"></mat-checkbox>
-
-    <mat-label>
-        Kwantitatief:
-    </mat-label>
-    <mat-checkbox formControlName="kwantitatief"></mat-checkbox>
-
-    <mat-form-field>
-        <mat-label>
-            Examinatoren:
-        </mat-label>
-        <input matInput type="textarea" formControlName="examinatoren">
-    </mat-form-field> -->
-
+        </ng-container>
+    </label>
+    <button mat-button (click)="addEindeis()">Eindeis toevoegen</button>
     <button mat-button type="submit" [disabled]="!moduleForm.valid">Creeer module</button>
 </form>
 

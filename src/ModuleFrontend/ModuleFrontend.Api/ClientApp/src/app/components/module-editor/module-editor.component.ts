@@ -114,4 +114,8 @@ export class ModuleEditorComponent implements OnInit{
   addEindeis(){
     this.eindeisen.push(new FormControl(''));
   }
+
+  changeCohort(e){
+    this.moduleForm.get('cohort').setValue(e.target.value,{onlySelf: true})
+  }
 }
