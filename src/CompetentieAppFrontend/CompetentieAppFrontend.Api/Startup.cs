@@ -2,6 +2,8 @@ using System;
 using CompetentieAppFrontend.Infrastructure.DAL;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using CompetentieAppFrontend.Services;
+using CompetentieAppFrontend.Services.Eventing;
+using CompetentieAppFrontend.Services.Projections;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -23,22 +25,30 @@ namespace CompetentieAppFrontend.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CompetentieAppFrontendContext>(builder =>
-            {
-                builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
-                                  throw new ArgumentNullException());
-            });
+            services.AddCompetentieAppFrontendContext();
+            
             services.AddTransient<IArchitectuurLaagRepository, ArchitectuurLaagRepository>();
             services.AddTransient<IActiviteitRepository, ActiviteitRepository>();
             services.AddTransient<ICompetentieRepository, CompetentieRepository>();
-            services.AddTransient<IEindcompetentieService, EindcompetentieService>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
+            services.AddTransient<ICohortRepository, CohortRepository>();
+            services.AddTransient<ISpecialisatieRepository, SpecialisatieRepository>();
+            services.AddTransient<IPeriodeRepository, PeriodeRepository>();
+            services.AddTransient<IStudiefaseRepository, StudiefaseRepository>();
+            services.AddTransient<IBeheersingsNiveauRepository, BeheersingsNiveauRepository>();
+            services.AddTransient<IEindeisRepository, EindeisRepository>();
+            
+            services.AddTransient<IEindcompetentieService, EindcompetentieService>();
             services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<IMatrixService<int>, NiveauMatrixService>();
             services.AddTransient<IMatrixService<Eindniveau>, EindcompetentieMatrixService>();
+            services.AddTransient<ICompetentieService, CompetentieService>();
+            services.AddTransient<IStudiefaseService, StudiefaseService>();
+            services.AddTransient<IEindeisService, EindeisService>();
+            services.AddTransient<IModuleEventsDeserializer, ModuleEventsDeserializer>();
+
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-            services.UseRabbitMq();
             services.UseMicroserviceHost();
         }
 

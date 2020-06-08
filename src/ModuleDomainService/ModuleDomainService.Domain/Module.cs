@@ -11,11 +11,10 @@ namespace ModuleDomainService.Domain
         private string _code;
         private string _naam;
         private int _aantalEc;
-        private Cohort _cohort;
-        private ModuleLeider _moduleLeider;
+        private string _cohort;
         private Studiefase _studiefase;
         private Status _status;
-        private Competenties _competenties;
+        private Matrix _competenties;
         private EindEisen _eindEisen;
 
         public Module(CreeerModuleCommand creeerModuleCommand) => Creeer(creeerModuleCommand);
@@ -24,15 +23,21 @@ namespace ModuleDomainService.Domain
         {
         }
 
-        public override string Id => $"{_code}:{_cohort.Studiejaar}";
+        public override string Id => $"{_code}:{_cohort}";
 
-        private void Creeer(CreeerModuleCommand creeerModuleCommand)
+        private void Creeer(CreeerModuleCommand creeerModule)
         {
             Apply(new ModuleGecreeerd
             {
-                ModuleNaam = creeerModuleCommand.ModuleNaam,
-                ModuleCode = creeerModuleCommand.ModuleCode,
-                AantalEc = creeerModuleCommand.AantalEc
+                ModuleNaam = creeerModule.ModuleNaam,
+                ModuleCode = creeerModule.ModuleCode,
+                AantalEc = creeerModule.AantalEc,
+                Cohort = creeerModule.Cohort,
+                Studiefase = creeerModule.Studiefase,
+                Competenties = creeerModule.Competenties,
+                Eindeisen = creeerModule.Eindeisen,
+                VerplichtVoor = creeerModule.VerplichtVoor,
+                AanbevolenVoor = creeerModule.AanbevolenVoor
             });
         }
 
@@ -44,11 +49,10 @@ namespace ModuleDomainService.Domain
             _code = @event.ModuleCode;
             _aantalEc = @event.AantalEc;
             _cohort = @event.Cohort;
-            _moduleLeider = @event.ModuleLeider;
             _studiefase = @event.Studiefase;
-            _status = @event.Status;
             _competenties = @event.Competenties;
-            _eindEisen = @event.Eindeisen;
+            _eindEisen = new EindEisen(@event.Eindeisen);
+            _status = new Status(@event.VerplichtVoor, @event.AanbevolenVoor);
         }
     }
 }

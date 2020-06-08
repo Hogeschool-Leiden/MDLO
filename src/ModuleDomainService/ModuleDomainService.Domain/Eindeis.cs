@@ -2,6 +2,9 @@ namespace ModuleDomainService.Domain
 {
     public struct Eindeis
     {
-        private string _omschrijving;
+        public Eindeis(string omschrijving) =>
+            Omschrijving = omschrijving;
+
+        public string Omschrijving { get; }
     }
 }

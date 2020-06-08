@@ -30,12 +30,12 @@ namespace ModuleDomainService.Infrastructure.Test.Repositories
                         ModuleCode = "IOPR",
                         ModuleNaam = "Object georienteerd programeren",
                         AantalEc = 3,
-                        Cohort = new Cohort(),
-                        ModuleLeider = new ModuleLeider(),
-                        Status = new Status(),
-                        Studiefase = new Studiefase(),
-                        Competenties = new Competenties(),
-                        Eindeisen = new EindEisen()
+                        Cohort = "2019/2020",
+                        Studiefase = new Studiefase("", new List<int>()),
+                        Competenties = new Matrix(),
+                        Eindeisen = new List<string>(),
+                        VerplichtVoor = new List<Specialisatie>(),
+                        AanbevolenVoor = new List<Specialisatie>()
                     }
                 }));
         }
@@ -77,19 +77,19 @@ namespace ModuleDomainService.Infrastructure.Test.Repositories
                     ModuleCode = "IOPR",
                     ModuleNaam = "Object georienteerd programeren",
                     AantalEc = 3,
-                    Cohort = new Cohort(),
-                    ModuleLeider = new ModuleLeider(),
-                    Status = new Status(),
-                    Studiefase = new Studiefase(),
-                    Competenties = new Competenties(),
-                    Eindeisen = new EindEisen()
+                    Cohort = "2019/2020",
+                    Studiefase = new Studiefase("", new List<int>()),
+                    Competenties = new Matrix(),
+                    Eindeisen = new List<string>(),
+                    VerplichtVoor = new List<Specialisatie>(),
+                    AanbevolenVoor = new List<Specialisatie>()
                 }
             });
             var repository = new ModuleRepository(_eventStoreMock.Object, _eventPublisherMock.Object);
 
             // Act
             repository.SaveModule(module);
-            
+
             // Assert
             _eventStoreMock.Verify(store => store.AppendToStream(It.IsAny<EventStream>()), Times.Never);
         }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using CompetentieAppFrontend.Api.Controllers;
 using CompetentieAppFrontend.Services;
+using CompetentieAppFrontend.Services.Projections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

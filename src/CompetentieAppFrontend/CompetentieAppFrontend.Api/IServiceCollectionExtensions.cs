@@ -1,4 +1,6 @@
 using System;
+using CompetentieAppFrontend.Infrastructure.DAL;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Miffy;
@@ -12,20 +14,24 @@ namespace CompetentieAppFrontend.Api
 {
     public static class IServiceCollectionExtensions
     {
-        public static void UseRabbitMq(this IServiceCollection services)
+        public static void AddCompetentieAppFrontendContext(this IServiceCollection services)
+        {
+            services.AddDbContext<CompetentieAppFrontendContext>(builder =>
+            {
+                var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+                if (connectionString == null)
+                    throw new ArgumentNullException($"{nameof(connectionString)} can not be null");
+                builder.UseNpgsql(connectionString);
+            });
+        }
+
+        public static void UseMicroserviceHost(this IServiceCollection services)
         {
             var contextBuilder = new RabbitMqContextBuilder().ReadFromEnvironmentVariables();
             
             var context = Policy.Handle<BrokerUnreachableException>()
                 .WaitAndRetryForever(sleepDurationProvider => TimeSpan.FromSeconds(5))
                 .Execute(contextBuilder.CreateContext);
-
-            services.AddSingleton(context);
-        }
-
-        public static void UseMicroserviceHost(this IServiceCollection services)
-        {
-            var context = services.BuildServiceProvider().GetService<IBusContext<IConnection>>();
             
             var loggerFactory = LoggerFactory.Create(configure =>
             {
@@ -38,10 +44,11 @@ namespace CompetentieAppFrontend.Api
                 .RegisterDependencies(services)
                 .WithQueueName(Environment.GetEnvironmentVariable("BROKER_QUEUE_NAME"))
                 .WithBusContext(context)
+                .UseConventions()
                 .CreateHost();
             
+            services.AddSingleton(context);
             services.AddSingleton(microserviceHost);
-
             services.AddHostedService<Miffy>();
         }
     }

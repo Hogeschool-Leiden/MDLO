@@ -51,7 +51,7 @@ namespace ModuleDomainService.Infrastructure.Test.DAL
                     ModuleCode = "IOPR",
                     ModuleNaam = "Object georienteerd programeren",
                     AantalEc = 3,
-                    Cohort = new Cohort()
+                    Cohort = "2019/2020"
                 }
             }));
 
