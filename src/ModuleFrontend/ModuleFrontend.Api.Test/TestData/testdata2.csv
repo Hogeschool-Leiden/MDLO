@@ -1,0 +1,4 @@
+Naam;Omschrijving;Jaar;per1;per2;per3;per4;EC;Allen;BDAM;FICT;SE;IAT;GI-BE;GI-AN;GI-AD;GI-ON;GI-RE;BP-BE;BP-AN;BP-AD;BP-ON;BP-RE;IS-BE;IS-AN;IS-AD;IS-ON;IS-RE;SW-BE;SW-AN;SW-AD;SW-ON;SW-RE;HI-BE;HI-AN;HI-AD;HI-ON;HI-RE
+ifedy;E-Discovery;2;FALSE;TRUE;FALSE;TRUE;3;;;V;;;;;;;;;3;2;;;;2;;;;;2;;;;;;;;
+ifito;Inleiding Forensisch ICT Onderzoek;1;FALSE;FALSE;TRUE;FALSE;3;V;;;;;;;;;;;1;;;1;;1;;;;;1;;;;;;;;
+ifma;Malware analyse in systemen;2;FALSE;FALSE;FALSE;TRUE;3;;;V;;;;;;;;;2;;;;;2;;1;;;2;;;;;;;;
