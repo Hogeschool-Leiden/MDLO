@@ -2,7 +2,6 @@
 using ModuleFrontend.Api.ViewModels;
 using ModuleFrontend.Api.Services;
 using System.Linq;
-using ModuleFrontend.Api.Exceptions;
 using Miffy;
 using Microsoft.AspNetCore.Http;
 
@@ -24,10 +23,9 @@ namespace ModuleFrontend.Api.Controllers
             {
                 return BadRequest(ModelState.Values);
             }
-            else if (module.VerplichtVoor.Count() < 1)
+            if (!module.VerplichtVoor.Any())
             {
-                ModelState.AddModelError("VerplichtVoorError", "Een module moet voor minstens één specialisatie verplicht zijn, of een keuzevak zijn.");
-                return BadRequest(ModelState.Values);
+                return BadRequest("Een module moest minstens voor één specialisatie verplicht zijn.");
             }
 
             try

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Miffy.MicroServices.Commands;
 using ModuleFrontend.Api.Models;
 
 namespace ModuleFrontend.Api.Commands
 {
+    [ExcludeFromCodeCoverage]
     public class CreeerModuleCommand : DomainCommand
     {
         public CreeerModuleCommand() : base("ModuleDomain.Module.CreeerModule")

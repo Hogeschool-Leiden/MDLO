@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using ModuleFrontend.Api.Models;
 
 namespace ModuleFrontend.Api.DAL
 {
+    [ExcludeFromCodeCoverage]
     public class ModuleContext : DbContext
     {
         public DbSet<Module> Modules { get; set; }

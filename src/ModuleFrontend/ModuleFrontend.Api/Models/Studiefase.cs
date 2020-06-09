@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleFrontend.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Studiefase
     {
         [ExcludeFromCodeCoverage]

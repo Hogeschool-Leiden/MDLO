@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Miffy;
@@ -12,6 +13,7 @@ using RabbitMQ.Client.Exceptions;
 
 namespace ModuleFrontend.Api
 {
+    [ExcludeFromCodeCoverage]
     public static class IServiceCollectionExtensions
     {
         public static void UseRabbitMq(this IServiceCollection services)

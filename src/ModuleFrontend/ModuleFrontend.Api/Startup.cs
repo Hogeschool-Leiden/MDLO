@@ -8,11 +8,12 @@ using Microsoft.Extensions.Hosting;
 using Miffy.MicroServices.Commands;
 using ModuleFrontend.Api.DAL;
 using ModuleFrontend.Api.Services;
-using ModuleFrontend.Api.Utility;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleFrontend.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
