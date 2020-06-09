@@ -3,6 +3,8 @@ using ModuleFrontend.Api.ViewModels;
 using ModuleFrontend.Api.Services;
 using System.Linq;
 using ModuleFrontend.Api.Exceptions;
+using Miffy;
+using Microsoft.AspNetCore.Http;
 
 namespace ModuleFrontend.Api.Controllers
 {
@@ -44,10 +46,21 @@ namespace ModuleFrontend.Api.Controllers
                 return BadRequest(ModelState.Values);
             }
 
-            var result = _service.SendCreeerModuleCommand(module);
+            try
+            {
+                var result = _service.SendCreeerModuleCommand(module);
+                if(result.StatusCode == 400)
+                {
+                    return BadRequest("De combinatie van modulecode en cohort bestaat al.");
+                }
+                return Ok(result.Message);
+            }
+            catch (DestinationQueueException)
+            {
 
-
-            return Ok(module);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Er is een fout op de server opgetreden. Probeer het later opnieuw.");
+            }
+          
         }
     }
 }

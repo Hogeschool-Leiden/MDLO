@@ -1,8 +1,10 @@
 ﻿using ModuleFrontend.Api.Models;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleFrontend.Api.DTO
 {
+    [ExcludeFromCodeCoverage]
     public class ModuleDTO
     {
         public IEnumerable<Specialisatie> VerplichtVoor { get; set; }

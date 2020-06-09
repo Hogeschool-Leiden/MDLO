@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleFrontend.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Module
     {
         public long ModuleId { get; set; }

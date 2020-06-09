@@ -22,7 +22,7 @@ describe('ModuleSanitizePipe', () => {
       },
       studiefase: {
         fase: "correcteFase",
-        periode: "4"
+        periode:[4, 2]
       },
       verplichtVoor: {
         SE: true,
@@ -64,18 +64,7 @@ describe('ModuleSanitizePipe', () => {
         "HIRE": 0,
         "HIBE": 0,
       },
-      beschrijvingLeerdoelen: "correcteBeschrijving",
-      inhoudelijkeBeschrijving: "correcteBeschrijving",
-      eindeisen: "correcteEindeisen",
-      contacturenWerkvormen: "correcteContacturen",
-      toetsvorm: "correcteToetsvorm",
-      voorwaardenVoldoende: "correcteVoorwaarde",
-      letOp: "correcteLetop",
-      summatief: "",
-      formatief: true,
-      kwalitatief: "",
-      kwantitatief: true,
-      examinatoren: "Studenten"
+      eindeisen: ["correcteEindeisen", "AndereEindeis"],
     }
 
     let result = pipe.transform(jsonValue);
@@ -86,19 +75,9 @@ describe('ModuleSanitizePipe', () => {
     expect(result.aantalEc).toBe(3);
     expect(result.studiejaar).toBe("correctJaar");
     expect(result.moduleleider).toEqual({ id: undefined, naam: "correcteNaam", email: "correctEmail", telefoonnummer: "correctTelefoonnummer" });
-    expect(result.studiefase).toEqual({ id: undefined, fase: "correcteFase", periode: { id: undefined, periodeNummer: 4 } });
-    // expect(result.beschrijvingLeerdoelen).toBe("correcteBeschrijving");
-    // expect(result.inhoudelijkeBeschrijving).toBe("correcteBeschrijving");
-    expect(result.eindeisen).toBe("correcteEindeisen");
-    // expect(result.contacturenWerkvormen).toBe("correcteContacturen");
-    // expect(result.toetsvorm).toBe("correcteToetsvorm");
-    // expect(result.voorwaardenVoldoende).toBe("correcteVoorwaarde");
-    // expect(result.letOp).toBe("correcteLetop");
-    // expect(result.summatief).toBe(false);
-    // expect(result.formatief).toBe(true);
-    // expect(result.kwalitatief).toBe(false);
-    // expect(result.kwantitatief).toBe(true);
-    // expect(result.examinatoren).toBe("Studenten");
+    expect(result.studiefase).toEqual({ id: undefined, fase: "correcteFase", periode: [4, 2] });
+    expect(result.eindeisen[0]).toBe("correcteEindeisen");
+    expect(result.eindeisen[1]).toBe("AndereEindeis");
     expect(result.competenties.cells[0][1]).toBe(3);
     expect(result.competenties.cells[3][3]).toBe(1);
     expect(result.cohort).toBe("2019/2020");

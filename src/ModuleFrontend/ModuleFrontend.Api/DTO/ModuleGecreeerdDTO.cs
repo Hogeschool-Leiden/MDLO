@@ -1,8 +1,10 @@
 ﻿using ModuleFrontend.Api.Models;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleFrontend.Api.DTO
 {
+    [ExcludeFromCodeCoverage]
     public class ModuleGecreeerdDTO
     {
         public long ModuleId { get; set; }

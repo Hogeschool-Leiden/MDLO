@@ -26,3 +26,12 @@ table
 button {
     max-height: 30px;
 }
+
+.error{
+    color: crimson;
+}
+
+.onderElkaar{
+    flex-grow: 2
+}
+

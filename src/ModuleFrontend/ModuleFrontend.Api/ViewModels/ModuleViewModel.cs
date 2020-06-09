@@ -1,9 +1,11 @@
 ﻿using ModuleFrontend.Api.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleFrontend.Api.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class ModuleViewModel
     {
         public long Id { get; set; }

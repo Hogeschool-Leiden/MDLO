@@ -6,10 +6,11 @@
     </label>
 
     <label>
-        <a>Modulecode</a>
+        <a>Modulecode *</a>
         <input type="string" formControlName="moduleCode">
-        <span>Modulecode is verplicht</span>
+
     </label>
+    <span class="error" *ngIf="!modulecode.valid && modulecode.touched">Modulecode is verplicht</span>
     <label>
         <a> Aantal EC</a>
         <input type="number" formControlName="aantalEc">
@@ -19,7 +20,7 @@
         <input type="string" formControlName="studiejaar">
     </label>
     <label>
-        <a> Cohort</a>
+        <a> Cohort *</a>
         <select (change)="changeCohort($event)" formControlName="cohort">
             <option value="" disabled>Kies een cohort</option>
             <option *ngFor="let item of availableCohorts" [ngValue]="item.naam">{{item.naam}}</option>
@@ -90,7 +91,7 @@
 
     <div class="naastElkaar">
         <div class="onderElkaar" formGroupName="verplichtVoor">
-            <h5>Verplicht voor</h5>
+            <label>Verplicht voor *</label>
             <div>
                 <label>
                     <a> SE</a>
@@ -102,35 +103,44 @@
                 </label>
             </div>
             <div>
-                <a> BDAM</a>
-                <input type="checkbox" formControlName="BDAM" />
-                <a> IAT</a>
-                <input type="checkbox" formControlName="IAT" />
+                <label>
+                    <a> BDAM</a>
+                    <input type="checkbox" formControlName="BDAM" />
+                </label>
+                <label>
+                    <a> IAT</a>
+                    <input type="checkbox" formControlName="IAT" />
+                </label>
             </div>
         </div>
 
+
         <div class="onderElkaar" formGroupName="aanbevolenVoor">
-            <h5>Aanbevolen voor</h5>
+            <label>Aanbevolen voor</label>
             <div>
-
-                <a> SE</a>
-                <input type="checkbox" formControlName="SE" />
-
-
-                <a>FICT</a>
-                <input type="checkbox" formControlName="FICT" />
-
+                <label>
+                    <a> SE</a>
+                    <input type="checkbox" formControlName="SE" />
+                </label>
+                <label>
+                    <a> FICT</a>
+                    <input type="checkbox" formControlName="FICT" />
+                </label>
             </div>
-
             <div>
-                <a>BDAM</a>
-                <input type="checkbox" formControlName="BDAM" />
-                <a>IAT</a>
-                <input type="checkbox" formControlName="IAT" />
+                <label>
+                    <a> BDAM</a>
+                    <input type="checkbox" formControlName="BDAM" />
+                </label>
+                <label>
+                    <a> IAT</a>
+                    <input type="checkbox" formControlName="IAT" />
+                </label>
             </div>
         </div>
     </div>
-
+    <span class="error" *ngIf="!verplichtVoor.valid && !verplichtVoor.pristine">Een module moet tenminste voor één
+        specialisatie verplicht zijn.</span>
 
     <h5>Competenties</h5>
     <div formGroupName="competenties">
