@@ -18,18 +18,6 @@ namespace ModuleFrontend.Api.Services
             _moduleContext = context;
             _publisher = publisher;
         }
-
-        public IEnumerable<Module> GetAllModules()
-        {
-            return _moduleContext.Modules;
-        }
-
-        public Module GetByModuleCode(string modulecode)
-        {
-            var module = _moduleContext.Modules.Where(m => m.ModuleCode == modulecode).FirstOrDefault();
-            return module;
-        }
-
         public CreeerModuleCommandResponse SendCreeerModuleCommand(ModuleViewModel module)
         {
             var verplichtVoor = new List<Specialisatie>() { };
@@ -44,7 +32,7 @@ namespace ModuleFrontend.Api.Services
                 aanbevolenVoor.Add(new Specialisatie() { Code = specialisatie.Code, Naam = specialisatie.Naam });
             }
 
-            ModuleDTO moduleToSend = new ModuleDTO()
+            CreeerModuleCommand command = new CreeerModuleCommand()
             {
                 Cohort = module.Cohort,
                 Competenties = module.Competenties,
@@ -55,9 +43,7 @@ namespace ModuleFrontend.Api.Services
                 VerplichtVoor = verplichtVoor,
                 AanbevolenVoor = aanbevolenVoor
             };
-
-            CreeerModuleCommand command = new CreeerModuleCommand() { Module = moduleToSend };
-
+            
             CreeerModuleCommandResponse result = _publisher.PublishAsync<CreeerModuleCommandResponse>(command).Result;
             return result;
         }

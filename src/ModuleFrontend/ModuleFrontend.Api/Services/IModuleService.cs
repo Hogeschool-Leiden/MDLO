@@ -7,8 +7,6 @@ namespace ModuleFrontend.Api.Services
 {
     public interface IModuleService
     {
-        Module GetByModuleCode(string modulecode);
-        IEnumerable<Module> GetAllModules();
         CreeerModuleCommandResponse SendCreeerModuleCommand(ModuleViewModel module);
     }
 }

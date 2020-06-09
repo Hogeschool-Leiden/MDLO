@@ -16,22 +16,6 @@ namespace ModuleFrontend.Api.Controllers
             _service = service;
         }
 
-        public IActionResult GetModule(string modulecode)
-        {
-            var module = _service.GetByModuleCode(modulecode);
-            if (module == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(module);
-        }
-
-        public IActionResult GetAll()
-        {
-            return Ok(_service.GetAllModules());
-        }
-
         [Route("module")]
         [HttpPost]
         public IActionResult PostModule([FromBody]ModuleViewModel module)
@@ -60,7 +44,6 @@ namespace ModuleFrontend.Api.Controllers
 
                 return StatusCode(StatusCodes.Status500InternalServerError, "Er is een fout op de server opgetreden. Probeer het later opnieuw.");
             }
-          
         }
     }
 }

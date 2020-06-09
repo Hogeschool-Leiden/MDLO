@@ -1,9 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ModuleFrontend.Api.ComponentTest
+namespace ModuleFrontend.Api.Test
 {
     [TestClass]
     public class ModuleServiceTest
     {
+        
     }
 }
