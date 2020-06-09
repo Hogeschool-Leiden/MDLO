@@ -32,5 +32,11 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
                 .ThenInclude(module => module.Cohort)
                 .ToList();
         }
+
+        public void CreateCompetenties(IEnumerable<Competentie> competenties)
+        {
+            _context.Competenties.AddRange(competenties);
+            _context.SaveChanges();
+        }
     }
 }

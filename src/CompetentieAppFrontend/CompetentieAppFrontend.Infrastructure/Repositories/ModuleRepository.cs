@@ -33,5 +33,13 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
                 .Include(module => module.Cohort)
                 .ToList();
         }
+
+        public long CreateModule(Module module)
+        {
+            var entityEntry = _context.Modules.Add(module);
+            _context.SaveChanges();
+
+            return entityEntry.Entity.Id;
+        }
     }
 }

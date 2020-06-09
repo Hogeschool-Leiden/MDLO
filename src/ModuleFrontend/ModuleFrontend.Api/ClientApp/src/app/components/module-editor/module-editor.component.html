@@ -1,0 +1,259 @@
+<h1>Module aanmaken</h1>
+<form id="moduleForm" class="flex-outer" [formGroup]="moduleForm" (ngSubmit)="onSubmit()">
+    <label>
+        <a>Modulenaam</a>
+        <input type="string" formControlName="moduleNaam">
+    </label>
+
+    <label>
+        <a>Modulecode *</a>
+        <input type="string" formControlName="moduleCode">
+
+    </label>
+    <span class="error" *ngIf="!modulecode.valid && modulecode.touched">Modulecode is verplicht</span>
+    <label>
+        <a> Aantal EC</a>
+        <input type="number" formControlName="aantalEc">
+    </label>
+    <label>
+        <a> Studiejaar</a>
+        <input type="string" formControlName="studiejaar">
+    </label>
+    <label>
+        <a> Cohort *</a>
+        <select (change)="changeCohort($event)" formControlName="cohort">
+            <option value="" disabled>Kies een cohort</option>
+            <option *ngFor="let item of availableCohorts" [ngValue]="item.naam">{{item.naam}}</option>
+        </select>
+    </label>
+
+    <br>
+    <h5>Eindeisen</h5>
+    <label>
+        <ng-container formArrayName="eindeisen">
+            <a>Eindeisen</a>
+            <div class="noWrap">
+                <div *ngFor="let control of eindeisen.controls; index as i">
+                    <input type="text" [formControl]="eindeisen.controls[i]">
+                </div>
+            </div>
+        </ng-container>
+        <button type="button" (click)="addEindeis()">Eindeis toevoegen</button>
+
+    </label>
+
+    <br>
+    <h5>Moduleleider</h5>
+    <div class="onderElkaar" formGroupName="moduleleider">
+        <label>
+
+            <a> Naam</a>
+
+            <input type="string" formControlName="naam">
+        </label>
+        <label>
+
+            <a> Email</a>
+
+            <input type="string" formControlName="email">
+        </label>
+        <label>
+
+            <a> Telefoonnummer</a>
+
+            <input type="string" formControlName="telefoonnummer">
+        </label>
+
+    </div>
+    <br>
+    <h5>Studiefase</h5>
+    <div class="onderElkaar" formGroupName="studiefase">
+        <label>
+            <a> Fase</a>
+            <input type="string" formControlName="fase">
+        </label>
+
+        <label>
+            <a> Periode</a>
+            <ng-container formArrayName="periode">
+                <div class="noWrap">
+                    <div *ngFor="let control of periode.controls; index as i">
+                        <input type="number" [formControl]="periode.controls[i]">
+                    </div>
+                </div>
+            </ng-container>
+            <button type="button" (click)="addPeriode()">Periode toevoegen</button>
+        </label>
+
+    </div>
+    <br>
+
+
+    <div class="naastElkaar">
+        <div class="onderElkaar" formGroupName="verplichtVoor">
+            <label>Verplicht voor *</label>
+            <div>
+                <label>
+                    <a> SE</a>
+                    <input type="checkbox" formControlName="SE" />
+                </label>
+                <label>
+                    <a> FICT</a>
+                    <input type="checkbox" formControlName="FICT" />
+                </label>
+            </div>
+            <div>
+                <label>
+                    <a> BDAM</a>
+                    <input type="checkbox" formControlName="BDAM" />
+                </label>
+                <label>
+                    <a> IAT</a>
+                    <input type="checkbox" formControlName="IAT" />
+                </label>
+            </div>
+        </div>
+
+
+        <div class="onderElkaar" formGroupName="aanbevolenVoor">
+            <label>Aanbevolen voor</label>
+            <div>
+                <label>
+                    <a> SE</a>
+                    <input type="checkbox" formControlName="SE" />
+                </label>
+                <label>
+                    <a> FICT</a>
+                    <input type="checkbox" formControlName="FICT" />
+                </label>
+            </div>
+            <div>
+                <label>
+                    <a> BDAM</a>
+                    <input type="checkbox" formControlName="BDAM" />
+                </label>
+                <label>
+                    <a> IAT</a>
+                    <input type="checkbox" formControlName="IAT" />
+                </label>
+            </div>
+        </div>
+    </div>
+    <span class="error" *ngIf="!verplichtVoor.valid && !verplichtVoor.pristine">Een module moet tenminste voor één
+        specialisatie verplicht zijn.</span>
+
+    <h5>Competenties</h5>
+    <div formGroupName="competenties">
+        <table id="competentiematrix">
+            <tr>
+                <th class="columnWidth"></th>
+                <th>gebruiksinteractie</th>
+                <th>organisatieprocessen</th>
+                <th>infrastructuur</th>
+                <th>software</th>
+                <th>hardware interfacing</th>
+            </tr>
+
+            <tr>
+                <td>analyseren</td>
+
+                <td>
+                    <input type="number" formControlName="GIAN">
+                </td>
+                <td>
+                    <input type="number" formControlName="BPAN">
+                </td>
+                <td>
+                    <input type="number" formControlName="ISAN">
+                </td>
+                <td>
+                    <input type="number" formControlName="SWAN">
+                </td>
+                <td>
+                    <input type="number" formControlName="HIAN">
+                </td>
+            </tr>
+
+            <tr>
+                <td>adviseren</td>
+                <td>
+                    <input type="number" formControlName="GIAD">
+                </td>
+                <td>
+                    <input type="number" formControlName="BPAD">
+                </td>
+                <td>
+                    <input type="number" formControlName="ISAD">
+                </td>
+                <td>
+                    <input type="number" formControlName="SWAD">
+                </td>
+                <td>
+                    <input type="number" formControlName="HIAD">
+                </td>
+            </tr>
+
+            <tr>
+                <td>ontwerpen</td>
+                <td>
+                    <input type="number" formControlName="GION">
+                </td>
+                <td>
+                    <input type="number" formControlName="BPON">
+                </td>
+                <td>
+                    <input type="number" formControlName="ISON">
+                </td>
+                <td>
+                    <input type="number" formControlName="SWON">
+                </td>
+                <td>
+                    <input type="number" formControlName="HION">
+                </td>
+            </tr>
+
+            <tr>
+                <td>realiseren</td>
+                <td>
+                    <input type="number" formControlName="GIRE">
+                </td>
+                <td>
+                    <input type="number" formControlName="BPRE">
+                </td>
+                <td>
+                    <input type="number" formControlName="ISRE">
+                </td>
+                <td>
+                    <input type="number" formControlName="SWRE">
+                </td>
+                <td>
+                    <input type="number" formControlName="HIRE">
+                </td>
+            </tr>
+
+            <tr>
+                <td>beheren</td>
+                <td>
+                    <input type="number" formControlName="GIBE">
+                </td>
+                <td>
+                    <input type="number" formControlName="BPBE">
+                </td>
+                <td>
+                    <input type="number" formControlName="ISBE">
+                </td>
+                <td>
+                    <input type="number" formControlName="SWBE">
+                </td>
+                <td>
+                    <input type="number" formControlName="HIBE">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <button mat-button type="submit" [disabled]="!moduleForm.valid">Creeer module</button>
+</form>
+
+<pre>{{jsonValue | json}} </pre>
+<pre>{{jsonValueAfterPipe | json}} </pre>

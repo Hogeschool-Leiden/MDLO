@@ -66,5 +66,47 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             // Assert
             Assert.IsTrue(result.Contains(activiteitNaam));
         }
+        
+        [TestMethod]
+        public void EnsureActiviteitExist_Should_Return_Instance_Of_Type_Long()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new ActiviteitRepository(context);
+
+            // Act
+            var result = repository.EnsureActiviteitExist("analyseren");
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(long));
+        }
+
+        [TestMethod]
+        public void EnsureActiviteitExist_Should_Not_Duplicate_Entry()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new ActiviteitRepository(context);
+
+            // Act
+            var result = repository.EnsureActiviteitExist("analyseren");
+
+            // Assert
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void EnsureActiviteitExist_Should_Save_New_Cohorts()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new ActiviteitRepository(context);
+
+            // Act
+            var result = repository.EnsureActiviteitExist("testen");
+
+            // Assert
+            Assert.AreEqual(6, result);
+        }
     }
 }

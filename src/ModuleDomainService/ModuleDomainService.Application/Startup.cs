@@ -1,7 +1,5 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Miffy.MicroServices.Events;
 using ModuleDomainService.Infrastructure.DAL;
@@ -13,11 +11,7 @@ namespace ModuleDomainService.Application
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ModuleDomainServiceContext>(builder =>
-            {
-                builder.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
-                                  throw new ArgumentNullException());
-            });
+            services.AddModuleDomainServiceDbContext();
             services.AddTransient<IEventPublisher, EventPublisher>();
             services.AddTransient<IEventStore, SQLEventStore>();
             services.AddTransient<IModuleRepository, ModuleRepository>();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Services;
+using CompetentieAppFrontend.Services.Projections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

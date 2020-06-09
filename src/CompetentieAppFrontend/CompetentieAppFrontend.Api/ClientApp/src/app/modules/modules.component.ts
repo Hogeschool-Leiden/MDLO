@@ -13,12 +13,13 @@ import {HttpClient} from "@angular/common/http";
 })
 export class ModulesComponent implements OnInit {
   displayedColumns = ['module', 'specialisation', 'period', 'matrix', 'endRequirements'];
-  dataSource = new MatTableDataSource(MODULE_DATA);
+  dataSource: MatTableDataSource<any>;
   pageWidthInPixels;
   columnRemoveName: string = 'endRequirements';
   fullColumnSize: number = 5;
-  showListUnderMatrix: boolean = true;
+  showEndRequirementsUnderMatrix: boolean = true;
   moduleData;
+  MODULE_DATA: ModuleModel[] = [];
   dbUrl: string = '/api/modules';
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -30,78 +31,27 @@ export class ModulesComponent implements OnInit {
     this.clearModuleData();
     this.getDataFromDB();
     this.onPageResize();
-    this.dataSource.sort = this.sort;
+    this.setDataSource();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onPageResize() {
-    this.pageWidthInPixels = window.innerWidth;
-    this.resizeTableToFitScreen();
-  }
-
-  resizeTableToFitScreen() {
-    if (this.isScreenToSmallToFitTable()) {
-      this.removeColumn();
-      this.addListUnderMatrix();
-    } else {
-      this.addColumn();
-      this.removeListUnderMatrix();
-    }
-  }
-
-  private removeColumn() {
-    if (this.displayedColumns.length >= this.fullColumnSize) {
-      this.displayedColumns.splice(this.displayedColumns.length - 1);
-    }
-  }
-
-  private addColumn() {
-    if (this.displayedColumns.length ! < this.fullColumnSize) {
-      this.displayedColumns.push(this.columnRemoveName);
-    }
-  }
-
-  private addListUnderMatrix() {
-    this.showListUnderMatrix = true;
-  }
-
-  private removeListUnderMatrix() {
-    this.showListUnderMatrix = false;
-  }
-
-  isScreenToSmallToFitTable() {
-    return this.pageWidthInPixels < 1155;
-  }
-
-  applyFilter($event: KeyboardEvent) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.setColumnsToFilter();
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  setColumnsToFilter() {
-    //specifies what column the filter looks at.
-    this.dataSource.filterPredicate = function (data, filter: string): boolean {
-      return data.specialisation.includes(filter) || data.module.toLowerCase().includes(filter) ||
-        data.period.toString().includes(filter);
-    }
+  clearModuleData() {
+    this.MODULE_DATA.length = 0;
   }
 
   getDataFromDB() {
-    //DBdata
-    this.http.get(this.dbUrl).toPromise().then(data =>{
+    this.http.get(this.dbUrl).toPromise().then(data => {
       this.moduleData = data;
       this.injectDataInTable();
-    });
+    }).catch(error => console.log(error));
 
-    // //mockdata
-    // this.moduleData = moduleMock;
+
+    // this.moduleData = moduleMock;  // this is mockdata
     // this.injectDataInTable();
   }
 
   injectDataInTable() {
     for (let i = 0; i < this.moduleData.length; i++) {
-      MODULE_DATA.push(
+      this.MODULE_DATA.push(
         {
           specialisation: this.moduleData[i].specialisaties,
           module: this.moduleData[i].moduleCode,
@@ -113,8 +63,62 @@ export class ModulesComponent implements OnInit {
     }
   }
 
-  clearModuleData() {
-    MODULE_DATA.length = 0;
+  @HostListener('window:resize', ['$event'])
+  onPageResize() {
+    this.pageWidthInPixels = window.innerWidth;
+    this.resizeTableToFitScreen();
+  }
+
+  resizeTableToFitScreen() {
+    if (this.isScreenTooSmallToFitTable()) {
+      this.removeColumn();
+      this.displayEndRequirementsUnderMatrix();
+    } else {
+      this.addColumn();
+      this.removeEndRequirementsUnderMatrix();
+    }
+  }
+
+  isScreenTooSmallToFitTable() {
+    return this.pageWidthInPixels < 1155;
+  }
+
+  private removeColumn() {
+    if (this.displayedColumns.length >= this.fullColumnSize) {
+      this.displayedColumns.splice(this.displayedColumns.length - 1);
+    }
+  }
+
+  private displayEndRequirementsUnderMatrix() {
+    this.showEndRequirementsUnderMatrix = true;
+  }
+
+  private addColumn() {
+    if (this.displayedColumns.length ! < this.fullColumnSize) {
+      this.displayedColumns.push(this.columnRemoveName);
+    }
+  }
+
+  private removeEndRequirementsUnderMatrix() {
+    this.showEndRequirementsUnderMatrix = false;
+  }
+
+  setDataSource() {
+    this.dataSource = new MatTableDataSource(this.MODULE_DATA);
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilter() {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.specifyWhatColumnsToFilter();
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  specifyWhatColumnsToFilter() {
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      return data.specialisation.includes(filter) || data.module.toLowerCase().includes(filter) ||
+        data.period.toString().includes(filter);
+    }
   }
 }
 
@@ -125,5 +129,3 @@ export interface ModuleModel {
   matrix: any;//TODO: use matrix
   endRequirements: string[];
 }
-
-let MODULE_DATA: ModuleModel[] = [];

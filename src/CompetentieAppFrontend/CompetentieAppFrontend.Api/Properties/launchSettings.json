@@ -12,7 +12,12 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost",
+        "BROKER_EXCHANGE_NAME": "MDLO",
+        "DB_CONNECTION_STRING": "User ID=postgres;Password=root;Host=localhost;Port=5432;Database=CompetentieAppDb;",
+        "BROKER_QUEUE_NAME": "CompetentieAppFrontend",
+        "LOG_LEVEL": "Trace"
       }
     },
     "CompetentieAppFrontend.Api": {
@@ -20,7 +25,12 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost",
+        "BROKER_EXCHANGE_NAME": "MDLO",
+        "DB_CONNECTION_STRING": "User ID=postgres;Password=root;Host=localhost;Port=5432;Database=CompetentieAppDb;",
+        "BROKER_QUEUE_NAME": "CompetentieAppFrontend",
+        "LOG_LEVEL": "Trace"
       }
     }
   }

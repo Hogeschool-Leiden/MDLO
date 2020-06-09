@@ -11,7 +11,7 @@ namespace CompetentieAppFrontend.Infrastructure.Configuration
             builder
                 .HasOne(eindeis => eindeis.Module)
                 .WithMany(module => module.Eindeisen)
-                .HasForeignKey(eindeis => eindeis.Id);
+                .HasForeignKey(eindeis => eindeis.ModuleId);
         }
     }
 }

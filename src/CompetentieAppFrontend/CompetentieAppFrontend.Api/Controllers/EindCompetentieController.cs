@@ -1,5 +1,6 @@
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using CompetentieAppFrontend.Services;
+using CompetentieAppFrontend.Services.Projections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
