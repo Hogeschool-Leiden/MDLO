@@ -1,12 +1,37 @@
-#moduleForm{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-}
-
 
 table
 {
     table-layout: fixed;
     width: 100%;
 }
+.flex-outer label{
+    display: flex;
+    flex-wrap: wrap;
+}
+.flex-outer label a{
+    flex-basis: 10rem;
+}
+
+.naastElkaar{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.noWrap{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+button {
+    max-height: 30px;
+}
+
+.error{
+    color: crimson;
+}
+
+.onderElkaar{
+    flex-grow: 2
+}
+

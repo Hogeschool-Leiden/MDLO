@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormArray, ValidationErrors } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import { Module } from '../../models/module';
 import { ModuleSanitizePipe } from 'src/app/pipes/module-sanitize.pipe';
@@ -12,18 +12,23 @@ import { Cohort } from 'src/app/models/cohort';
   templateUrl: './module-editor.component.html',
   styleUrls: ['./module-editor.component.css']
 })
-export class ModuleEditorComponent {
+export class ModuleEditorComponent implements OnInit {
   constructor(private snackBar: MatSnackBar, private httpService: HttpService, private sanitizePipe: ModuleSanitizePipe) {
 
   }
-  availableCohorts: Cohort[] =[{ naam: "2017/2018", beginjaar: "2017/2018" }, { naam: "2018/2019", beginjaar: "2018/2019" }, { naam: "2019/2020", beginjaar: "2019/2020" },]
+  ngOnInit(): void {
+    this.addEindeis();
+    this.addPeriode();
+  }
+
+  availableCohorts: Cohort[] = [{ naam: "2017/2018", beginjaar: "2017/2018" }, { naam: "2018/2019", beginjaar: "2018/2019" }, { naam: "2019/2020", beginjaar: "2019/2020" },]
   jsonValue: null;
   jsonValueAfterPipe: null;
   moduleForm = new FormGroup({
     id: new FormControl({ value: '', disabled: true }),
     moduleNaam: new FormControl(''),
-    moduleCode: new FormControl(''),
-    cohort: new FormControl(''),
+    moduleCode: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    cohort: new FormControl('', Validators.required),
     aantalEc: new FormControl(0),
     studiejaar: new FormControl(''),
     moduleleider: new FormGroup({
@@ -33,14 +38,14 @@ export class ModuleEditorComponent {
     }),
     studiefase: new FormGroup({
       fase: new FormControl(''),
-      periode: new FormControl(0),
+      periode: new FormArray([]),
     }),
     verplichtVoor: new FormGroup({
       SE: new FormControl(false),
       FICT: new FormControl(false),
       BDAM: new FormControl(false),
       IAT: new FormControl(false),
-    }),
+    }, this.atLeastOneValue),
     aanbevolenVoor: new FormGroup({
       SE: new FormControl(false),
       FICT: new FormControl(false),
@@ -76,31 +81,64 @@ export class ModuleEditorComponent {
       HIRE: new FormControl(0),
       HIBE: new FormControl(0),
     }),
-    // beschrijvingLeerdoelen: new FormControl(''),
-    // inhoudelijkeBeschrijving: new FormControl(''),
-    eindeisen: new FormControl(''),
-    // contacturenWerkvormen: new FormControl(''),
-    // toetsvorm: new FormControl(''),
-    // voorwaardenVoldoende: new FormControl(''),
-    // letOp: new FormControl(''),
-    // summatief: new FormControl(''),
-    // formatief: new FormControl(''),
-    // kwalitatief: new FormControl(''),
-    // kwantitatief: new FormControl(''),
-    // examinatoren: new FormControl(''),
-  })
+    eindeisen: new FormArray([
 
+    ]),
+  })
+  atLeastOneValue(form: FormGroup): ValidationErrors {
+    return Object.keys(form.value).some(key => !!form.value[key]) ?
+      null :
+      { atLeastOneRequired: 'At least one should be selected' };
+  }
   onSubmit() {
     this.jsonValue = this.moduleForm.value;
     this.jsonValueAfterPipe = this.sanitizePipe.transform(this.moduleForm.value) as any;
     this.httpService.postModule(this.sanitizePipe.transform(this.moduleForm.value)).subscribe(
       data => {
+        this.snackBar.open("Module succesvol aangemaakt.", "", {
+          duration: 5000,
+          panelClass: ['green-snackbar']
+        })
       }, err => {
-        if (err.error[0].errors[0].errorMessage.includes("Duplicate ModuleCode")) {
-          var snackBarRef = this.snackBar.open('Modulecode bestaat al.', '', { duration: 3000 });
-          console.log(err);
+        if (err.status == 400) {
+          this.snackBar.open("De combinatie van modulecode en cohort bestaat al.", "", {
+            duration: 5000,
+            panelClass: ['red-snackbar']
+          })
+        } else if (err.status == 500) {
+          this.snackBar.open("Er is iets foutgegaan. Probeer het later opnieuw.", "", {
+            duration: 5000,
+            panelClass: ['red-snackbar']
+          }
+          )
         }
       }
     )
+  }
+  addEindeis() {
+    this.eindeisen.push(new FormControl(''));
+  }
+
+  changeCohort(e) {
+    this.moduleForm.get('cohort').setValue(e.target.value, { onlySelf: true })
+  }
+  get eindeisen() {
+    return this.moduleForm.get('eindeisen') as FormArray;
+  }
+
+  get periode() {
+    return this.moduleForm.get('studiefase').get('periode') as FormArray;
+  }
+
+  addPeriode() {
+    this.periode.push(new FormControl(0));
+  }
+
+  get verplichtVoor() {
+    return this.moduleForm.get('verplichtVoor')
+  }
+
+  get modulecode() {
+    return this.moduleForm.get('moduleCode')
   }
 }
