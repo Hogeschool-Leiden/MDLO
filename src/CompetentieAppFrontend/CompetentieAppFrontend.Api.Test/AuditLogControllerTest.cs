@@ -3,6 +3,7 @@ using System.Reflection;
 using CompetentieAppFrontend.Api.Controllers;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -21,7 +22,7 @@ namespace CompetentieAppFrontend.Api.Test
         }
 
         [TestMethod]
-        public void GetAllAuditLogEntries_Should_Return_Instance_Of_Type_IEnumerable_With_AuditLogEntry()
+        public void GetAllAuditLogEntries_Should_Return_Instance_Of_Type_IEnumerable_With_AuditLogEntryViewModel()
         {
             // Arrange
             var controller = new AuditLogController(_auditLogEntryServiceMock.Object);
@@ -30,7 +31,7 @@ namespace CompetentieAppFrontend.Api.Test
             var result = controller.GetAllAuditLogEntries();
             
             // Assert
-            Assert.IsInstanceOfType(result, typeof(IEnumerable<AuditLogEntry>));
+            Assert.IsInstanceOfType(result, typeof(IEnumerable<AuditLogEntryViewModel>));
         }
 
         [TestMethod]

@@ -5,7 +5,7 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 {
     public interface IAuditLogEntryRepository
     {
-        IEnumerable<AuditLogEntry> GetAllAuditLogEntries();
+        IList<AuditLogEntry> GetAllAuditLogEntries();
         void Create(AuditLogEntry auditLogEntry);
     }
 }

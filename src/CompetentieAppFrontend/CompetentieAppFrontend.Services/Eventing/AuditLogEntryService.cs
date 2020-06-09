@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.ViewModels;
 
 namespace CompetentieAppFrontend.Services.Eventing
 {
@@ -12,7 +14,11 @@ namespace CompetentieAppFrontend.Services.Eventing
         public AuditLogEntryService(IAuditLogEntryRepository auditLogRepository) =>
             _auditLogRepository = auditLogRepository;
 
-        public IEnumerable<AuditLogEntry> GetAllAuditLogEntries() =>
-            _auditLogRepository.GetAllAuditLogEntries();
+        public IEnumerable<AuditLogEntryViewModel> GetAllAuditLogEntries() =>
+            _auditLogRepository.GetAllAuditLogEntries().Select(entry => new AuditLogEntryViewModel
+            {
+                Omschrijving = entry.Omschrijving,
+                Timestamp = entry.Timestamp
+            }).ToList();
     }
 }

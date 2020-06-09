@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using CompetentieAppFrontend.Domain;
+using CompetentieAppFrontend.Services.ViewModels;
 
 namespace CompetentieAppFrontend.Services.Abstractions
 {
     public interface IAuditLogEntryService
     {
-        IEnumerable<AuditLogEntry> GetAllAuditLogEntries();
+        IEnumerable<AuditLogEntryViewModel> GetAllAuditLogEntries();
     }
 }

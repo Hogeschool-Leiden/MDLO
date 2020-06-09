@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompetentieAppFrontend.Api.Controllers
@@ -15,7 +16,7 @@ namespace CompetentieAppFrontend.Api.Controllers
             _auditLogEntryService = auditLogEntryService;
 
         [HttpGet]
-        public IEnumerable<AuditLogEntry> GetAllAuditLogEntries() =>
+        public IEnumerable<AuditLogEntryViewModel> GetAllAuditLogEntries() =>
             _auditLogEntryService.GetAllAuditLogEntries();
     }
 }
