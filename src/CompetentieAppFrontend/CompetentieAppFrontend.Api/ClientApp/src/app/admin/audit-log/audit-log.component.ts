@@ -52,7 +52,6 @@ export class AuditLogComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.auditData);
     this.setCorrectSortingOrder();
     this.dataSource.sort = this.sort;
-    console.log(this.dataSource);
   }
 
   setCorrectSortingOrder() {

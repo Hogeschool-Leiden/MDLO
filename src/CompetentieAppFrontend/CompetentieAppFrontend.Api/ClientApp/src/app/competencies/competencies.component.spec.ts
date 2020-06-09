@@ -51,4 +51,16 @@ describe('CompetenciesComponent', () => {
     component.specialisation = 'Propedeuse';
     expect(component.isSpecialisationPropedeuse).toBeTruthy();
   });
+
+  it('should create the correct cohort.', function () {
+    expect(component.createCohort(2019)).toEqual("2018-2019")
+  });
+
+  it('should return the current year + 1.', function () {
+    let currentYear = new Date().getFullYear() + 1;
+
+    expect(component.getYearValue()).toEqual(currentYear);
+  });
+
+
 });
