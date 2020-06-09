@@ -21,5 +21,7 @@ namespace CompetentieAppFrontend.Domain
         public IEnumerable<Competentie> Competenties { get; set; }
 
         public IEnumerable<Eindeis> Eindeisen { get; set; }
+
+        public IEnumerable<AuditLogEntry> AuditLogEntries { get; set; }
     }
 }

@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompetentieAppFrontend.Inte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompetentieAppFrontend.Api.Test", "CompetentieAppFrontend.Api.Test\CompetentieAppFrontend.Api.Test.csproj", "{5536B8D0-EF9C-4522-A5AF-E00FABF03540}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompetentieAppFrontend.Constants", "CompetentieAppFrontend.Constants\CompetentieAppFrontend.Constants.csproj", "{45EA21F9-5EC0-4881-9190-22A3DD0CA318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,18 @@ Global
 		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Release|x64.Build.0 = Release|Any CPU
 		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Release|x86.ActiveCfg = Release|Any CPU
 		{5536B8D0-EF9C-4522-A5AF-E00FABF03540}.Release|x86.Build.0 = Release|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Debug|x64.Build.0 = Debug|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Debug|x86.Build.0 = Debug|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Release|x64.ActiveCfg = Release|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Release|x64.Build.0 = Release|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Release|x86.ActiveCfg = Release|Any CPU
+		{45EA21F9-5EC0-4881-9190-22A3DD0CA318}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

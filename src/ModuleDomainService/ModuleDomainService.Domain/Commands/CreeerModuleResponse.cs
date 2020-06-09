@@ -1,12 +1,13 @@
-using System;
-using System.Net;
 using Miffy.MicroServices.Commands;
+using ModuleDomainService.Domain.Constants;
 
 namespace ModuleDomainService.Domain.Commands
 {
     public class CreeerModuleResponse : DomainCommand
     {
-        private CreeerModuleResponse(int statusCode) : base("") => StatusCode = statusCode;
+        private CreeerModuleResponse(int statusCode)
+            : base(DestinationQueueNames.CreeerModuleResponse) =>
+            StatusCode = statusCode;
 
         private CreeerModuleResponse(int statusCode, string message) : this(statusCode) => Message = message;
 
@@ -15,5 +16,6 @@ namespace ModuleDomainService.Domain.Commands
         public string Message { get; }
 
         public static CreeerModuleResponse OkResponse => new CreeerModuleResponse(200, "OK");
+        public static CreeerModuleResponse ModuleAlreadyExistResponse => new CreeerModuleResponse(400, "Module already exists");
     }
 }

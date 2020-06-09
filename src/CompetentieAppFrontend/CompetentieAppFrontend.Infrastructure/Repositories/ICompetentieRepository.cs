@@ -6,7 +6,9 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
     public interface ICompetentieRepository
     {
         IList<Competentie> GetAllCompetentiesByCriteria(Criteria criteria);
-        
+
+        void CreateCompetenties(IEnumerable<Competentie> competenties);
+
         public struct Criteria
         {
             public int PeriodeNummer { get; set; }
