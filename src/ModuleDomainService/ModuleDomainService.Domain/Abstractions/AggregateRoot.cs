@@ -14,6 +14,8 @@ namespace ModuleDomainService.Domain.Abstractions
         public int Version { get; private set; }
         public List<DomainEvent> Changes { get; }
 
+        public bool HasNoChanges => !Changes.Any();
+
         protected void Apply(DomainEvent @event)
         {
             Changes.Add(@event);

@@ -16,5 +16,6 @@ namespace ModuleDomainService.Domain.Commands
         public string Message { get; }
 
         public static CreeerModuleResponse OkResponse => new CreeerModuleResponse(200, "OK");
+        public static CreeerModuleResponse ModuleAlreadyExistResponse => new CreeerModuleResponse(400, "Module already exists");
     }
 }
