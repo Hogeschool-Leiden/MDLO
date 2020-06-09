@@ -73,7 +73,6 @@ namespace CompetentieAppFrontend.Services.Test.Projections
                         Cohort = new Cohort
                         {
                             CohortNaam = "Studiejaar 2019/2020",
-                            StartDatum = new DateTime(2019, 9, 3)
                         }
                     },
                     new Module
@@ -121,7 +120,6 @@ namespace CompetentieAppFrontend.Services.Test.Projections
                         Cohort = new Cohort
                         {
                             CohortNaam = "Studiejaar 2019/2020",
-                            StartDatum = new DateTime(2019, 9, 3)
                         }
                     }
                 });

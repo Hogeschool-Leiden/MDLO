@@ -181,5 +181,25 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             // Assert
             Assert.AreEqual("2018-2019",result.Cohort.CohortNaam);
         }
+
+        [TestMethod]
+        public void CreateModule_Should_Save_Entry_To_Database()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new ModuleRepository(context);
+            
+            // Act
+            var result = repository.CreateModule(new Module
+            {
+                ModuleCode = "ITEST",
+                ModuleNaam = "Test Driven development",
+                CohortId = 1,
+                Studiepunten = 4
+            });
+            
+            // Assert
+            Assert.IsTrue(context.Modules.Any(module => module.ModuleCode == "ITEST"));
+        }
     }
 }

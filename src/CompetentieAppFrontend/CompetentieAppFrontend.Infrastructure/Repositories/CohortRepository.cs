@@ -13,15 +13,26 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 
         public long EnsureCohortExist(string cohortNaam)
         {
-            if (_context.Cohorts.Any(cohort => cohort.CohortNaam.Equals(cohortNaam)))
+            if (Exists(cohortNaam))
             {
-                return _context.Cohorts.First(cohort => cohort.CohortNaam.Equals(cohortNaam)).Id;
+                return GetId(cohortNaam);
             }
 
-            _context.Cohorts.Add(new Cohort {CohortNaam = cohortNaam});
-            _context.SaveChanges();
+            Create(new Cohort {CohortNaam = cohortNaam});
 
             return EnsureCohortExist(cohortNaam);
         }
+
+        private void Create(Cohort cohort)
+        {
+            _context.Cohorts.Add(cohort);
+            _context.SaveChanges();
+        }
+
+        private long GetId(string cohortNaam) =>
+            _context.Cohorts.First(cohort => cohort.CohortNaam.Equals(cohortNaam)).Id;
+
+        private bool Exists(string cohortNaam) =>
+            _context.Cohorts.Any(cohort => cohort.CohortNaam.Equals(cohortNaam));
     }
 }

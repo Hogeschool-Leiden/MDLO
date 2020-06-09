@@ -10,5 +10,7 @@ namespace CompetentieAppFrontend.Services.Projections
         public IEnumerable<int> Perioden { get; set; }
         public Matrix<int> Matrix { get; set; }
         public IEnumerable<string> Eindeisen { get; set; }
+
+        public IEnumerator<AuditLogEntryView> AuditLogEntries { get; set; }
     }
 }

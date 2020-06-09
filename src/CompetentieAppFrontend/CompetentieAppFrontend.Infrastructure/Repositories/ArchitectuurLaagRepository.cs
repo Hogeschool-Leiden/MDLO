@@ -24,18 +24,31 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 
         public long EnsureArchitectuurLaagExist(string architectuurLaagNaam)
         {
-            if (_context.ArchitectuurLagen.Any(laag => laag.ArchitectuurLaagNaam.Equals(architectuurLaagNaam)))
+            if (Exist(architectuurLaagNaam))
             {
-                return _context
-                    .ArchitectuurLagen
-                    .First(laag => laag.ArchitectuurLaagNaam.Equals(architectuurLaagNaam))
-                    .Id;
+                return GetId(architectuurLaagNaam);
             }
 
-            _context.ArchitectuurLagen.Add(new ArchitectuurLaag {ArchitectuurLaagNaam = architectuurLaagNaam});
-            _context.SaveChanges();
-            
+            Create(new ArchitectuurLaag {ArchitectuurLaagNaam = architectuurLaagNaam});
+
             return EnsureArchitectuurLaagExist(architectuurLaagNaam);
         }
+
+        private void Create(ArchitectuurLaag architectuurLaag)
+        {
+            _context.ArchitectuurLagen.Add(architectuurLaag);
+            _context.SaveChanges();
+        }
+
+        private long GetId(string architectuurLaagNaam) =>
+            _context
+                .ArchitectuurLagen
+                .First(laag => laag.ArchitectuurLaagNaam.Equals(architectuurLaagNaam))
+                .Id;
+
+        private bool Exist(string architectuurLaagNaam) =>
+            _context
+                .ArchitectuurLagen
+                .Any(laag => laag.ArchitectuurLaagNaam.Equals(architectuurLaagNaam));
     }
 }

@@ -17,15 +17,26 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 
         private long EnsurePeriodeExist(Periode newPeriode)
         {
-            if (_context.Perioden.Any(periode => periode.Equals(newPeriode)))
+            if (Exists(newPeriode))
             {
-                return _context.Perioden.First(periode => periode.Equals(newPeriode)).Id;
+                return GetId(newPeriode);
             }
 
-            _context.Perioden.Add(newPeriode);
-            _context.SaveChanges();
+            Create(newPeriode);
 
             return EnsurePeriodeExist(newPeriode);
         }
+
+        private void Create(Periode newPeriode)
+        {
+            _context.Perioden.Add(newPeriode);
+            _context.SaveChanges();
+        }
+
+        private long GetId(Periode newPeriode) =>
+            _context.Perioden.First(periode => periode.PeriodeNummer == newPeriode.PeriodeNummer).Id;
+
+        private bool Exists(Periode newPeriode) =>
+            _context.Perioden.Any(periode => periode.PeriodeNummer == newPeriode.PeriodeNummer);
     }
 }

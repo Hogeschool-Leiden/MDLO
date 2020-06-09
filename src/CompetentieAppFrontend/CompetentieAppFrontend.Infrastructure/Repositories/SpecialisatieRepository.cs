@@ -17,15 +17,28 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 
         private long EnsureSpecialisatieExist(Specialisatie newSpecialisatie)
         {
-            if (_context.Specialisaties.Any(specialisatie => specialisatie.Equals(newSpecialisatie)))
+            if (Exist(newSpecialisatie))
             {
-                return _context.Specialisaties.First(specialisatie => specialisatie.Equals(newSpecialisatie)).Id;
+                return GetId(newSpecialisatie);
             }
 
-            _context.Specialisaties.Add(newSpecialisatie);
-            _context.SaveChanges();
+            Create(newSpecialisatie);
 
             return EnsureSpecialisatieExist(newSpecialisatie);
         }
+
+        private void Create(Specialisatie newSpecialisatie)
+        {
+            _context.Specialisaties.Add(newSpecialisatie);
+            _context.SaveChanges();
+        }
+
+        private long GetId(Specialisatie newSpecialisatie) =>
+            _context.Specialisaties.First(specialisatie =>
+                specialisatie.SpecialisatieNaam == newSpecialisatie.SpecialisatieNaam).Id;
+
+        private bool Exist(Specialisatie newSpecialisatie) =>
+            _context.Specialisaties.Any(specialisatie =>
+                specialisatie.SpecialisatieNaam == newSpecialisatie.SpecialisatieNaam);
     }
 }

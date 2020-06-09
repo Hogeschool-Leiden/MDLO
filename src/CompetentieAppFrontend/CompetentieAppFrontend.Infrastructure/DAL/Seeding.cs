@@ -363,7 +363,6 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                 {
                     Id = 1,
                     CohortNaam = "2018-2019",
-                    StartDatum = new DateTime(2019, 9, 3)
                 });
 
             context.Modules

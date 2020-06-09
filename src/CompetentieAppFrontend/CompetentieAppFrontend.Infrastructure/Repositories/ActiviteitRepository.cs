@@ -24,18 +24,29 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 
         public long EnsureActiviteitExist(string activiteitNaam)
         {
-            if (_context.Activiteiten.Any(laag => laag.ActiviteitNaam.Equals(activiteitNaam)))
+            if (Exist(activiteitNaam))
             {
-                return _context
-                    .Activiteiten
-                    .First(laag => laag.ActiviteitNaam.Equals(activiteitNaam))
-                    .Id;
+                return GetId(activiteitNaam);
             }
 
-            _context.Activiteiten.Add(new Activiteit {ActiviteitNaam = activiteitNaam});
-            _context.SaveChanges();
+            Create(new Activiteit {ActiviteitNaam = activiteitNaam});
 
             return EnsureActiviteitExist(activiteitNaam);
         }
+
+        private void Create(Activiteit activiteit)
+        {
+            _context.Activiteiten.Add(activiteit);
+            _context.SaveChanges();
+        }
+
+        private long GetId(string activiteitNaam) =>
+            _context
+                .Activiteiten
+                .First(laag => laag.ActiviteitNaam.Equals(activiteitNaam))
+                .Id;
+
+        private bool Exist(string activiteitNaam) =>
+            _context.Activiteiten.Any(laag => laag.ActiviteitNaam.Equals(activiteitNaam));
     }
 }

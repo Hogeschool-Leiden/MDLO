@@ -16,15 +16,32 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 
         private long EnsureBeheersingsNiveauExist(BeheersingsNiveau beheersingsNiveau)
         {
-            if (_context.BeheersingsNiveaus.Any(niveau => niveau.Equals(beheersingsNiveau)))
+            if (Exists(beheersingsNiveau))
             {
-                return _context.BeheersingsNiveaus.First(niveau => niveau.Equals(beheersingsNiveau)).Id;
+                return GetId(beheersingsNiveau);
             }
 
-            _context.BeheersingsNiveaus.Add(beheersingsNiveau);
-            _context.SaveChanges();
-            
+            Create(beheersingsNiveau);
+
             return EnsureBeheersingsNiveauExist(beheersingsNiveau);
         }
+
+        private void Create(BeheersingsNiveau beheersingsNiveau)
+        {
+            _context.BeheersingsNiveaus.Add(beheersingsNiveau);
+            _context.SaveChanges();
+        }
+
+        private long GetId(BeheersingsNiveau beheersingsNiveau) =>
+            _context.BeheersingsNiveaus.First(niveau =>
+                niveau.ArchitectuurLaagId == beheersingsNiveau.ArchitectuurLaagId &&
+                niveau.ActiviteitId == beheersingsNiveau.ActiviteitId &&
+                niveau.Niveau == beheersingsNiveau.Niveau).Id;
+
+        private bool Exists(BeheersingsNiveau beheersingsNiveau) =>
+            _context.BeheersingsNiveaus.Any(niveau =>
+                niveau.ArchitectuurLaagId == beheersingsNiveau.ArchitectuurLaagId &&
+                niveau.ActiviteitId == beheersingsNiveau.ActiviteitId &&
+                niveau.Niveau == beheersingsNiveau.Niveau);
     }
 }
