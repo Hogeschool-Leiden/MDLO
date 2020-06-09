@@ -1,6 +1,7 @@
 using System;
 using CompetentieAppFrontend.Infrastructure.DAL;
 using Microsoft.EntityFrameworkCore;
+using CompetentieAppFrontend.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Miffy;
