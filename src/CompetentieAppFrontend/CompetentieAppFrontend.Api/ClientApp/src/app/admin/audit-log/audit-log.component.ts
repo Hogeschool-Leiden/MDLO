@@ -41,14 +41,19 @@ export class AuditLogComponent implements OnInit {
 
   setDataSource() {
     this.dataSource = new MatTableDataSource(this.auditData);
-    this.sort.sort(({id: 'timeStamp', start: 'desc'}) as MatSortable);
+    this.setCorrectSortingOrder();
     this.dataSource.sort = this.sort;
+  }
+
+  setCorrectSortingOrder() {
+    if (this.sort) {
+      this.sort.sort(({id: 'timeStamp', start: 'desc'}) as MatSortable);
+    }
   }
 
   openPopup(auditRowData) {
     this.dialog.open(AuditPopupComponent, {
       data: {auditData: auditRowData}
     });
-
   }
 }

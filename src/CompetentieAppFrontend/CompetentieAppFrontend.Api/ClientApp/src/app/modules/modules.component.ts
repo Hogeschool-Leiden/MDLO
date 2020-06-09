@@ -42,14 +42,13 @@ export class ModulesComponent implements OnInit {
   }
 
   getDataFromDB() {
-    // this.http.get(this.dbUrl).toPromise().then(data => {
-    //   this.moduleData = data;
-    //   this.injectDataInTable();
-    // }).catch(error => console.log(error));
+    this.http.get(this.dbUrl).toPromise().then(data => {
+      this.moduleData = data;
+      this.injectDataInTable();
+    }).catch(error => console.log(error));
 
-
-    this.moduleData = moduleMock;  // this is mockdata
-    this.injectDataInTable();
+    // this.moduleData = moduleMock;  // this is mockdata
+    // this.injectDataInTable();
   }
 
   injectDataInTable() {

@@ -6,6 +6,7 @@ import {CompetenceMatrixComponent} from "../competencies/competence-matrix/compe
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 // @ts-ignore
 import moduleMock from "./../../assets/mock-data/modules-mock.json"
+import {MatDialog} from "@angular/material/dialog";
 
 describe('ModuleComponent', () => {
   let component: ModulesComponent;
@@ -14,7 +15,8 @@ describe('ModuleComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ModulesComponent , CompetenceMatrixComponent],
-      imports:[HttpClientModule]
+      imports:[HttpClientModule],
+      providers: [{provide: MatDialog, useValue: {}}]
     })
       .compileComponents();
   }));
