@@ -5,25 +5,17 @@ using ModuleDomainService.Domain.Extensions;
 
 namespace ModuleDomainService.Domain
 {
-    public readonly struct Matrix : IEquatable<Matrix>
+    public class Matrix : IEquatable<Matrix>
     {
-        private readonly int[,] _adjacencyMatrix;
+        private int[,] _adjacencyMatrix;
 
-        public Matrix(IReadOnlyCollection<string> rows, IReadOnlyCollection<string> columns)
-        {
-            Rows = rows;
-            Columns = columns;
-            _adjacencyMatrix = new int[rows.Count, columns.Count];
-        }
-
-        public IEnumerable<string> Rows { get; }
-
-        public IEnumerable<string> Columns { get; }
+        public IEnumerable<string> Rows { get; set; }
+        public IEnumerable<string> Columns { get; set; }
 
         public int[][] AdjacencyMatrix
         {
             get => _adjacencyMatrix.ToJaggedArray();
-            set => value.FromJaggedArray();
+            set => _adjacencyMatrix = value.FromJaggedArray();
         }
 
         public bool Equals(Matrix other)

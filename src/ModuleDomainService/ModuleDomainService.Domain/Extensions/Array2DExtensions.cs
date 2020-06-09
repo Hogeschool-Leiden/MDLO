@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 namespace ModuleDomainService.Domain.Extensions
 {
     internal static class Array2DExtensions
@@ -28,7 +31,22 @@ namespace ModuleDomainService.Domain.Extensions
 
         internal static T[,] FromJaggedArray<T>(this T[][] jaggedArray)
         {
-            return new T[0, 0];
+            try
+            {
+                var FirstDim = jaggedArray.Length;
+                var SecondDim = jaggedArray.GroupBy(row => row.Length).Single().Key; // throws InvalidOperationException if source is not rectangular
+
+                var result = new T[FirstDim, SecondDim];
+                for (var i = 0; i < FirstDim; ++i)
+                for (var j = 0; j < SecondDim; ++j)
+                    result[i, j] = jaggedArray[i][j];
+
+                return result;
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidOperationException("The given jagged array is not rectangular.");
+            } 
         }
     }
 }
