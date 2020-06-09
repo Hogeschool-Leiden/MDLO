@@ -42,13 +42,13 @@ export class ModulesComponent implements OnInit {
   }
 
   getDataFromDB() {
-    this.http.get(this.dbUrl).toPromise().then(data => {
-      this.moduleData = data;
-      this.injectDataInTable();
-    }).catch(error => console.log(error));
+    // this.http.get(this.dbUrl).toPromise().then(data => {
+    //   this.moduleData = data;
+    //   this.injectDataInTable();
+    // }).catch(error => console.log(error));
 
-    // this.moduleData = moduleMock;  // this is mockdata
-    // this.injectDataInTable();
+    this.moduleData = moduleMock;  // this is mockdata
+    this.injectDataInTable();
   }
 
   injectDataInTable() {
@@ -59,7 +59,8 @@ export class ModulesComponent implements OnInit {
           module: this.moduleData[i].moduleCode,
           period: this.moduleData[i].perioden,
           matrix: this.moduleData[i].matrix,
-          endRequirements: this.moduleData[i].eindeisen
+          endRequirements: this.moduleData[i].eindeisen,
+          auditLog: this.moduleData[i].auditLogObject
         }
       );
     }
@@ -136,4 +137,10 @@ export interface ModuleModel {
   period: number[];
   matrix: any;//TODO: use matrix
   endRequirements: string[];
+  auditLog: auditModel[];
+}
+
+export interface auditModel {
+  timeStamp: string;
+  information: string;
 }

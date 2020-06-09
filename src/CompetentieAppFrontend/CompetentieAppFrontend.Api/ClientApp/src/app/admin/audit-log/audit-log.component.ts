@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 // @ts-ignore
 import auditMock from "./../../../assets/mock-data/audit-log-mock.json"
@@ -20,12 +20,22 @@ export class AuditLogComponent implements OnInit {
   dbUrl: string = '/api/audit-log';
   auditData: any;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @Input() alternateData;
 
   constructor(private http: HttpClient, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
-    this.getDataFromDB();
+    this.checkWhatDataToUse();
+  }
+
+  checkWhatDataToUse() {
+    if (this.alternateData !== undefined){
+      this.auditData = this.alternateData;
+      this.setDataSource();
+    }else {
+      this.getDataFromDB();
+    }
   }
 
   getDataFromDB() {
@@ -33,7 +43,6 @@ export class AuditLogComponent implements OnInit {
     //   this.auditData = data;
     //   this.injectDataInTable();
     // }).catch(error => console.log(error));
-
 
     this.auditData = auditMock;  // this is mockdata
     this.setDataSource();
@@ -43,11 +52,12 @@ export class AuditLogComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.auditData);
     this.setCorrectSortingOrder();
     this.dataSource.sort = this.sort;
+    console.log(this.dataSource);
   }
 
   setCorrectSortingOrder() {
     if (this.sort) {
-      this.sort.sort(({id: 'timeStamp', start: 'desc'}) as MatSortable);
+      this.sort.sort(({id: 'timestamp', start: 'desc'}) as MatSortable);
     }
   }
 

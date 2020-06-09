@@ -2,14 +2,14 @@
   <mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Timestamp Column -->
     <ng-container matColumnDef=timeStamp>
-      <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="'timeCell'"> timeStamp</mat-header-cell>
-      <mat-cell *matCellDef="let element" [ngClass]="'timeCell'"> {{element.timeStamp}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef [ngClass]="'timeCell'"> tijdstip</mat-header-cell>
+      <mat-cell *matCellDef="let element" [ngClass]="'timeCell'"> {{element.timestamp}} </mat-cell>
     </ng-container>
 
     <!-- InfoString Column -->
     <ng-container matColumnDef="infoString">
-      <mat-header-cell *matHeaderCellDef> Information</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.infoString}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef> omschrijving</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.omschrijving}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
