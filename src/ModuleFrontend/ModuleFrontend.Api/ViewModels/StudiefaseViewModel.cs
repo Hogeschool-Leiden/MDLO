@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ModuleFrontend.Api.ViewModels
 {
@@ -7,6 +8,6 @@ namespace ModuleFrontend.Api.ViewModels
         public long Id { get; set; }
         public string Fase { get; set; }
         [Required]
-        public PeriodeViewModel Periode { get; set; }
+        public List<int> Periode { get; set; }
     }
 }

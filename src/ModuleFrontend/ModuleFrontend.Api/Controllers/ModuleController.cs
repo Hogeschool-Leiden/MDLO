@@ -32,7 +32,7 @@ namespace ModuleFrontend.Api.Controllers
 
         [Route("module")]
         [HttpPost]
-        public IActionResult PostModule([FromBody]ModuleViewModel module) 
+        public IActionResult PostModule([FromBody]ModuleViewModel module)
         {
             if (!ModelState.IsValid)
             {
@@ -43,15 +43,10 @@ namespace ModuleFrontend.Api.Controllers
                 ModelState.AddModelError("VerplichtVoorError", "Een module moet voor minstens één specialisatie verplicht zijn, of een keuzevak zijn.");
                 return BadRequest(ModelState.Values);
             }
-            try
-            {
-                _service.AddModule(module);
-            }
-            catch (AlreadyExistsException e)
-            {
-                ModelState.AddModelError("BestaatAlError", e.Message);
-                return BadRequest(ModelState.Values);
-            }
+
+            var result = _service.SendCreeerModuleCommand(module);
+
+
             return Ok(module);
         }
     }

@@ -28,12 +28,11 @@ namespace ModuleFrontend.Api.DAL
                 .HasOne(m => m.Studiefase)
                 .WithMany();
 
-            modelBuilder.Entity<Studiefase>()
-                .HasOne(s => s.Periode)
-                .WithMany();
 
             modelBuilder.Entity<Module>()
                 .Ignore(m => m.Competenties);
+            modelBuilder.Entity<Studiefase>()
+                .Ignore(s => s.Periode);
         }
     }
 }

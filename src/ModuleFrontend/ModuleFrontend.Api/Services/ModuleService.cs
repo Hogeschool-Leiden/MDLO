@@ -19,13 +19,6 @@ namespace ModuleFrontend.Api.Services
             _publisher = publisher;
         }
 
-        public Module AddModule(ModuleViewModel module)
-        {
-            var retrievedModule = SendCreeerModuleCommand(module);
-            _moduleContext.Modules.Add(retrievedModule);
-            return retrievedModule;
-        }
-
         public IEnumerable<Module> GetAllModules()
         {
             return _moduleContext.Modules;
@@ -37,13 +30,20 @@ namespace ModuleFrontend.Api.Services
             return module;
         }
 
-        public Module SendCreeerModuleCommand(ModuleViewModel module)
+        public CreeerModuleCommandResponse SendCreeerModuleCommand(ModuleViewModel module)
         {
             var verplichtVoor = new List<Specialisatie>() { };
             foreach (var specialisatie in module.VerplichtVoor)
             {
                 verplichtVoor.Add(new Specialisatie() { Code = specialisatie.Code, Naam = specialisatie.Naam });
             }
+
+            var aanbevolenVoor = new List<Specialisatie>() { };
+            foreach (var specialisatie in module.AanbevolenVoor)
+            {
+                aanbevolenVoor.Add(new Specialisatie() { Code = specialisatie.Code, Naam = specialisatie.Naam });
+            }
+
             ModuleDTO moduleToSend = new ModuleDTO()
             {
                 Cohort = module.Cohort,
@@ -51,25 +51,15 @@ namespace ModuleFrontend.Api.Services
                 ModuleCode = module.ModuleCode,
                 ModuleNaam = module.ModuleNaam,
                 Eindeisen = module.Eindeisen,
-                Studiefase = new Studiefase() { Fase = module.Studiefase.Fase, Periode = new Periode() { PeriodeNummer = module.Studiefase.Periode.PeriodeNummer } },
+                Studiefase = new Studiefase() { Fase = module.Studiefase.Fase, Periode = module.Studiefase.Periode },
                 VerplichtVoor = verplichtVoor,
+                AanbevolenVoor = aanbevolenVoor
             };
 
             CreeerModuleCommand command = new CreeerModuleCommand() { Module = moduleToSend };
 
-            CreeerModuleCommandResult res = _publisher.PublishAsync<CreeerModuleCommandResult>(command).Result;
-            var retMod = res.Module;
-            Module returnedModule = new Module()
-            {
-                Cohort = retMod.Cohort,
-                Competenties = retMod.Competenties,
-                ModuleCode = retMod.ModuleCode,
-                ModuleNaam = retMod.ModuleNaam,
-                Eindeisen = retMod.Eindeisen,
-                Studiefase = retMod.Studiefase,
-                VerplichtVoor = retMod.VerplichtVoor
-            };
-            return returnedModule;
+            CreeerModuleCommandResponse result = _publisher.PublishAsync<CreeerModuleCommandResponse>(command).Result;
+            return result;
         }
     }
 }

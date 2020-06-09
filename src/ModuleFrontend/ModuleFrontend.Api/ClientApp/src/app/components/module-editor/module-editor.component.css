@@ -7,7 +7,6 @@ table
 .flex-outer label{
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
 }
 .flex-outer label a{
     flex-basis: 10rem;
@@ -23,4 +22,7 @@ table
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+}
+button {
+    max-height: 30px;
 }

@@ -18,8 +18,8 @@ export class ModuleEditorComponent implements OnInit{
   }
   ngOnInit(): void {
     this.addEindeis();
+    this.addPeriode();
   }
-  eindeisen=  new FormArray([])
   
   availableCohorts: Cohort[] =[{ naam: "2017/2018", beginjaar: "2017/2018" }, { naam: "2018/2019", beginjaar: "2018/2019" }, { naam: "2019/2020", beginjaar: "2019/2020" },]
   jsonValue: null;
@@ -38,7 +38,7 @@ export class ModuleEditorComponent implements OnInit{
     }),
     studiefase: new FormGroup({
       fase: new FormControl(''),
-      periode: new FormControl(0),
+      periode: new FormArray([]),
     }),
     verplichtVoor: new FormGroup({
       SE: new FormControl(false),
@@ -81,21 +81,9 @@ export class ModuleEditorComponent implements OnInit{
       HIRE: new FormControl(0),
       HIBE: new FormControl(0),
     }),
-    // beschrijvingLeerdoelen: new FormControl(''),
-    // inhoudelijkeBeschrijving: new FormControl(''),
     eindeisen: new FormArray([
 
     ]),
-    
-    // contacturenWerkvormen: new FormControl(''),
-    // toetsvorm: new FormControl(''),
-    // voorwaardenVoldoende: new FormControl(''),
-    // letOp: new FormControl(''),
-    // summatief: new FormControl(''),
-    // formatief: new FormControl(''),
-    // kwalitatief: new FormControl(''),
-    // kwantitatief: new FormControl(''),
-    // examinatoren: new FormControl(''),
   })
 
   onSubmit() {
@@ -117,5 +105,16 @@ export class ModuleEditorComponent implements OnInit{
 
   changeCohort(e){
     this.moduleForm.get('cohort').setValue(e.target.value,{onlySelf: true})
+  }
+  get eindeisen(){
+    return this.moduleForm.get('eindeisen') as FormArray;
+  }
+
+  get periode(){
+    return this.moduleForm.get('studiefase').get('periode') as FormArray;
+  }
+
+  addPeriode(){
+    this.periode.push(new FormControl(0));
   }
 }

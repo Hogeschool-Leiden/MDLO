@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.Collections.Generic;
 
 namespace ModuleFrontend.Api.Models
 {
@@ -6,6 +7,6 @@ namespace ModuleFrontend.Api.Models
     {
         public long StudiefaseId { get; set; }
         public string Fase { get; set; }
-        public Periode Periode { get; set; }
+        public List<int> Periode { get; set; }
     }
 }

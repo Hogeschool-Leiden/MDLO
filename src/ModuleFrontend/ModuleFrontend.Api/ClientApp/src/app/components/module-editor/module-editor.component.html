@@ -2,21 +2,21 @@
 <form id="moduleForm" class="flex-outer" [formGroup]="moduleForm" (ngSubmit)="onSubmit()">
     <label>
         <a>Modulenaam</a>
-        <input matInput type="string" formControlName="moduleNaam">
+        <input type="string" formControlName="moduleNaam">
     </label>
 
     <label>
         <a>Modulecode</a>
-        <input matInput type="string" formControlName="moduleCode">
+        <input type="string" formControlName="moduleCode">
         <span>Modulecode is verplicht</span>
     </label>
     <label>
         <a> Aantal EC</a>
-        <input matInput type="number" formControlName="aantalEc">
+        <input type="number" formControlName="aantalEc">
     </label>
     <label>
         <a> Studiejaar</a>
-        <input matInput type="string" formControlName="studiejaar">
+        <input type="string" formControlName="studiejaar">
     </label>
     <label>
         <a> Cohort</a>
@@ -32,12 +32,12 @@
         <ng-container formArrayName="eindeisen">
             <a>Eindeisen</a>
             <div class="noWrap">
-            <div *ngFor="let control of eindeisen.controls; index as i">
-                <input type="text" [formControl]="eindeisen.controls[i]">
-            </div>
+                <div *ngFor="let control of eindeisen.controls; index as i">
+                    <input type="text" [formControl]="eindeisen.controls[i]">
+                </div>
             </div>
         </ng-container>
-        <button mat-button (click)="addEindeis()">Eindeis toevoegen</button>
+        <button type="button" (click)="addEindeis()">Eindeis toevoegen</button>
 
     </label>
 
@@ -48,19 +48,19 @@
 
             <a> Naam</a>
 
-            <input matInput type="string" formControlName="naam">
+            <input type="string" formControlName="naam">
         </label>
         <label>
 
             <a> Email</a>
 
-            <input matInput type="string" formControlName="email">
+            <input type="string" formControlName="email">
         </label>
         <label>
 
             <a> Telefoonnummer</a>
 
-            <input matInput type="string" formControlName="telefoonnummer">
+            <input type="string" formControlName="telefoonnummer">
         </label>
 
     </div>
@@ -68,16 +68,20 @@
     <h5>Studiefase</h5>
     <div class="onderElkaar" formGroupName="studiefase">
         <label>
-
             <a> Fase</a>
-
-            <input matInput type="string" formControlName="fase">
+            <input type="string" formControlName="fase">
         </label>
+
         <label>
-
             <a> Periode</a>
-
-            <input matInput type="number" formControlName="periode">
+            <ng-container formArrayName="periode">
+                <div class="noWrap">
+                    <div *ngFor="let control of periode.controls; index as i">
+                        <input type="number" [formControl]="periode.controls[i]">
+                    </div>
+                </div>
+            </ng-container>
+            <button type="button" (click)="addPeriode()">Periode toevoegen</button>
         </label>
 
     </div>
@@ -108,15 +112,16 @@
         <div class="onderElkaar" formGroupName="aanbevolenVoor">
             <h5>Aanbevolen voor</h5>
             <div>
-                <label>
-                    <a> SE</a>
-                    <input type="checkbox" formControlName="SE" />
-                </label>
-                <label>
-                    <a>FICT</a>
-                    <input type="checkbox" formControlName="FICT" />
-                </label>
+
+                <a> SE</a>
+                <input type="checkbox" formControlName="SE" />
+
+
+                <a>FICT</a>
+                <input type="checkbox" formControlName="FICT" />
+
             </div>
+
             <div>
                 <a>BDAM</a>
                 <input type="checkbox" formControlName="BDAM" />
@@ -143,95 +148,95 @@
                 <td>analyseren</td>
 
                 <td>
-                    <input matInput type="number" formControlName="GIAN">
+                    <input type="number" formControlName="GIAN">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="BPAN">
+                    <input type="number" formControlName="BPAN">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="ISAN">
+                    <input type="number" formControlName="ISAN">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="SWAN">
+                    <input type="number" formControlName="SWAN">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="HIAN">
+                    <input type="number" formControlName="HIAN">
                 </td>
             </tr>
 
             <tr>
                 <td>adviseren</td>
                 <td>
-                    <input matInput type="number" formControlName="GIAD">
+                    <input type="number" formControlName="GIAD">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="BPAD">
+                    <input type="number" formControlName="BPAD">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="ISAD">
+                    <input type="number" formControlName="ISAD">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="SWAD">
+                    <input type="number" formControlName="SWAD">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="HIAD">
+                    <input type="number" formControlName="HIAD">
                 </td>
             </tr>
 
             <tr>
                 <td>ontwerpen</td>
                 <td>
-                    <input matInput type="number" formControlName="GION">
+                    <input type="number" formControlName="GION">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="BPON">
+                    <input type="number" formControlName="BPON">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="ISON">
+                    <input type="number" formControlName="ISON">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="SWON">
+                    <input type="number" formControlName="SWON">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="HION">
+                    <input type="number" formControlName="HION">
                 </td>
             </tr>
 
             <tr>
                 <td>realiseren</td>
                 <td>
-                    <input matInput type="number" formControlName="GIRE">
+                    <input type="number" formControlName="GIRE">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="BPRE">
+                    <input type="number" formControlName="BPRE">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="ISRE">
+                    <input type="number" formControlName="ISRE">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="SWRE">
+                    <input type="number" formControlName="SWRE">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="HIRE">
+                    <input type="number" formControlName="HIRE">
                 </td>
             </tr>
 
             <tr>
                 <td>beheren</td>
                 <td>
-                    <input matInput type="number" formControlName="GIBE">
+                    <input type="number" formControlName="GIBE">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="BPBE">
+                    <input type="number" formControlName="BPBE">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="ISBE">
+                    <input type="number" formControlName="ISBE">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="SWBE">
+                    <input type="number" formControlName="SWBE">
                 </td>
                 <td>
-                    <input matInput type="number" formControlName="HIBE">
+                    <input type="number" formControlName="HIBE">
                 </td>
             </tr>
         </table>
