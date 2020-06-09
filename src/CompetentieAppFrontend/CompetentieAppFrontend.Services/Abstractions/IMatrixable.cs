@@ -1,4 +1,4 @@
-namespace CompetentieAppFrontend.Services.Projections
+namespace CompetentieAppFrontend.Services.Abstractions
 {
     public interface IMatrixable<out TValue>
     {

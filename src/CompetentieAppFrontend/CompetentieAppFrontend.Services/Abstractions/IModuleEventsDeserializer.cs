@@ -1,4 +1,6 @@
-namespace CompetentieAppFrontend.Services.Eventing
+using CompetentieAppFrontend.Services.Events;
+
+namespace CompetentieAppFrontend.Services.Abstractions
 {
     public interface IModuleEventsDeserializer
     {

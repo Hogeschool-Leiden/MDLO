@@ -1,4 +1,7 @@
-namespace CompetentieAppFrontend.Services.Projections
+using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.Projections;
+
+namespace CompetentieAppFrontend.Services.ViewModels
 {
     public class Eindcompetentie : IMatrixable<Eindniveau>
     {

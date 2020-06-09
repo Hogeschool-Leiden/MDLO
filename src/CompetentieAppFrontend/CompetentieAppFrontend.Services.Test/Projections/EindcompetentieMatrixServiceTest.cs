@@ -3,6 +3,7 @@ using System.Linq;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using CompetentieAppFrontend.Services.Projections;
+using CompetentieAppFrontend.Services.ViewModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

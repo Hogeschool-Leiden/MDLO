@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.Repositories;
+using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace CompetentieAppFrontend.Services.Projections
@@ -21,13 +23,13 @@ namespace CompetentieAppFrontend.Services.Projections
             _moduleRepository = moduleRepository;
         }
 
-        public IEnumerable<ModuleView> GetAllModules()
+        public IEnumerable<ModuleViewModel> GetAllModules()
         {
             var modules = _moduleRepository.GetAllModules();
 
             _logger.LogTrace($"Retrieved {modules.Count} modules.");
 
-            return modules.Select(module => new ModuleView
+            return modules.Select(module => new ModuleViewModel
             {
                 CohortNaam = module.Cohort.CohortNaam,
                 Specialisaties = module.Studiefasen.Select(studiefase => studiefase.Specialisatie.SpecialisatieNaam),

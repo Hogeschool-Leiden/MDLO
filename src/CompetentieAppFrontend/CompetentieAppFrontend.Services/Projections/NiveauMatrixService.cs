@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.Repositories;
+using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace CompetentieAppFrontend.Services.Projections

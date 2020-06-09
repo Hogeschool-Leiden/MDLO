@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using CompetentieAppFrontend.Constants;
 using CompetentieAppFrontend.Domain;
+using CompetentieAppFrontend.Services.Eventing;
 using CompetentieAppFrontend.Services.Projections;
+using CompetentieAppFrontend.Services.ViewModels;
 using Miffy.MicroServices.Events;
 
-namespace CompetentieAppFrontend.Services.Eventing
+namespace CompetentieAppFrontend.Services.Events
 {
     public class ModuleGecreeerd : DomainEvent
     {
