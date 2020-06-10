@@ -48,6 +48,7 @@ namespace CompetentieAppFrontend.Api
             services.AddTransient<IStudiefaseService, StudiefaseService>();
             services.AddTransient<IEindeisService, EindeisService>();
             services.AddTransient<IModuleEventsDeserializer, ModuleEventsDeserializer>();
+            services.AddTransient<IAuditLogEntryService, AuditLogEntryService>();
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });

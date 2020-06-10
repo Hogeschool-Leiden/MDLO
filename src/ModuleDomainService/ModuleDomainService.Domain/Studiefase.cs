@@ -12,7 +12,7 @@ namespace ModuleDomainService.Domain
             : this(fase)
             => Perioden = perioden;
 
-        public string Fase { get; }
-        public IEnumerable<int> Perioden { get; }
+        public string Fase { get; set; }
+        public IEnumerable<int> Perioden { get; set; }
     }
 }
