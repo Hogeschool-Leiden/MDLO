@@ -1,12 +1,15 @@
-﻿
+using Miffy.MicroServices.Commands;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleFrontend.Api.Commands
 {
     [ExcludeFromCodeCoverage]
-    public class CreeerModuleCommandResponse
+    public class CreeerModuleCommandResponse : DomainCommand
     {
-        public string Message { get; set; }
+        public CreeerModuleCommandResponse() : base("MDLO.ModuleBeheerService.CreeerModuleResponse") {}
+
         public int StatusCode { get; set; }
+
+        public string Message { get; set; }
     }
 }

@@ -27,8 +27,9 @@ variables:
   angularProject: '$(projectPath)/ClientApp'
   relativeAngularProject: ClientApp
   testProjects: |
+    $(solutionPath)/CompetentieAppFrontend.Api.Test
     $(solutionPath)/CompetentieAppFrontend.Infrastructure.Test
-    $(solutionPath)/CompetentieAppFrontend/CompetentieAppFrontend.Services.Test
+    $(solutionPath)/CompetentieAppFrontend.Services.Test
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   buildvmImageName: 'windows-latest'

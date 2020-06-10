@@ -145,6 +145,9 @@ namespace ModuleDomainService.Infrastructure.Test.Repositories
         public void SaveModule_Should_Call_AppendToStream_On_EventStore()
         {
             // Arrange
+            _eventStoreMock
+                .Setup(store => store.LoadStream(It.IsAny<string>()))
+                .Returns(new EventStream(null, 0, new List<DomainEvent>()));
             var module = new Module(
                 new CreeerModuleCommand
                 {

@@ -66,9 +66,9 @@ namespace ModuleDomainService.Infrastructure.Test.DAL
                 AanbevolenVoor = new List<Specialisatie>(),
                 Competenties = new Matrix
                 {
-                    Rows = new[] {"software"},
-                    Columns = new[] {"analyseren"},
-                    AdjacencyMatrix = new int[1][] {new[] {1}}
+                    XHeaders = new List<string> {"software"},
+                    YHeaders = new List<string> {"analyseren"},
+                    Cells = new int[][] {new[] {1}}
                 },
                 Studiefase = new Studiefase("", new List<int> {1, 2}),
                 Eindeisen = new List<string> {"Test", "Test"}

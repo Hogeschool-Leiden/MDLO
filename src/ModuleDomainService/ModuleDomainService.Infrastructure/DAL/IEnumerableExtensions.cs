@@ -3,9 +3,21 @@ using System.Linq;
 
 namespace ModuleDomainService.Infrastructure.DAL
 {
-    internal static class IEnumerableExtensions
+    public static class IEnumerableExtensions
     {
-        internal static int Version(this IEnumerable<Event> events) =>
-            events.Max(@event => @event.Stream.Version);
+        public static int Version(this IEnumerable<Event> events)
+        {
+            if (events == null)
+            {
+                return 0;
+            }
+
+            if (events.Count() == 0)
+            {
+                return 0;
+            }
+
+            return events.Max(@event => @event.Stream.Version);
+        }
     }
 }

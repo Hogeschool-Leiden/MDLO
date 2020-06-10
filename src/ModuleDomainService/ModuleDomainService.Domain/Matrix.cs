@@ -4,8 +4,8 @@ namespace ModuleDomainService.Domain
 {
     public class Matrix
     {
-        public IEnumerable<string> Rows { get; set; }
-        public IEnumerable<string> Columns { get; set; }
-        public int[][] AdjacencyMatrix { get; set; }
+        public List<string> XHeaders{ get; set; }
+        public List<string> YHeaders { get; set; }
+        public int[][] Cells { get; set; }
     }
 }

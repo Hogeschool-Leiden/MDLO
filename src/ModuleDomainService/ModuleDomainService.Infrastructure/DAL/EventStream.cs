@@ -26,6 +26,8 @@ namespace ModuleDomainService.Infrastructure.DAL
         public int Version { get; private set; }
         public IEnumerable<DomainEvent> Events { get; }
 
+        public bool IsNullOrEmpty => Events == null || !Events.Any();
+
         public IEnumerable<Event> ToEvents =>
             from domainEvent in Events
             select Event.FromDomainEvent(new Stream(Id, ++Version), domainEvent);

@@ -41,7 +41,7 @@ namespace ModuleDomainService.Infrastructure.Repositories
         {
             var stream = _eventStore.LoadStream(module.Id);
 
-            if (stream != null)
+            if (!stream.IsNullOrEmpty)
             {
                 throw new ModuleAlreadyExistException();
             }

@@ -38,7 +38,8 @@ namespace CompetentieAppFrontend.Api
             services.AddTransient<IStudiefaseRepository, StudiefaseRepository>();
             services.AddTransient<IBeheersingsNiveauRepository, BeheersingsNiveauRepository>();
             services.AddTransient<IEindeisRepository, EindeisRepository>();
-            
+            services.AddTransient<IAuditLogEntryRepository, AuditLogEntryRepository>();
+
             services.AddTransient<IEindcompetentieService, EindcompetentieService>();
             services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<IMatrixService<int>, NiveauMatrixService>();
@@ -47,6 +48,7 @@ namespace CompetentieAppFrontend.Api
             services.AddTransient<IStudiefaseService, StudiefaseService>();
             services.AddTransient<IEindeisService, EindeisService>();
             services.AddTransient<IModuleEventsDeserializer, ModuleEventsDeserializer>();
+            services.AddTransient<IAuditLogEntryService, AuditLogEntryService>();
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
