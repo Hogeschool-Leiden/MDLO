@@ -34,7 +34,7 @@ namespace ModuleFrontend.Api.Test
                 Studiefase = new Studiefase()
                 {
                     Fase = "Propedeuse",
-                    Periode = new List<int>(){ 1, 3}
+                    Perioden = new List<int>(){ 1, 3}
                 },
                 Studiejaar = "Jaar 3",
                 AanbevolenVoor = new List<Specialisatie>(){ new Specialisatie()
