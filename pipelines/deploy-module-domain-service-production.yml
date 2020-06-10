@@ -37,6 +37,6 @@ stages:
                     action: 'deploy'
                     kubernetesServiceConnection: 'MDLO-mdlo-production-1591281497115'
                     namespace: 'production'
-                    manifests: 'manifests/production/module-domain-service.yml'
+                    manifests: '$(Pipeline.Workspace)/manifests/production/module-domain-service.yml'
                     containers: '$(containerRegistry)/$(imageRepository):$(tag)'
                     imagePullSecrets: '$(imagePullSecret)'
