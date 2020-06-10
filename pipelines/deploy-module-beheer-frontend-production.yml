@@ -6,6 +6,7 @@ variables:
     imageRepository: 'competentie-app-frontend'
     containerRegistry: 'hsleidenmdlo.azurecr.io'
     vmImageName: 'ubuntu-latest'
+    imagePullSecret: 'mdlo-auth'
 
 stages:
     - stage: Deploy
