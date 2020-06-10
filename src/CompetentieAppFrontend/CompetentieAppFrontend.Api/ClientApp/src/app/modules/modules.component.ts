@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, ViewChild, Inject} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild, Inject, AfterViewInit} from '@angular/core';
 import {CompetenceMatrixComponent} from "../competencies/competence-matrix/competence-matrix.component";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
@@ -46,6 +46,7 @@ export class ModulesComponent implements OnInit {
     this.http.get(this.dbUrl).toPromise().then(data => {
       this.moduleData = data;
       this.injectDataInTable();
+      this.setDataSource();
     }).catch(error => console.log(error));
 
     // this.moduleData = moduleMock;  // this is mockdata
