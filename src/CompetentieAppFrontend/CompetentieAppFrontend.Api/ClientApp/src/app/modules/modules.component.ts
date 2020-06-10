@@ -112,7 +112,7 @@ export class ModulesComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  applyFilter() {
+  applyFilter(event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.specifyWhatColumnsToFilter();
     this.dataSource.filter = filterValue.trim().toLowerCase();
