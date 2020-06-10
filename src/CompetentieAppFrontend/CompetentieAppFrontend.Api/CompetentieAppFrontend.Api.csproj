@@ -41,6 +41,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CompetentieAppFrontend.Services\CompetentieAppFrontend.Services.csproj" />
     <ProjectReference Include="..\CompetentieAppFrontend.Constants\CompetentieAppFrontend.Constants.csproj" />
+    <ProjectReference Include="..\CompetentieAppFrontend.Infrastructure\CompetentieAppFrontend.Infrastructure.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
