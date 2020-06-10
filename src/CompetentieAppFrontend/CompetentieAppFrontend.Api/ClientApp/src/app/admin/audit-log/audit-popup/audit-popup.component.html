@@ -1,6 +1,6 @@
 <h3>Log</h3>
 <div *ngIf="data.auditData !== undefined">
-  <p><strong>Timestamp: </strong>{{data.auditData.timestamp}}</p>
+  <p><strong>Timestamp: </strong>{{data.auditData.timestamp | date:'dd/mm/yyyy hh:mm'}}</p>
   <p><strong>What happened?: </strong>{{data.auditData.omschrijving}}</p>
 </div>
 
