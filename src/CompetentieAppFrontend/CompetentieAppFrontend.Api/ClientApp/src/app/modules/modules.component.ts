@@ -1,10 +1,13 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild, Inject} from '@angular/core';
 import {CompetenceMatrixComponent} from "../competencies/competence-matrix/competence-matrix.component";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-// @ts-ignore
-import moduleMock from "./../../assets/mock-data/modules-mock.json"
 import {MatSort} from "@angular/material/sort";
 import {HttpClient} from "@angular/common/http";
+// @ts-ignore
+import moduleMock from "./../../assets/mock-data/modules-mock.json"
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {ModulePopupComponent} from "./module-popup/module-popup.component";
+
 
 @Component({
   selector: 'app-modules',
@@ -24,7 +27,7 @@ export class ModulesComponent implements OnInit {
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -36,6 +39,7 @@ export class ModulesComponent implements OnInit {
 
   clearModuleData() {
     this.MODULE_DATA.length = 0;
+
   }
 
   getDataFromDB() {
@@ -43,7 +47,6 @@ export class ModulesComponent implements OnInit {
       this.moduleData = data;
       this.injectDataInTable();
     }).catch(error => console.log(error));
-
 
     // this.moduleData = moduleMock;  // this is mockdata
     // this.injectDataInTable();
@@ -57,7 +60,8 @@ export class ModulesComponent implements OnInit {
           module: this.moduleData[i].moduleCode,
           period: this.moduleData[i].perioden,
           matrix: this.moduleData[i].matrix,
-          endRequirements: this.moduleData[i].eindeisen
+          endRequirements: this.moduleData[i].eindeisen,
+          auditLog: this.moduleData[i].auditLogObject
         }
       );
     }
@@ -120,12 +124,24 @@ export class ModulesComponent implements OnInit {
         data.period.toString().includes(filter);
     }
   }
+
+  openPopup(moduleRowData) {
+    this.dialog.open(ModulePopupComponent, {
+      data: {moduleData: moduleRowData}
+    });
+  }
 }
 
 export interface ModuleModel {
   specialisation: string[];
   module: string;
   period: number[];
-  matrix: any;//TODO: use matrix
+  matrix: any;
   endRequirements: string[];
+  auditLog: auditModel[];
+}
+
+export interface auditModel {
+  timeStamp: string;
+  information: string;
 }
