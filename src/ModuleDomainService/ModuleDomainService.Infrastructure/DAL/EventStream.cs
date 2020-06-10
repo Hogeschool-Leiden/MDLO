@@ -6,22 +6,28 @@ namespace ModuleDomainService.Infrastructure.DAL
 {
     public class EventStream
     {
-        private readonly List<DomainEvent> _events;
+        private EventStream(string id) =>
+            Id = id;
 
-        private EventStream(string id) => Id = id;
-
-        private EventStream(string id, int version) : this(id) => Version = version;
+        private EventStream(string id, int version) : this(id) =>
+            Version = version;
 
         public EventStream(string id,
             int version,
             IEnumerable<DomainEvent> events)
             : this(id, version) =>
-            _events = events.ToList();
+            Events = events;
+
+        public EventStream(string id, IEnumerable<Event> events) :
+            this(id, events.Version()) =>
+            Events = events.Select(@event => @event.ToDomainEvent());
 
         public string Id { get; }
+        public int Version { get; private set; }
+        public IEnumerable<DomainEvent> Events { get; }
 
-        public int Version { get; set; }
-
-        public IEnumerable<DomainEvent> Events => _events;
+        public IEnumerable<Event> ToEvents =>
+            from domainEvent in Events
+            select Event.FromDomainEvent(new Stream(Id, ++Version), domainEvent);
     }
 }

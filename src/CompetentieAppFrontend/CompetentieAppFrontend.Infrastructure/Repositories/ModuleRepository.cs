@@ -31,7 +31,16 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
                 .ThenInclude(studiefase => studiefase.Periode)
                 .Include(module => module.Eindeisen)
                 .Include(module => module.Cohort)
+                .Include(module => module.AuditLogEntries)
                 .ToList();
+        }
+
+        public long CreateModule(Module module)
+        {
+            var entityEntry = _context.Modules.Add(module);
+            _context.SaveChanges();
+
+            return entityEntry.Entity.Id;
         }
     }
 }

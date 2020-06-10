@@ -1,204 +1,270 @@
 [
-    {
-        "specialisaties": [
-            "Propedeuse"
+  {
+    "specialisaties": [
+      "Propedeuse"
+    ],
+    "moduleCode": "IOPR",
+    "perioden": [
+      1
+    ],
+    "matrix": {
+      "xHeaders": [
+        "gebruikersinteractie",
+        "organisatieprocessen",
+        "infrastructuur",
+        "software",
+        "hardware interfacing"
+      ],
+      "yHeaders": [
+        "analyseren",
+        "adviseren",
+        "ontwerpen",
+        "realiseren",
+        "manage & control"
+      ],
+      "cells": [
+        [
+          {
+            "value": 1
+          },
+          null,
+          null,
+          null,
+          null
         ],
-        "moduleCode": "IOPR",
-        "perioden": [
-            1
+        [
+          null,
+          null,
+          null,
+          null,
+          null
         ],
-        "matrix": {
-            "xHeaders": [
-                "gebruikersinteractie",
-                "organisatieprocessen",
-                "infrastructuur",
-                "software",
-                "hardware interfacing"
-            ],
-            "yHeaders": [
-                "analyseren",
-                "adviseren",
-                "ontwerpen",
-                "realiseren",
-                "manage & control"
-            ],
-            "cells": [
-                [
-                    {
-                        "value": 1
-                    },
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    {
-                        "value": 1
-                    }
-                ]
-            ]
-        },
-        "eindeisen": [
-            "Deze module is erg moeilijk.",
-            "Het is onmogelijk deze module te halen."
+        [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          {
+            "value": 1
+          }
         ]
+      ]
     },
-    {
-        "specialisaties": [
-            "Propedeuse"
+    "eindeisen": [
+      "Deze module is erg moeilijk.",
+      "Het is onmogelijk deze module te halen."
+    ],
+    "auditLogObject": [
+      {
+        "timestamp": "2017-04-23T18:25:43-05:00",
+        "omschrijving": "Henk heeft module UML aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T17:25:43-05:00",
+        "omschrijving": "Henk heeft module FICT aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T18:25:43-05:00",
+        "omschrijving": "Henk heeft module UML aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T19:25:43-05:00",
+        "omschrijving": "Henk heeft module ITST aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T20:25:43-05:00",
+        "omschrijving": "Henk heeft module IOPR aangepast!"
+      }
+    ]
+  },
+  {
+    "specialisaties": [
+      "Propedeuse"
+    ],
+    "moduleCode": "IOPR2",
+    "perioden": [
+      3
+    ],
+    "matrix": {
+      "xHeaders": [
+        "gebruikersinteractie",
+        "organisatieprocessen",
+        "infrastructuur",
+        "software",
+        "hardware interfacing"
+      ],
+      "yHeaders": [
+        "analyseren",
+        "adviseren",
+        "ontwerpen",
+        "realiseren",
+        "manage & control"
+      ],
+      "cells": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null
         ],
-        "moduleCode": "IOPR2",
-        "perioden": [
-            3
+        [
+          null,
+          null,
+          null,
+          null,
+          null
         ],
-        "matrix": {
-            "xHeaders": [
-                "gebruikersinteractie",
-                "organisatieprocessen",
-                "infrastructuur",
-                "software",
-                "hardware interfacing"
-            ],
-            "yHeaders": [
-                "analyseren",
-                "adviseren",
-                "ontwerpen",
-                "realiseren",
-                "manage & control"
-            ],
-            "cells": [
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    {
-                        "value": 1
-                    },
-                    {
-                        "value": 1
-                    },
-                    null
-                ]
-            ]
-        },
-        "eindeisen": []
+        [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          {
+            "value": 1
+          },
+          {
+            "value": 1
+          },
+          null
+        ]
+      ]
     },
-    {
-        "specialisaties": [
-            "Propedeuse"
+    "eindeisen": [],
+    "auditLogObject": [
+      {
+        "timestamp": "2017-04-23T18:25:43-05:00",
+        "omschrijving": "Henk heeft module UML aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T17:25:43-05:00",
+        "omschrijving": "Henk heeft module FICT aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T18:25:43-05:00",
+        "omschrijving": "Henk heeft module UML aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T19:25:43-05:00",
+        "omschrijving": "Henk heeft module ITST aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T20:25:43-05:00",
+        "omschrijving": "Henk heeft module IOPR aangepast!"
+      }
+    ]
+  },
+  {
+    "specialisaties": [
+      "Propedeuse"
+    ],
+    "moduleCode": "IUML",
+    "perioden": [
+      2
+    ],
+    "matrix": {
+      "xHeaders": [
+        "gebruikersinteractie",
+        "organisatieprocessen",
+        "infrastructuur",
+        "software",
+        "hardware interfacing"
+      ],
+      "yHeaders": [
+        "analyseren",
+        "adviseren",
+        "ontwerpen",
+        "realiseren",
+        "manage & control"
+      ],
+      "cells": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null
         ],
-        "moduleCode": "IUML",
-        "perioden": [
-            2
+        [
+          null,
+          null,
+          null,
+          null,
+          null
         ],
-        "matrix": {
-            "xHeaders": [
-                "gebruikersinteractie",
-                "organisatieprocessen",
-                "infrastructuur",
-                "software",
-                "hardware interfacing"
-            ],
-            "yHeaders": [
-                "analyseren",
-                "adviseren",
-                "ontwerpen",
-                "realiseren",
-                "manage & control"
-            ],
-            "cells": [
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ],
-                [
-                    null,
-                    {
-                        "value": 1
-                    },
-                    null,
-                    null,
-                    null
-                ]
-            ]
-        },
-        "eindeisen": []
-    }
+        [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          {
+            "value": 1
+          },
+          null,
+          null,
+          null
+        ]
+      ]
+    },
+    "eindeisen": [],
+    "auditLogObject": [
+      {
+        "timestamp": "2017-04-23T18:25:43-05:00",
+        "omschrijving": "Henk heeft module UML aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T17:25:43-05:00",
+        "omschrijving": "Henk heeft module FICT aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T18:25:43-05:00",
+        "omschrijving": "Henk heeft module UML aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T19:25:43-05:00",
+        "omschrijving": "Henk heeft module ITST aangepast!"
+      },
+      {
+        "timestamp": "2020-04-23T20:25:43-05:00",
+        "omschrijving": "Henk heeft module IOPR aangepast!"
+      }
+    ]
+  }
 ]

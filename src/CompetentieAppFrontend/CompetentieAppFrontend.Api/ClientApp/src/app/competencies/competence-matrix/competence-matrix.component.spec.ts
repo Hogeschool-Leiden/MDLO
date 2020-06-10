@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {DebugElement, SimpleChange} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {CompetenceMatrixComponent} from "./competence-matrix.component";
@@ -13,7 +13,7 @@ describe('CompetenceMatrixComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CompetenceMatrixComponent]
+      declarations: [CompetenceMatrixComponent]
     })
       .compileComponents();
   }));
@@ -65,6 +65,22 @@ describe('CompetenceMatrixComponent', () => {
     component.resetMatrix();
     expect(component.displayMatrix[1][1]).toEqual(null);
     expect(component.displayMatrix[5][5]).toEqual(null);
+  });
+
+  it('should return competence value', function () {
+    let matrixElement1 = {value: 3}
+    expect(component.getCorrectCompetenceValue(matrixElement1)).toEqual(3);
+
+    let matrixElement2 = {value: {niveau: 2}}
+    expect(component.getCorrectCompetenceValue(matrixElement2)).toEqual(2);
+
+  });
+
+  it('should return the correct colours to the correct competence value.', function () {
+    expect(component.getCellColor('0')).toEqual('#FFF');
+    expect(component.getCellColor('1')).toEqual('#88BFFF');
+    expect(component.getCellColor('2')).toEqual('#2648FF');
+    expect(component.getCellColor('3')).toEqual('#0000CA');
   });
 
 });

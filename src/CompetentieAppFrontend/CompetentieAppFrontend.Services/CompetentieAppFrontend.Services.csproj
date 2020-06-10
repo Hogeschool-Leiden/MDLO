@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\CompetentieAppFrontend.Constants\CompetentieAppFrontend.Constants.csproj" />
         <ProjectReference Include="..\CompetentieAppFrontend.Domain\CompetentieAppFrontend.Domain.csproj" />
         <ProjectReference Include="..\CompetentieAppFrontend.Infrastructure\CompetentieAppFrontend.Infrastructure.csproj" />
     </ItemGroup>

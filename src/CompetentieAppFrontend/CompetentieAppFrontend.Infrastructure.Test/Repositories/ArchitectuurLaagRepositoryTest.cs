@@ -66,5 +66,47 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             // Assert
             Assert.IsTrue(result.Contains(architectuurLaagNaam));
         }
+        
+        [TestMethod]
+        public void EnsureArchitectuurLaagExist_Should_Return_Instance_Of_Type_Long()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new ArchitectuurLaagRepository(context);
+
+            // Act
+            var result = repository.EnsureArchitectuurLaagExist("gebruikersinteractie");
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(long));
+        }
+
+        [TestMethod]
+        public void EnsureArchitectuurLaagExist_Should_Not_Duplicate_Entry()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new ArchitectuurLaagRepository(context);
+
+            // Act
+            var result = repository.EnsureArchitectuurLaagExist("gebruikersinteractie");
+
+            // Assert
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void EnsureArchitectuurLaagExist_Should_Save_New_Cohorts()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new ArchitectuurLaagRepository(context);
+
+            // Act
+            var result = repository.EnsureArchitectuurLaagExist("verkopen");
+
+            // Assert
+            Assert.AreEqual(6, result);
+        }
     }
 }

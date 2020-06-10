@@ -363,7 +363,6 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                 {
                     Id = 1,
                     CohortNaam = "2018-2019",
-                    StartDatum = new DateTime(2019, 9, 3)
                 });
 
             context.Modules
@@ -461,6 +460,17 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                     Id = 2,
                     ModuleId = 1,
                     EindeisBeschrijving = "Het is onmogelijk deze module te halen."
+                }
+            });
+            
+            context.AuditLogEntries.AddRange(new []
+            {
+                new AuditLogEntry
+                {
+                    Id = 1,
+                    ModuleId = 1,
+                    Omschrijving = "Henk creeerde dit",
+                    Timestamp = new DateTime(2020, 3,4,12,21,22)
                 }
             });
 

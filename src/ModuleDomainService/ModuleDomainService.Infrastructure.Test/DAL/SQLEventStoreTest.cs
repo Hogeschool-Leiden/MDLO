@@ -50,12 +50,12 @@ namespace ModuleDomainService.Infrastructure.Test.DAL
                     ModuleCode = "IOPR",
                     ModuleNaam = "Object georienteerd programeren",
                     AantalEc = 3,
-                    Studiejaar = "2018/2019"
+                    Cohort = "2019/2020"
                 }
             }));
 
             // Assert
-            Assert.IsTrue(context.Events.Any(@event => @event.Stream.Id.Equals("uniqueId")));
+            Assert.IsTrue(context.Stream.Any(@event => @event.Stream.Id.Equals("uniqueId")));
         }
     }
 }

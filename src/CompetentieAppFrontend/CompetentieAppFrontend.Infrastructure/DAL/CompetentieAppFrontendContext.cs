@@ -21,8 +21,9 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
         public DbSet<Eindeis> Eindeisen { get; set; }
         public DbSet<Cohort> Cohorts { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        public DbSet<AuditLogEntry> AuditLogEntries { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) =>
             modelBuilder
                 .ApplyConfiguration(new CompetentieConfiguration())
                 .ApplyConfiguration(new BeheersingsNiveauConfiguration())
@@ -33,7 +34,7 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                 .ApplyConfiguration(new ModuleConfiguration())
                 .ApplyConfiguration(new PeriodeConfiguration())
                 .ApplyConfiguration(new SpecialisatieConfiguration())
-                .ApplyConfiguration(new CohortConfiguration());
-        }
+                .ApplyConfiguration(new CohortConfiguration())
+                .ApplyConfiguration(new AuditLogEntryConfiguration());
     }
 }

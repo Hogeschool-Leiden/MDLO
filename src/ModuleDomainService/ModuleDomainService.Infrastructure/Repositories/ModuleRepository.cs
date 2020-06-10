@@ -1,7 +1,8 @@
-using System.Linq;
 using Miffy.MicroServices.Events;
 using ModuleDomainService.Domain;
+using ModuleDomainService.Domain.Abstractions;
 using ModuleDomainService.Infrastructure.DAL;
+using ModuleDomainService.Infrastructure.Exceptions;
 
 namespace ModuleDomainService.Infrastructure.Repositories
 {
@@ -27,11 +28,23 @@ namespace ModuleDomainService.Infrastructure.Repositories
 
         public void SaveModule(Module module)
         {
-            if (!module.Changes.Any()) return;
-            
-            _eventStore.AppendToStream(new EventStream($"module:{module.Id}",module.Version, module.Changes));
+            if (module.HasNoChanges) return;
+
+            DoesModuleExist(module);
+
+            _eventStore.AppendToStream(new EventStream($"module:{module.Id}", module.Version, module.Changes));
 
             module.Changes.ForEach(@event => _eventPublisher.Publish(@event));
+        }
+
+        private void DoesModuleExist(AggregateRoot module)
+        {
+            var stream = _eventStore.LoadStream(module.Id);
+
+            if (stream != null)
+            {
+                throw new ModuleAlreadyExistException();
+            }
         }
     }
 }

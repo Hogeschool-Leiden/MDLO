@@ -3,6 +3,9 @@ using System.Linq;
 using System.Reflection;
 using CompetentieAppFrontend.Api.Controllers;
 using CompetentieAppFrontend.Services;
+using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.Projections;
+using CompetentieAppFrontend.Services.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,7 +25,7 @@ namespace CompetentieAppFrontend.Api.Test
             _moduleServiceMock = new Mock<IModuleService>();
             _loggerMock = new Mock<ILogger<ModuleController>>();
 
-            _moduleServiceMock.Setup(service => service.GetAllModules()).Returns(new List<ModuleView>());
+            _moduleServiceMock.Setup(service => service.GetAllModules()).Returns(new List<ModuleViewModel>());
         }
 
         [TestMethod]
@@ -74,7 +77,7 @@ namespace CompetentieAppFrontend.Api.Test
             var result = controller.GetAllModules();
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(IEnumerable<ModuleView>));
+            Assert.IsInstanceOfType(result, typeof(IEnumerable<ModuleViewModel>));
         }
 
         [TestMethod]
@@ -94,8 +97,8 @@ namespace CompetentieAppFrontend.Api.Test
         public void GetAllModules_Should_Return_Data_Received_From_ModuleService()
         {
             // Arrange
-            _moduleServiceMock.Setup(service => service.GetAllModules()).Returns(new List<ModuleView>
-                {new ModuleView {ModuleCode = "TestCode"}});
+            _moduleServiceMock.Setup(service => service.GetAllModules()).Returns(new List<ModuleViewModel>
+                {new ModuleViewModel {ModuleCode = "TestCode"}});
             var controller = new ModuleController(_loggerMock.Object, _moduleServiceMock.Object);
 
             // Act

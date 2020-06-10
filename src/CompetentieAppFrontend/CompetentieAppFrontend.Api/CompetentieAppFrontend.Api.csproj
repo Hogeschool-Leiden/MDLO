@@ -8,7 +8,6 @@
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     <ProjectGuid>98fe63c2-dcca-4811-b25a-e4d29b7ecdd8</ProjectGuid>
-    <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
   </PropertyGroup>
 
@@ -40,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CompetentieAppFrontend.Services\CompetentieAppFrontend.Services.csproj" />
+    <ProjectReference Include="..\CompetentieAppFrontend.Constants\CompetentieAppFrontend.Constants.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
