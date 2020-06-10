@@ -4,7 +4,6 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Miffy.MicroServices.Events;
-using ModuleDomainService.Domain;
 using ModuleDomainService.Domain.Events;
 using ModuleDomainService.Infrastructure.DAL;
 

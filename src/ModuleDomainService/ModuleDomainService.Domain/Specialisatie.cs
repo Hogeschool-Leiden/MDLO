@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace ModuleDomainService.Domain
 {
+    [ExcludeFromCodeCoverage]
     public class Specialisatie
     {
         private Specialisatie(string naam) => Naam = naam;

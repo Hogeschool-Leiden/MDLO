@@ -1,10 +1,15 @@
+using System;
 using Miffy.MicroServices.Events;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ModuleDomainService.Infrastructure.DAL
 {
     public class Event
     {
+        private const string EventsLocation = "ModuleDomainService.Domain.Events.";
+        private const string DomainProject = "ModuleDomainService.Domain";
+
         private Event(string id) => Id = id;
 
         private Event(string id, Stream stream)
@@ -23,7 +28,9 @@ namespace ModuleDomainService.Infrastructure.DAL
         public Stream Stream { get; set; }
         public string Type { get; set; }
         public string Payload { get; set; }
-        public DomainEvent toDomainEvent => JsonConvert.DeserializeObject<DomainEvent>(Payload);
+
+        public DomainEvent ToDomainEvent() =>
+            (DomainEvent) JObject.FromObject(JObject.Parse(Payload)).ToObject(EventType);
 
         public static Event FromDomainEvent(Stream stream, DomainEvent domainEvent)
         {
@@ -32,5 +39,8 @@ namespace ModuleDomainService.Infrastructure.DAL
             var payload = JsonConvert.SerializeObject(domainEvent);
             return new Event(id, stream, type, payload);
         }
+
+        private Type EventType =>
+            System.Type.GetType($"{EventsLocation}{Type}, {DomainProject}");
     }
 }

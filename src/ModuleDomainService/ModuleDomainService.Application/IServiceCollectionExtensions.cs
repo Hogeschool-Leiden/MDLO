@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -11,6 +12,7 @@ using RabbitMQ.Client.Exceptions;
 
 namespace ModuleDomainService.Application
 {
+    [ExcludeFromCodeCoverage]
     public static class IServiceCollectionExtensions
     {
         public static void UseMicroserviceHost(this IServiceCollection services)

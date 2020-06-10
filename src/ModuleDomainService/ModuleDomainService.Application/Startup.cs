@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,7 @@ using ModuleDomainService.Infrastructure.Repositories;
 
 namespace ModuleDomainService.Application
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
