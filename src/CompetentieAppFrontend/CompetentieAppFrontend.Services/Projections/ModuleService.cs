@@ -32,7 +32,7 @@ namespace CompetentieAppFrontend.Services.Projections
             return modules.Select(module => new ModuleViewModel
             {
                 CohortNaam = module.Cohort.CohortNaam,
-                Specialisaties = module.Studiefasen.Select(studiefase => studiefase.Specialisatie.SpecialisatieNaam),
+                Specialisaties = module.Studiefasen.Select(studiefase => studiefase.Specialisatie.Naam),
                 ModuleCode = module.ModuleCode,
                 Matrix = _matrixService.CreateCompetentieMatrix(module.Competenties),
                 Perioden = module.Studiefasen.Select(studiefase => studiefase.Periode.PeriodeNummer),

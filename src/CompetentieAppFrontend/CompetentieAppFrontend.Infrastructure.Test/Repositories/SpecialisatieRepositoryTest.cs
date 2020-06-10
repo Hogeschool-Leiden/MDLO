@@ -48,7 +48,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 new Specialisatie
                 {
-                    SpecialisatieNaam = "Software engineering"
+                    Naam = "Software engineering"
                 }
             });
 
@@ -68,7 +68,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 new Specialisatie
                 {
-                    SpecialisatieNaam = "Software engineering"
+                    Naam = "Software engineering"
                 }
             });
 
@@ -88,7 +88,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             {
                 new Specialisatie
                 {
-                    SpecialisatieNaam = "Kaas snijden"
+                    Naam = "Kaas snijden"
                 }
             });
 

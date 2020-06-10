@@ -22,7 +22,7 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
                     where competentie.Module.Cohort.CohortNaam == criteria.CohortNaam
                     from studiefase in competentie.Module.Studiefasen
                     where studiefase.Periode.PeriodeNummer <= criteria.PeriodeNummer
-                    where studiefase.Specialisatie.SpecialisatieNaam == criteria.SpecialisatieNaam
+                    where studiefase.Specialisatie.Naam == criteria.SpecialisatieNaam
                     select competentie)
                 .Include(competentie => competentie.BeheersingsNiveau)
                 .ThenInclude(niveau => niveau.ArchitectuurLaag)
