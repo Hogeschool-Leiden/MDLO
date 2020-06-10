@@ -19,7 +19,7 @@ export class ModuleEditorComponent implements OnInit {
     this.addPeriode();
   }
 
-  availableCohorts: Cohort[] = [{ naam: "2017/2018", beginjaar: "2017/2018" }, { naam: "2018/2019", beginjaar: "2018/2019" }, { naam: "2019/2020", beginjaar: "2019/2020" },]
+  availableCohorts: Cohort[] = [{ naam: "2017-2018", beginjaar: "2017-2018" }, { naam: "2018-2019", beginjaar: "2018-2019" }, { naam: "2019-2020", beginjaar: "2019-2020" },{ naam: "2010-2021", beginjaar: "2020-2021" }]
   jsonValue: null;
   jsonValueAfterPipe: null;
   moduleForm = new FormGroup({
