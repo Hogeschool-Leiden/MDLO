@@ -1,37 +1,20 @@
 ﻿using Miffy.MicroServices.Commands;
 using ModuleFrontend.Api.Commands;
-using ModuleFrontend.Api.DAL;
-using ModuleFrontend.Api.DTO;
 using ModuleFrontend.Api.Models;
 using ModuleFrontend.Api.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ModuleFrontend.Api.Services
 {
     public class ModuleService : IModuleService
     {
-        private readonly ModuleContext _moduleContext;
         private readonly ICommandPublisher _publisher;
-        public ModuleService(ModuleContext context, ICommandPublisher publisher)
+        public ModuleService(ICommandPublisher publisher)
         {
-            _moduleContext = context;
             _publisher = publisher;
         }
-        public CreeerModuleCommandResponse SendCreeerModuleCommand(ModuleViewModel module)
+        public CreeerModuleCommandResponse SendCreeerModuleCommand(Module module)
         {
-            var verplichtVoor = new List<Specialisatie>() { };
-            foreach (var specialisatie in module.VerplichtVoor)
-            {
-                verplichtVoor.Add(new Specialisatie() { Code = specialisatie.Code, Naam = specialisatie.Naam });
-            }
-
-            var aanbevolenVoor = new List<Specialisatie>() { };
-            foreach (var specialisatie in module.AanbevolenVoor)
-            {
-                aanbevolenVoor.Add(new Specialisatie() { Code = specialisatie.Code, Naam = specialisatie.Naam });
-            }
-
             CreeerModuleCommand command = new CreeerModuleCommand()
             {
                 Cohort = module.Cohort,
@@ -39,9 +22,9 @@ namespace ModuleFrontend.Api.Services
                 ModuleCode = module.ModuleCode,
                 ModuleNaam = module.ModuleNaam,
                 Eindeisen = module.Eindeisen,
-                Studiefase = new Studiefase() { Fase = module.Studiefase.Fase, Periode = module.Studiefase.Periode },
-                VerplichtVoor = verplichtVoor,
-                AanbevolenVoor = aanbevolenVoor
+                Studiefase = module.Studiefase,
+                VerplichtVoor = module.VerplichtVoor,
+                AanbevolenVoor = module.AanbevolenVoor
             };
             
             CreeerModuleCommandResponse result = _publisher.PublishAsync<CreeerModuleCommandResponse>(command).Result;

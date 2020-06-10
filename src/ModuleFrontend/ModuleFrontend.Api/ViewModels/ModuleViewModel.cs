@@ -16,11 +16,11 @@ namespace ModuleFrontend.Api.ViewModels
         public string Studiejaar { get; set; }
         [Required]
         public string Cohort { get; set; }
-        public ModuleleiderViewModel Moduleleider { get; set; }
-        public StudiefaseViewModel Studiefase { get; set; }
+        public Moduleleider Moduleleider { get; set; }
+        public Studiefase Studiefase { get; set; }
         [Required]
-        public List<SpecialisatieViewModel> VerplichtVoor { get; set; }
-        public List<SpecialisatieViewModel> AanbevolenVoor { get; set; }
+        public List<Specialisatie> VerplichtVoor { get; set; }
+        public List<Specialisatie> AanbevolenVoor { get; set; }
         public Matrix Competenties { get; set; }
         public List<string> Eindeisen { get; set; }
     }

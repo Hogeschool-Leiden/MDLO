@@ -1,0 +1,8 @@
+Naam;Omschrijving;Jaar;per1;per2;per3;per4;EC;Allen;BDAM;FICT;SE;IAT;GI-BE;GI-AN;GI-AD;GI-ON;GI-RE;BP-BE;BP-AN;BP-AD;BP-ON;BP-RE;IS-BE;IS-AN;IS-AD;IS-ON;IS-RE;SW-BE;SW-AN;SW-AD;SW-ON;SW-RE;HI-BE;HI-AN;HI-AD;HI-ON;HI-RE
+iarch;IT Architectuur;1;TRUE;FALSE;FALSE;FALSE;3;V;;;;;;;;;1;;;;;;;;;;1;;;;;1;;1;;;1
+ibdw;Business Intelligence & Data Warehousing;1;TRUE;FALSE;FALSE;FALSE;3;;V;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ibk5;Opzetten eigen IT bedrijf�;2;FALSE;FALSE;TRUE;FALSE;3;K;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+icomas;Assessment en Zelfonderzoek;2;TRUE;FALSE;FALSE;FALSE;3;K;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+icommha;Communicatie Hoofdfase;2;TRUE;TRUE;TRUE;TRUE;3;V;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+icommpr;Communicatie 1;1;FALSE;FALSE;TRUE;TRUE;3;V;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+icpt;Concepten in Programmeertalen;2;FALSE;TRUE;FALSE;TRUE;3;;;;V;;;;;;;;;;;;;;;;;;;;3;;;;;;

@@ -1,0 +1,11 @@
+<form [formGroup]="modulesInladenForm" (ngSubmit)="onSubmit()">
+    <label>
+        Cohort*
+        <input type="text" formControlName="cohort">
+    </label>
+    <label>
+        CSV bestand
+        <input type="file" (change)="onFileChange($event)" />
+    </label>
+    <button type="submit" [disabled]="modulesInladenForm.invalid || modulesInladenForm.pristine">Uploaden</button>
+</form>

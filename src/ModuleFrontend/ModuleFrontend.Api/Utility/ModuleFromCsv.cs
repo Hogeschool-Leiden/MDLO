@@ -25,7 +25,21 @@ namespace ModuleFrontend.Api.Utility
         [Name("BDAM")]
         [Optional]
         public string BDAM { get; set; }
-
+        [Name("Jaar")]
+        [Optional]
+        public int Jaar { get; set; }
+        [Name("per1")]
+        [Optional]
+        public bool Periode1 { get; set; }
+        [Name("per2")]
+        [Optional]
+        public bool Periode2 { get; set; }
+        [Name("per3")]
+        [Optional]
+        public bool Periode3 { get; set; }
+        [Name("per4")]
+        [Optional]
+        public bool Periode4 { get; set; }
         [Name("GI-BE")]
         [Optional]
         public string GIBE { get; set; }
