@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace CompetentieAppFrontend.Services.Projections
+namespace CompetentieAppFrontend.Services.ViewModels
 {
-    public class ModuleView
+    public class ModuleViewModel
     {
         public string CohortNaam { get; set; }
         public IEnumerable<string> Specialisaties { get; set; }
@@ -11,6 +11,6 @@ namespace CompetentieAppFrontend.Services.Projections
         public Matrix<int> Matrix { get; set; }
         public IEnumerable<string> Eindeisen { get; set; }
 
-        public IEnumerator<AuditLogEntryView> AuditLogEntries { get; set; }
+        public IEnumerator<AuditLogEntryViewModel> AuditLogEntries { get; set; }
     }
 }

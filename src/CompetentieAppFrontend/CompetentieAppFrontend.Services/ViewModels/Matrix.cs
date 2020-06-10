@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using CompetentieAppFrontend.Domain;
+using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.Projections;
 
-namespace CompetentieAppFrontend.Services.Projections
+namespace CompetentieAppFrontend.Services.ViewModels
 {
     public class Matrix<TValue>
     {

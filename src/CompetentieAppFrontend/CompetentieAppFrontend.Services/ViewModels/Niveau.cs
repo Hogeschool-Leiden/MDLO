@@ -1,10 +1,11 @@
 using CompetentieAppFrontend.Domain;
+using CompetentieAppFrontend.Services.Abstractions;
 
-namespace CompetentieAppFrontend.Services.Projections
+namespace CompetentieAppFrontend.Services.ViewModels
 {
     public class Niveau : IMatrixable<int>
     {
-        private Niveau(string xHeader, string yHeader, int value)
+        public Niveau(string xHeader, string yHeader, int value)
         {
             XHeader = xHeader;
             YHeader = yHeader;

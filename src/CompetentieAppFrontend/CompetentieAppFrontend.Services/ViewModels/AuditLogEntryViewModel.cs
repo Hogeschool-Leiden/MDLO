@@ -1,8 +1,8 @@
 using System;
 
-namespace CompetentieAppFrontend.Services.Projections
+namespace CompetentieAppFrontend.Services.ViewModels
 {
-    public class AuditLogEntryView
+    public class AuditLogEntryViewModel
     {
         public string Omschrijving { get; set; }
         public DateTime Timestamp { get; set; }

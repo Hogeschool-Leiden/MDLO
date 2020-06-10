@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CompetentieAppFrontend.Services.Projections
+namespace CompetentieAppFrontend.Services.ViewModels
 {
     public class Eindniveau
     {

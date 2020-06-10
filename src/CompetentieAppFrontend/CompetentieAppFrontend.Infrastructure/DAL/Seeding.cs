@@ -462,6 +462,17 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                     EindeisBeschrijving = "Het is onmogelijk deze module te halen."
                 }
             });
+            
+            context.AuditLogEntries.AddRange(new []
+            {
+                new AuditLogEntry
+                {
+                    Id = 1,
+                    ModuleId = 1,
+                    Omschrijving = "Henk creeerde dit",
+                    Timestamp = new DateTime(2020, 3,4,12,21,22)
+                }
+            });
 
             context.SaveChanges();
         }

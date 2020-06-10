@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using CompetentieAppFrontend.Domain;
+using CompetentieAppFrontend.Services.ViewModels;
 
-namespace CompetentieAppFrontend.Services.Projections
+namespace CompetentieAppFrontend.Services.Abstractions
 {
     public interface IMatrixService<T>
     {

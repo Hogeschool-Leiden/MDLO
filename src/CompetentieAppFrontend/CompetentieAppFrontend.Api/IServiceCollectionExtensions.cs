@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using CompetentieAppFrontend.Infrastructure.DAL;
 using Microsoft.EntityFrameworkCore;
 using CompetentieAppFrontend.Services;
@@ -13,6 +14,7 @@ using RabbitMQ.Client.Exceptions;
 
 namespace CompetentieAppFrontend.Api
 {
+    [ExcludeFromCodeCoverage]
     public static class IServiceCollectionExtensions
     {
         public static void AddCompetentieAppFrontendContext(this IServiceCollection services)
