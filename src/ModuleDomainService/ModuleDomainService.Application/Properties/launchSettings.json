@@ -1,7 +1,7 @@
-﻿{
+{
   "iisSettings": {
-    "windowsAuthentication": false, 
-    "anonymousAuthentication": true, 
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:16002",
       "sslPort": 44393
@@ -10,29 +10,27 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:5003;http://localhost:5002",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost",
-        "BROKER_EXCHANGE_NAME": "MDLO",
         "DB_CONNECTION_STRING": "User ID=postgres;Password=root;Host=localhost;Port=5432;Database=ModuleDomainDb;",
+        "BROKER_EXCHANGE_NAME": "MDLO",
+        "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost",
+        "LOG_LEVEL": "Trace",
         "BROKER_QUEUE_NAME": "ModuleDomain",
-        "LOG_LEVEL": "Trace"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:5003;http://localhost:5002"
     },
     "ModuleDomainService.Application": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:5003;http://localhost:5002",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost",
+        "DB_CONNECTION_STRING": "User ID=postgres;Password=verygoodrootpassword;Host=localhost;Port=5432;Database=ModuleDomainDb1;",
         "BROKER_EXCHANGE_NAME": "MDLO",
-        "DB_CONNECTION_STRING": "User ID=postgres;Password=root;Host=localhost;Port=5432;Database=ModuleDomainDb;",
+        "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost",
+        "LOG_LEVEL": "Trace",
         "BROKER_QUEUE_NAME": "ModuleDomain",
-        "LOG_LEVEL": "Trace"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:5003;http://localhost:5002"
     }
   }
 }

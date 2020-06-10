@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, ValidationErrors } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
-import { Module } from '../../models/module';
 import { ModuleSanitizePipe } from 'src/app/pipes/module-sanitize.pipe';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { config } from 'process';
 import { Cohort } from 'src/app/models/cohort';
 
 @Component({
@@ -120,7 +118,11 @@ export class ModuleEditorComponent implements OnInit {
   }
 
   changeCohort(e) {
-    this.moduleForm.get('cohort').setValue(e.target.value, { onlySelf: true })
+    let value = e.target.value;
+    if(value.length>9){
+      value = value.substr(value.length - 9)
+    }
+    this.moduleForm.get('cohort').setValue(value, { onlySelf: true })
   }
   get eindeisen() {
     return this.moduleForm.get('eindeisen') as FormArray;
