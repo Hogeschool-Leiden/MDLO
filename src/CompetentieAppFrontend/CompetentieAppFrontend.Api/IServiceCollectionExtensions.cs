@@ -30,6 +30,8 @@ namespace CompetentieAppFrontend.Api
 
         public static void UseMicroserviceHost(this IServiceCollection services)
         {
+            Enum.TryParse(Environment.GetEnvironmentVariable("LOG_LEVEL"), out LogLevel logLevel);
+            
             var contextBuilder = new RabbitMqContextBuilder().ReadFromEnvironmentVariables();
             
             var context = Policy.Handle<BrokerUnreachableException>()
@@ -38,7 +40,6 @@ namespace CompetentieAppFrontend.Api
             
             var loggerFactory = LoggerFactory.Create(configure =>
             {
-                Enum.TryParse(Environment.GetEnvironmentVariable("LOG_LEVEL"), out LogLevel logLevel);
                 configure.AddConsole().SetMinimumLevel(logLevel);
             });
             
@@ -49,7 +50,8 @@ namespace CompetentieAppFrontend.Api
                 .WithBusContext(context)
                 .UseConventions()
                 .CreateHost();
-            
+
+            services.AddLogging(builder => builder.AddConsole().SetMinimumLevel(logLevel));
             services.AddSingleton(context);
             services.AddSingleton(microserviceHost);
             services.AddHostedService<Miffy>();
