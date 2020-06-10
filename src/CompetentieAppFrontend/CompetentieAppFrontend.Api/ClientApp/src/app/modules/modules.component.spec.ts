@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ModulesComponent} from "./modules.component";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
@@ -7,6 +7,7 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 // @ts-ignore
 import moduleMock from "./../../assets/mock-data/modules-mock.json"
 import {MatDialog} from "@angular/material/dialog";
+import {convertMetaToOutput} from "@angular/compiler/src/render3/util";
 
 describe('ModuleComponent', () => {
   let component: ModulesComponent;
@@ -14,8 +15,8 @@ describe('ModuleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModulesComponent , CompetenceMatrixComponent],
-      imports:[HttpClientModule],
+      declarations: [ModulesComponent, CompetenceMatrixComponent],
+      imports: [HttpClientModule],
       providers: [{provide: MatDialog, useValue: {}}]
     })
       .compileComponents();
@@ -65,5 +66,11 @@ describe('ModuleComponent', () => {
     component.injectDataInTable();
 
     expect(component.MODULE_DATA.length).toEqual(3);
+  });
+
+  it('should specify what columns we are filtering.', function () {
+    component.specifyWhatColumnsToFilter();
+
+    expect(component.dataSource.filterPredicate).toBeTruthy()
   });
 });

@@ -17,7 +17,7 @@ export class AuditLogComponent implements OnInit {
 
   displayedColumns = ['timeStamp', 'infoString'];
   dataSource: MatTableDataSource<any>;
-  dbUrl: string = '=api/auditlog';
+  dbUrl: string = 'api/auditlog';
   auditData: any;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @Input() alternateData;
