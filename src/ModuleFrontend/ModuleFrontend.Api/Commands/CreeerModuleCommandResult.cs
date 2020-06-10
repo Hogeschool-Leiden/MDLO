@@ -4,9 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 namespace ModuleFrontend.Api.Commands
 {
     [ExcludeFromCodeCoverage]
-    public class CreeerModuleCommandResponse : DomainCommand
+    public class CreeerModuleCommandResult : DomainCommand
     {
-        public CreeerModuleResponse() : base("MDLO.ModuleBeheerService.CreeerModuleResponse") {}
+        public CreeerModuleCommandResult() : base("MDLO.ModuleBeheerService.CreeerModuleResponse") {}
 
         public int StatusCode { get; set; }
 
