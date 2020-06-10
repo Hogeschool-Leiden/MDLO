@@ -8,6 +8,8 @@ namespace CompetentieAppFrontend.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Cohort> builder)
         {
+
+            
             builder
                 .HasMany(cohort => cohort.Modules)
                 .WithOne(module => module.Cohort)

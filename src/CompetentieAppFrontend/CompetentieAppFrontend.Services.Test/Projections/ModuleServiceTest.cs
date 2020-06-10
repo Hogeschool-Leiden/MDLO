@@ -39,7 +39,7 @@ namespace CompetentieAppFrontend.Services.Test.Projections
                             {
                                 Specialisatie = new Specialisatie
                                 {
-                                    SpecialisatieNaam = "Propedeuse",
+                                    Naam = "Propedeuse",
                                 },
                                 Periode = new Periode
                                 {
@@ -94,7 +94,7 @@ namespace CompetentieAppFrontend.Services.Test.Projections
                             {
                                 Specialisatie = new Specialisatie
                                 {
-                                    SpecialisatieNaam = "Propedeuse",
+                                    Naam = "Propedeuse",
                                 },
                                 Periode = new Periode
                                 {

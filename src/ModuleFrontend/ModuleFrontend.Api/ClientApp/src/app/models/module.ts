@@ -2,7 +2,6 @@ import { Moduleleider } from "./module-leider";
 import { Studiefase } from "./studiefase";
 import { Specialisatie } from "./specialisatie";
 import { Matrix } from "./matrix";
-import { Cohort } from "./cohort";
 
 export interface Module {
     id: number

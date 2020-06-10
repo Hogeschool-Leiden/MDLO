@@ -74,22 +74,22 @@ namespace CompetentieAppFrontend.Infrastructure.DAL
                     new Specialisatie
                     {
                         Id = 1,
-                        SpecialisatieNaam = "Propedeuse"
+                        Naam = "Propedeuse"
                     },
                     new Specialisatie
                     {
                         Id = 2,
-                        SpecialisatieNaam = "Interactie technologie"
+                        Naam = "Interactie technologie"
                     },
                     new Specialisatie
                     {
                         Id = 3,
-                        SpecialisatieNaam = "Software engineering"
+                        Naam = "Software engineering"
                     },
                     new Specialisatie
                     {
                         Id = 4,
-                        SpecialisatieNaam = "Forensische ICT"
+                        Naam = "Forensische ICT"
                     }
                 });
 

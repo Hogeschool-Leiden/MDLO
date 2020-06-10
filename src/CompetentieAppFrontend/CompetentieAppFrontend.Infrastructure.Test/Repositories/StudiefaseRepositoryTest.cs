@@ -58,7 +58,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             var result = context.Modules.Include(module => module.Studiefasen)
                 .ThenInclude(studiefase => studiefase.Specialisatie).First(module => module.Id == 1);
             Assert.IsTrue(result.Studiefasen.Any(studiefase =>
-                studiefase.Specialisatie.SpecialisatieNaam == "Forensische ICT"));
+                studiefase.Specialisatie.Naam == "Forensische ICT"));
         }
     }
 }

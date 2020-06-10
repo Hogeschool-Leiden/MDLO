@@ -19,11 +19,11 @@ namespace CompetentieAppFrontend.Api.EventListeners
 
         [EventListener]
         [Topic(Topics.ModuleGecreeerd)]
-        public void ModuleGecreeerd(ModuleGecreeerd @event)
+        public void Handles(ModuleGecreeerd @event)
         {
             _moduleEventsDeserializer.CreateModule(@event);
             
-            _logger.LogInformation($"{nameof(ModuleGecreeerd)} triggerd");
+            _logger.LogInformation($"{nameof(Handles)} triggerd");
         }
     }
 }

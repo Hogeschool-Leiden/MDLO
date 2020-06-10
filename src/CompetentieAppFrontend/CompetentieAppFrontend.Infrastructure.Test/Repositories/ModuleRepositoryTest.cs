@@ -136,7 +136,7 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
 
             // Assert
             Assert.IsTrue(result.Studiefasen.Any(studiefase =>
-                studiefase.Specialisatie.SpecialisatieNaam.Equals("Propedeuse")));
+                studiefase.Specialisatie.Naam.Equals("Propedeuse")));
         }
 
         [TestMethod]

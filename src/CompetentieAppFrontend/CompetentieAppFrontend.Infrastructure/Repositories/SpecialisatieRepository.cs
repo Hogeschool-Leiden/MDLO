@@ -35,10 +35,10 @@ namespace CompetentieAppFrontend.Infrastructure.Repositories
 
         private long GetId(Specialisatie newSpecialisatie) =>
             _context.Specialisaties.First(specialisatie =>
-                specialisatie.SpecialisatieNaam == newSpecialisatie.SpecialisatieNaam).Id;
+                specialisatie.Naam == newSpecialisatie.Naam).Id;
 
         private bool Exist(Specialisatie newSpecialisatie) =>
             _context.Specialisaties.Any(specialisatie =>
-                specialisatie.SpecialisatieNaam == newSpecialisatie.SpecialisatieNaam);
+                specialisatie.Naam == newSpecialisatie.Naam);
     }
 }

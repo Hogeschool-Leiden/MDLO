@@ -8,7 +8,7 @@ namespace CompetentieAppFrontend.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Periode> builder)
         {
-            
+
         }
     }
 }

@@ -8,6 +8,7 @@ namespace CompetentieAppFrontend.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<BeheersingsNiveau> builder)
         {
+
             builder
                 .HasOne(niveau => niveau.ArchitectuurLaag)
                 .WithMany(laag => laag.BeheersingsNiveaus)

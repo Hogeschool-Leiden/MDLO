@@ -19,7 +19,7 @@ namespace CompetentieAppFrontend.Services.Events
         public int AantalEc { get; set; }
         public string Cohort { get; set; }
         public Fase Studiefase { get; set; }
-        public Matrix<int> Competenties { get; set; }
+        public MatrixDTO Competenties { get; set; }
         public IEnumerable<string> Eindeisen { get; set; }
         public IEnumerable<Specialisatie> VerplichtVoor { get; set; }
         public IEnumerable<Specialisatie> AanbevolenVoor { get; set; }

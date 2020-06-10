@@ -1,0 +1,42 @@
+resources:
+  - repo: self
+  
+variables:
+    dockerRegistryServiceConnection: 'Container registry connection'
+    imageRepository: 'competentie-app-frontend'
+    containerRegistry: 'hsleidenmdlo.azurecr.io'
+    vmImageName: 'ubuntu-latest'
+
+stages:
+    - stage: Deploy
+      displayName: Deploy stage
+      jobs:
+      - deployment: Deploy
+        displayName: Deploy
+        condition: eq(variables['build.sourcebranch'], 'refs/heads/master')
+        pool:
+            vmImage: $(vmImageName)
+        environment: 'MDLO.production'
+        strategy:
+          runOnce:
+            deploy:
+                steps:
+                - task: KubernetesManifest@0
+                  displayName: Create imagePullSecret
+                  inputs:
+                    action: 'createSecret'
+                    kubernetesServiceConnection: 'MDLO-mdlo-production-1591281497115'
+                    namespace: 'production'
+                    secretType: 'dockerRegistry'
+                    secretName: '$(imagePullSecret)'
+                    dockerRegistryEndpoint: '$(dockerRegistryServiceConnection)'
+
+                - task: KubernetesManifest@0
+                  displayName: Deploy to Kubernetes cluster
+                  inputs:
+                    action: 'deploy'
+                    kubernetesServiceConnection: 'MDLO-mdlo-production-1591281497115'
+                    namespace: 'production'
+                    manifests: 'manifests/production/module-beheer-frontend.yml'
+                    containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+                    imagePullSecrets: '$(imagePullSecret)'

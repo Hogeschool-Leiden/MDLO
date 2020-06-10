@@ -8,6 +8,7 @@ namespace CompetentieAppFrontend.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Eindeis> builder)
         {
+
             builder
                 .HasOne(eindeis => eindeis.Module)
                 .WithMany(module => module.Eindeisen)

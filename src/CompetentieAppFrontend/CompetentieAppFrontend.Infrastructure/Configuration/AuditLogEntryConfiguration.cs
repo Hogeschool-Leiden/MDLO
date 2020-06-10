@@ -8,6 +8,7 @@ namespace CompetentieAppFrontend.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<AuditLogEntry> builder)
         {
+
             builder
                 .HasOne(entry => entry.Module)
                 .WithMany(module => module.AuditLogEntries)

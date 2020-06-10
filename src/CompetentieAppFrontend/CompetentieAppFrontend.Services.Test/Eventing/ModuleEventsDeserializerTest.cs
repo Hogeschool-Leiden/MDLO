@@ -174,19 +174,12 @@ namespace CompetentieAppFrontend.Services.Test.Eventing
             VerplichtVoor = new List<Specialisatie>(),
             AanbevolenVoor = new List<Specialisatie>(),
             Eindeisen = new List<string>(),
-            Competenties = new Matrix<int>(
-                new List<string>
-                {
-                    "software"
-                },
-                new List<string>
-                {
-                    "analyseren"
-                },
-                new List<Niveau>
-                {
-                    new Niveau("software", "analyseren", 3)
-                })
+            Competenties = new MatrixDTO
+            {
+                XHeaders = new List<string>(),
+                YHeaders = new List<string>(),
+                Cells = new int[0][]
+            }
         };
     }
 }

@@ -30,7 +30,7 @@ namespace CompetentieAppFrontend.Api.Test
             var eventListener = new ModuleEventListener(_moduleEventsDeserializer.Object, _loggerMock.Object);
 
             // Act
-            eventListener.ModuleGecreeerd(new ModuleGecreeerd());
+            eventListener.Handles(new ModuleGecreeerd());
 
             // Assert
             _moduleEventsDeserializer.Verify(deserializer => deserializer.CreateModule(It.IsAny<ModuleGecreeerd>()));
@@ -43,7 +43,7 @@ namespace CompetentieAppFrontend.Api.Test
             var eventListener = new ModuleEventListener(_moduleEventsDeserializer.Object, _loggerMock.Object);
 
             // Act
-            var result = eventListener.GetType().GetMethod(nameof(eventListener.ModuleGecreeerd))
+            var result = eventListener.GetType().GetMethod(nameof(eventListener.Handles))
                 ?.GetCustomAttribute<EventListenerAttribute>();
 
             // Assert
@@ -57,7 +57,7 @@ namespace CompetentieAppFrontend.Api.Test
             var eventListener = new ModuleEventListener(_moduleEventsDeserializer.Object, _loggerMock.Object);
 
             // Act
-            var result = eventListener.GetType().GetMethod(nameof(eventListener.ModuleGecreeerd))
+            var result = eventListener.GetType().GetMethod(nameof(eventListener.Handles))
                 ?.GetCustomAttribute<TopicAttribute>();
 
             // Assert
@@ -71,7 +71,7 @@ namespace CompetentieAppFrontend.Api.Test
             var eventListener = new ModuleEventListener(_moduleEventsDeserializer.Object, _loggerMock.Object);
 
             // Act
-            var result = eventListener.GetType().GetMethod(nameof(eventListener.ModuleGecreeerd))
+            var result = eventListener.GetType().GetMethod(nameof(eventListener.Handles))
                 ?.GetCustomAttribute<TopicAttribute>()?.TopicPattern;
 
             // Assert
