@@ -71,7 +71,7 @@ stages:
       - task: DotNetCoreCLI@2
         displayName: 'dotnet build'
         inputs:
-          projects: '$(projectPath)/*.csproj'
+          projects: '$(solutionPath)/*.sln'
           arguments: '--configuration $(BuildConfiguration)'
 
       - task: DotNetCoreCLI@2
