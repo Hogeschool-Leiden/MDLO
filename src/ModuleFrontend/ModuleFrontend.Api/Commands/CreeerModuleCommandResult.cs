@@ -1,4 +1,5 @@
 using Miffy.MicroServices.Commands;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleFrontend.Api.Commands
 {
