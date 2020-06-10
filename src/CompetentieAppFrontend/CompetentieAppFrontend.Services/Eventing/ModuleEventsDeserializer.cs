@@ -1,8 +1,10 @@
+using System;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.Repositories;
 using CompetentieAppFrontend.Services.Abstractions;
 using CompetentieAppFrontend.Services.Commands;
 using CompetentieAppFrontend.Services.Events;
+using RabbitMQ.Client;
 
 namespace CompetentieAppFrontend.Services.Eventing
 {
@@ -46,7 +48,8 @@ namespace CompetentieAppFrontend.Services.Eventing
             _auditLogRepository.Create(new AuditLogEntry
             {
                 ModuleId = moduleId,
-                Omschrijving = $"{@event.Type} on {@event.ModuleCode} in cohort {@event.Cohort}"
+                Omschrijving = $"{@event.Type} on {@event.ModuleCode} in cohort {@event.Cohort}",
+                Timestamp = new DateTime(@event.Timestamp)
             });
         }
 
