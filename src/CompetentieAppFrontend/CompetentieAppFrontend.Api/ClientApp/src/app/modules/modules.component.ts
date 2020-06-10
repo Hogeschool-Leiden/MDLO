@@ -136,7 +136,7 @@ export interface ModuleModel {
   specialisation: string[];
   module: string;
   period: number[];
-  matrix: any;//TODO: use matrix
+  matrix: any;
   endRequirements: string[];
   auditLog: auditModel[];
 }

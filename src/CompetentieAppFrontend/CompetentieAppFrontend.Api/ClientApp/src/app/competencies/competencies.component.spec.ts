@@ -63,6 +63,11 @@ describe('CompetenciesComponent', () => {
   });
 
   it('should see that specialisation is propedeuse or not.', function () {
+    component.specialisation = 'Software Engineer';
+    expect(component.isSpecialisationPropedeuse()).toBeFalsy();
+
+    component.specialisation = 'Propedeuse';
+    expect(component.isSpecialisationPropedeuse()).toBeTruthy();
 
   });
 
