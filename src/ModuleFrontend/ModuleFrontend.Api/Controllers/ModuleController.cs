@@ -9,6 +9,7 @@ using Miffy;
 using Microsoft.AspNetCore.Http;
 using ModuleFrontend.Api.Utility;
 using Module = ModuleFrontend.Api.Models.Module;
+using ModuleFrontend.Api.Commands;
 
 namespace ModuleFrontend.Api.Controllers
 {
@@ -77,6 +78,7 @@ namespace ModuleFrontend.Api.Controllers
 
             var stream = model.File.OpenReadStream();
             IEnumerable<Module> modules = _csvLoader.ReadFromStream(stream);
+            List<CreeerModuleCommandResponse> responses = new List<CreeerModuleCommandResponse>();
             foreach (var module in modules)
             {
                 module.Cohort = model.Cohort;
@@ -84,18 +86,13 @@ namespace ModuleFrontend.Api.Controllers
                     try
                     {
                         var response = _service.SendCreeerModuleCommand(module);
-                        if (response.StatusCode == 200)
-                        {
-                            return Ok(modules.Count());
-                        }
-                        return StatusCode(response.StatusCode, response.Message);
+                    responses.Add(response);
                     }
-                    catch (DestinationQueueException e)
+                    catch (DestinationQueueException)
                     {
-                        return StatusCode(500, "Er is iets foutgegaan bij het versturen van de modules naar de server.");
                     }
             }
-            return Ok(modules.Count());
+            return Ok(responses.Where(r => r.StatusCode==200).Count());
         }
         
     }
