@@ -32,9 +32,9 @@ namespace ModuleFrontend.Api.Utility
                     if (item.Allen.ToLower() == "v")
                     {
                         verplichtVoor.Add(new Specialisatie(){Code = "SE", Naam= "Software Engineering"});
-                        verplichtVoor.Add(new Specialisatie(){Code = "FICT", Naam= "Forensische IT"});
-                        verplichtVoor.Add(new Specialisatie(){Code = "IAT", Naam= "Interactietechnologie"});
-                        verplichtVoor.Add(new Specialisatie(){Code = "BDAM", Naam= "Big Data and Management"});
+                        verplichtVoor.Add(new Specialisatie(){Code = "FICT", Naam= "Forensiche ICT"});
+                        verplichtVoor.Add(new Specialisatie(){Code = "IAT", Naam= "Interactie Technologie"});
+                        verplichtVoor.Add(new Specialisatie(){Code = "BDAM", Naam= "Business Data Management"});
                     }
 
                     if (item.Allen.ToLower() == "k")
@@ -49,17 +49,17 @@ namespace ModuleFrontend.Api.Utility
 
                     if (item.FICT.ToLower() == "v")
                     {
-                        verplichtVoor.Add(new Specialisatie(){Code = "FICT", Naam= "Forensische IT"});
+                        verplichtVoor.Add(new Specialisatie(){Code = "FICT", Naam= "Forensiche ICT"});
                     }
 
                     if (item.IAT.ToLower() == "v")
                     {
-                        verplichtVoor.Add(new Specialisatie(){Code = "IAT", Naam= "Interactietechnologie"});
+                        verplichtVoor.Add(new Specialisatie(){Code = "IAT", Naam= "Interactie Technologie"});
                     }
 
                     if (item.BDAM.ToLower() == "v")
                     {
-                        verplichtVoor.Add(new Specialisatie(){Code = "BDAM", Naam= "Big Data and Management"});
+                        verplichtVoor.Add(new Specialisatie(){Code = "BDAM", Naam= "Business Data Management"});
                     }
                     
                     if (item.Jaar != 1)

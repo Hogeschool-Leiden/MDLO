@@ -12,7 +12,7 @@ namespace CompetentieAppFrontend.Services.Commands
         public IEnumerable<Specialisatie> VerplichtVoor { get; set; }
         public IEnumerable<Specialisatie> AanbevolenVoor { get; set; }
         public IEnumerable<int> PeriodenNummers { get; set; }
-        public IEnumerable<Specialisatie> Specialisaties => VerplichtVoor.Union(AanbevolenVoor);
+        public IEnumerable<Specialisatie> Specialisaties => VerplichtVoor;
 
         public IEnumerable<Periode> Perioden
         {

@@ -23,7 +23,7 @@
     "ModuleDomainService.Application": {
       "commandName": "Project",
       "environmentVariables": {
-        "DB_CONNECTION_STRING": "User ID=postgres;Password=verygoodrootpassword;Host=localhost;Port=5432;Database=ModuleDomainDb1;",
+        "DB_CONNECTION_STRING": "User ID=postgres;Password=verygoodrootpassword;Host=localhost;Port=5432;Database=ModuleDomainD2b1;",
         "BROKER_EXCHANGE_NAME": "MDLO",
         "BROKER_CONNECTION_STRING": "amqp://guest:guest@localhost",
         "LOG_LEVEL": "Trace",
