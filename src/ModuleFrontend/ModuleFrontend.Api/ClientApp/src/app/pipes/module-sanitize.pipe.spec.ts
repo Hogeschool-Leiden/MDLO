@@ -1,6 +1,5 @@
 import { ModuleSanitizePipe } from './module-sanitize.pipe';
 import { assert } from 'console';
-import { Specialisatie } from "../models/specialisatie";
 describe('ModuleSanitizePipe', () => {
   it('create an instance', () => {
     const pipe = new ModuleSanitizePipe();

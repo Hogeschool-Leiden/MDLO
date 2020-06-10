@@ -79,7 +79,7 @@ namespace CompetentieAppFrontend.Services.Eventing
             _competentieService.CreateCompetenties(new CreateCompetentiesCommand
             {
                 ModuleId = moduleId,
-                Competenties = @event.Competenties
+                Competenties = @event.Competenties.ToMatrix()
             });
 
         private long EnsureCohortExist(string cohort) =>

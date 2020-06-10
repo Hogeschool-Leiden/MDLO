@@ -1,5 +1,3 @@
-using CompetentieAppFrontend.Domain;
-
 namespace CompetentieAppFrontend.Infrastructure.Repositories
 {
     public interface ICohortRepository

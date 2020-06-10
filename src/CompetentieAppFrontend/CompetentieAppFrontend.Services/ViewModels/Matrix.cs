@@ -6,11 +6,16 @@ namespace CompetentieAppFrontend.Services.ViewModels
 {
     public class Matrix<TValue>
     {
-        private readonly Cell<TValue>[,] _cells;
+        public Matrix()
+        {
+            XHeaders = new List<string>();
+            YHeaders = new List<string>();
+            Cells = new Cell<TValue>[0][];
+        }
 
         private Matrix(int xHeaderCount, int yHeaderCount)
         {
-            _cells = new Cell<TValue>[xHeaderCount, yHeaderCount];
+            Cells = new Cell<TValue>[xHeaderCount, yHeaderCount].ToJaggedArray();
         }
 
         private Matrix(IList<string> xHeaders, IList<string> yHeaders) : this(
@@ -30,17 +35,17 @@ namespace CompetentieAppFrontend.Services.ViewModels
             {
                 var xHeaderIndex = XHeaders.IndexOf(item.XHeader);
                 var yHeaderIndex = YHeaders.IndexOf(item.YHeader);
-                _cells[xHeaderIndex, yHeaderIndex] = new Cell<TValue>(item.Value);
+                Cells[xHeaderIndex][yHeaderIndex] = new Cell<TValue>(item.Value);
             }
         }
 
-        public IList<string> XHeaders { get; }
+        public IList<string> XHeaders { get; set; }
 
-        public IList<string> YHeaders { get; }
+        public IList<string> YHeaders { get; set; }
 
-        public Cell<TValue>[][] Cells => _cells.ToJaggedArray();
+        public Cell<TValue>[][] Cells { get; set; }
 
         public TValue ValueAt(string xHeader, string yHeader) =>
-            _cells[XHeaders.IndexOf(xHeader), YHeaders.IndexOf(yHeader)].Value;
+            Cells[XHeaders.IndexOf(xHeader)][YHeaders.IndexOf(yHeader)].Value;
     }
 }
