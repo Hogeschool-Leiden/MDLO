@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-modules-inladen',
@@ -9,7 +10,7 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class ModulesInladenComponent{
   selectedFile: File = null;
-  constructor(private fb: FormBuilder, private httpService: HttpService) { }
+  constructor(private fb: FormBuilder, private httpService: HttpService, private snackBar: MatSnackBar) { }
 
   modulesInladenForm = this.fb.group({
     cohort: ['', Validators.required],
@@ -27,10 +28,16 @@ export class ModulesInladenComponent{
 
     this.httpService.PostCsvFile(formData).subscribe(
       data =>{
-        console.log(data)
+        this.snackBar.open(`Er zijn ${data} modules toegevoegd. aan cohort ${this.modulesInladenForm.get('cohort').value}.`, "", {
+          duration: 5000,
+          panelClass: ['green-snackbar']
+        })
       },
       err =>{
-        console.log(err)
+        this.snackBar.open(`Er is iets foutgegaan bij het versturen van de modules.`, "", {
+          duration: 5000,
+          panelClass: ['red-snackbar']
+        })
       }
     )
   }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using ModuleFrontend.Api.ViewModels;
 using ModuleFrontend.Api.Services;
@@ -80,9 +81,21 @@ namespace ModuleFrontend.Api.Controllers
             {
                 module.Cohort = model.Cohort;
 
-                _service.SendCreeerModuleCommand(module);
+                    try
+                    {
+                        var response = _service.SendCreeerModuleCommand(module);
+                        if (response.StatusCode == 200)
+                        {
+                            return Ok(modules.Count());
+                        }
+                        return StatusCode(response.StatusCode, response.Message);
+                    }
+                    catch (DestinationQueueException e)
+                    {
+                        return StatusCode(500, "Er is iets foutgegaan bij het versturen van de modules naar de server.");
+                    }
             }
-            return Ok(modules);
+            return Ok(modules.Count());
         }
         
     }
