@@ -20,7 +20,7 @@ namespace ModuleDomainService.Infrastructure.DAL
 
         public EventStream(string id, IEnumerable<Event> events) :
             this(id, events.Version()) =>
-            Events = events.Select(@event => @event.toDomainEvent);
+            Events = events.Select(@event => @event.ToDomainEvent());
 
         public string Id { get; }
         public int Version { get; private set; }
