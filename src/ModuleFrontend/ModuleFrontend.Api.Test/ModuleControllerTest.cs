@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Miffy;
@@ -16,6 +18,7 @@ namespace ModuleFrontend.Api.Test
     [TestClass]
     public class ModuleControllerTest
     {
+        private static string file2 = "TestData/testdata2.csv";
         [TestMethod]
         public void PostModule_TestIfFaultyViewModelReturns400()
         {
@@ -213,6 +216,153 @@ namespace ModuleFrontend.Api.Test
             Assert.AreEqual(500, objectResult.StatusCode);
             Assert.AreEqual("Er is een fout op de server opgetreden. Probeer het later opnieuw.", objectResult.Value);
             
+        }
+
+        [TestMethod]
+        public void PostCsv_ShouldReturnBadRequestIfModelErrors()
+        {
+            // Arrange
+            Mock<ICsvLoader> csvMock = new Mock<ICsvLoader>(MockBehavior.Loose);
+            Mock<IModuleService> service = new Mock<IModuleService>(MockBehavior.Loose);
+            ModuleController sut = new ModuleController(service.Object, csvMock.Object);
+            Mock<IFormFile> formFileMock = new Mock<IFormFile>();
+            
+            using (FileStream fs = File.OpenRead(file2))
+                
+            formFileMock.Setup(file => file.OpenReadStream()).Returns(fs);
+            CsvInlaadFormViewModel model = new CsvInlaadFormViewModel(){Cohort = "2017/2018", File = formFileMock.Object};
+            
+            // Act
+            sut.ModelState.AddModelError("Een error","Oh neeeeee");
+            var result = sut.PostCsvFile(model);
+            
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        }
+        
+        [TestMethod]
+        public void PostCsv_ShouldCallOpenReadStreamOnce()
+        {
+            // Arrange
+            Mock<ICsvLoader> csvMock = new Mock<ICsvLoader>(MockBehavior.Loose);
+            Mock<IModuleService> service = new Mock<IModuleService>(MockBehavior.Loose);
+            ModuleController sut = new ModuleController(service.Object, csvMock.Object);
+            Mock<IFormFile> formFileMock = new Mock<IFormFile>();
+            
+            using (FileStream fs = File.OpenRead(file2))
+                formFileMock.Setup(file => file.OpenReadStream()).Returns(fs);
+            
+            CsvInlaadFormViewModel model = new CsvInlaadFormViewModel(){Cohort = "2017/2018", File = formFileMock.Object};
+            
+            // Act
+            var result = sut.PostCsvFile(model);
+            
+            // Assert
+            formFileMock.Verify(file => file.OpenReadStream(), Times.Once);
+        }
+        
+        // [TestMethod]
+        // public void PostCsv_ShouldCallServiceSendCreeerModuleCommand3Times()
+        // {
+        //     // Arrange
+        //     ICsvLoader loader = new CsvLoader();
+        //     Mock<IModuleService> service = new Mock<IModuleService>(MockBehavior.Loose);
+        //     service.Setup(s => s.SendCreeerModuleCommand(It.IsAny<Module>()));
+        //     ModuleController sut = new ModuleController(service.Object, loader);
+        //     Mock<IFormFile> formFileMock = new Mock<IFormFile>();
+        //
+        //     using (FileStream fs = File.OpenRead(file2))
+        //     {
+        //         formFileMock.Setup(file => file.OpenReadStream()).Returns(fs);
+        //
+        //         CsvInlaadFormViewModel model = new CsvInlaadFormViewModel()
+        //             {Cohort = "2017/2018", File = formFileMock.Object};
+        //
+        //         // Act
+        //         var result = sut.PostCsvFile(model);
+        //
+        //         // Assert
+        //         service.Verify(service => service.SendCreeerModuleCommand(It.IsAny<Module>()), Times.Exactly(3));
+        //     }
+        // }
+        
+        [TestMethod]
+        public void PostCsv_ShouldCallServiceSendCreeerModuleCommand1Times()
+        {
+            // Arrange
+            ICsvLoader loader = new CsvLoader();
+            Mock<IModuleService> service = new Mock<IModuleService>(MockBehavior.Loose);
+            service.Setup(s => s.SendCreeerModuleCommand(It.IsAny<Module>())).Returns(new CreeerModuleCommandResponse(){Message = "xd", StatusCode = 200});
+            ModuleController sut = new ModuleController(service.Object, loader);
+            Mock<IFormFile> formFileMock = new Mock<IFormFile>();
+        
+            using (FileStream fs = File.OpenRead(file2))
+            {
+                formFileMock.Setup(file => file.OpenReadStream()).Returns(fs);
+        
+                CsvInlaadFormViewModel model = new CsvInlaadFormViewModel()
+                    {Cohort = "2017/2018", File = formFileMock.Object};
+        
+                // Act
+                var result = sut.PostCsvFile(model);
+        
+                // Assert
+                service.Verify(service => service.SendCreeerModuleCommand(It.IsAny<Module>()), Times.Exactly(1));
+            }
+        }
+        
+        [TestMethod]
+        public void PostCsv_ShouldReturn200IfSuccesful()
+        {
+            // Arrange
+            ICsvLoader loader = new CsvLoader();
+            Mock<IModuleService> service = new Mock<IModuleService>(MockBehavior.Loose);
+            service.Setup(s => s.SendCreeerModuleCommand(It.IsAny<Module>())).Returns(new CreeerModuleCommandResponse(){Message = "xd", StatusCode = 200});
+            ModuleController sut = new ModuleController(service.Object, loader);
+            Mock<IFormFile> formFileMock = new Mock<IFormFile>();
+        
+            using (FileStream fs = File.OpenRead(file2))
+            {
+                formFileMock.Setup(file => file.OpenReadStream()).Returns(fs);
+        
+                CsvInlaadFormViewModel model = new CsvInlaadFormViewModel()
+                    {Cohort = "2017/2018", File = formFileMock.Object};
+        
+                // Act
+                var result = sut.PostCsvFile(model);
+        
+                // Assert
+                Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+            }
+        }
+        
+        [TestMethod]
+        public void PostCsv_ShouldReturn500IfDestinationQueueException()
+        {
+            // Arrange
+            ICsvLoader loader = new CsvLoader();
+            Mock<IModuleService> service = new Mock<IModuleService>(MockBehavior.Loose);
+            service.Setup(s => s.SendCreeerModuleCommand(It.IsAny<Module>()))
+                .Throws(new DestinationQueueException("Oh oh!"));
+            ModuleController sut = new ModuleController(service.Object, loader);
+            Mock<IFormFile> formFileMock = new Mock<IFormFile>();
+        
+            using (FileStream fs = File.OpenRead(file2))
+            {
+                formFileMock.Setup(file => file.OpenReadStream()).Returns(fs);
+        
+                CsvInlaadFormViewModel model = new CsvInlaadFormViewModel()
+                    {Cohort = "2017/2018", File = formFileMock.Object};
+        
+                // Act
+                var result = sut.PostCsvFile(model);
+        
+                // Assert
+                Assert.IsInstanceOfType(result, typeof(ObjectResult));
+                var resultObject= (ObjectResult) result;
+                Assert.AreEqual("Er is iets foutgegaan bij het versturen van de modules naar de server.", resultObject.Value);
+                Assert.AreEqual(500, resultObject.StatusCode);
+            }
         }
     }
 }
