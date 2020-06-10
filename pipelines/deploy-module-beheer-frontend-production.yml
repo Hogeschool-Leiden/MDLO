@@ -1,3 +1,5 @@
+trigger: none
+
 resources:
   - repo: self
   
@@ -38,6 +40,6 @@ stages:
                     action: 'deploy'
                     kubernetesServiceConnection: 'MDLO-mdlo-production-1591281497115'
                     namespace: 'production'
-                    manifests: 'manifests/production/module-beheer-frontend.yml'
+                    manifests: '$(Pipeline.Workspace)/manifests/production/module-beheer-frontend.yml'
                     containers: '$(containerRegistry)/$(imageRepository):$(tag)'
                     imagePullSecrets: '$(imagePullSecret)'
