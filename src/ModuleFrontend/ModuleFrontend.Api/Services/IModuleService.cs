@@ -7,6 +7,6 @@ namespace ModuleFrontend.Api.Services
 {
     public interface IModuleService
     {
-        CreeerModuleCommandResponse SendCreeerModuleCommand(ModuleViewModel module);
+        CreeerModuleCommandResponse SendCreeerModuleCommand(Module module);
     }
 }

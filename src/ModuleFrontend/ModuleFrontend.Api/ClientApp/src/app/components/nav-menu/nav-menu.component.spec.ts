@@ -31,7 +31,7 @@ describe('nav-menu component', () => {
   });
 
   it('should have 3 buttons', function () {
-    const EXPECTED_NUMBER_OF_BUTTONS:number = 1;
+    const EXPECTED_NUMBER_OF_BUTTONS:number = 2;
     let amountOfButtons:number = de.queryAll(By.css('.link-button')).length;
     expect(amountOfButtons).toEqual(EXPECTED_NUMBER_OF_BUTTONS);
   });

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Miffy;
@@ -6,12 +7,14 @@ using Miffy.MicroServices.Commands;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
 using ModuleFrontend.Api.Services;
+using ModuleFrontend.Api.Utility;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
 namespace ModuleFrontend.Api
 {
+    [ExcludeFromCodeCoverage]
     public static class IServiceCollectionExtensions
     {
         public static void UseRabbitMq(this IServiceCollection services)
@@ -25,6 +28,7 @@ namespace ModuleFrontend.Api
             services.AddSingleton(context);
             services.AddTransient<IModuleService, ModuleService>();
             services.AddSingleton<ICommandPublisher, CommandPublisher>();
+            services.AddSingleton<ICsvLoader, CsvLoader>();
 
         }
 
