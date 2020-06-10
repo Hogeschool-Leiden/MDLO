@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleDomainService.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleDomainService.Infrastructure.Test", "ModuleDomainService.Infrastructure.Test\ModuleDomainService.Infrastructure.Test.csproj", "{5FF1213C-70FC-4AA4-8B6C-133699D543D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleDomainService.Application.Test", "ModuleDomainService.Application.Test\ModuleDomainService.Application.Test.csproj", "{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,5 +88,17 @@ Global
 		{5FF1213C-70FC-4AA4-8B6C-133699D543D4}.Release|x64.Build.0 = Release|Any CPU
 		{5FF1213C-70FC-4AA4-8B6C-133699D543D4}.Release|x86.ActiveCfg = Release|Any CPU
 		{5FF1213C-70FC-4AA4-8B6C-133699D543D4}.Release|x86.Build.0 = Release|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Debug|x64.Build.0 = Debug|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Debug|x86.Build.0 = Debug|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Release|x64.ActiveCfg = Release|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Release|x64.Build.0 = Release|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Release|x86.ActiveCfg = Release|Any CPU
+		{C96AB2DC-0F44-4176-95AB-4D4826BBAF7C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

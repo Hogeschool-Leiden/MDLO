@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleDomainService.Domain
 {
+    [ExcludeFromCodeCoverage]
     public class Studiefase
     {
         private Studiefase(string fase) => Fase = fase;

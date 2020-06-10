@@ -1,5 +1,6 @@
 using Miffy.MicroServices.Events;
 using ModuleDomainService.Domain;
+using ModuleDomainService.Domain.Abstractions;
 using ModuleDomainService.Infrastructure.DAL;
 using ModuleDomainService.Infrastructure.Exceptions;
 
@@ -36,11 +37,11 @@ namespace ModuleDomainService.Infrastructure.Repositories
             module.Changes.ForEach(@event => _eventPublisher.Publish(@event));
         }
 
-        private void DoesModuleExist(Module module)
+        private void DoesModuleExist(AggregateRoot module)
         {
-            var result = LoadModule(module.Id);
+            var stream = _eventStore.LoadStream(module.Id);
 
-            if (result != null)
+            if (stream != null)
             {
                 throw new ModuleAlreadyExistException();
             }

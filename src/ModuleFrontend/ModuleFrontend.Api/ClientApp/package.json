@@ -7,6 +7,7 @@
     "build": "ng build",
     "build:ssr": "ng run CompetentieAppFrontend.Api:server:dev",
     "test": "ng test",
+    "test-nowatch": "ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

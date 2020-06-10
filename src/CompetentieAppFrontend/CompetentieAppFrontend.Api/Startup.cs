@@ -38,7 +38,8 @@ namespace CompetentieAppFrontend.Api
             services.AddTransient<IStudiefaseRepository, StudiefaseRepository>();
             services.AddTransient<IBeheersingsNiveauRepository, BeheersingsNiveauRepository>();
             services.AddTransient<IEindeisRepository, EindeisRepository>();
-            
+            services.AddTransient<IAuditLogEntryRepository, AuditLogEntryRepository>();
+
             services.AddTransient<IEindcompetentieService, EindcompetentieService>();
             services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<IMatrixService<int>, NiveauMatrixService>();

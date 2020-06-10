@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace ModuleDomainService.Application.Constants
 {
+    [ExcludeFromCodeCoverage]
     internal static class EnvironmentNames
     {
         internal const string BrokerExchangeName = "BROKER_QUEUE_NAME";

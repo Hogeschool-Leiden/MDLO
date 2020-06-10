@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleDomainService.Domain
 {
+    [ExcludeFromCodeCoverage]
     public class Status
     {
         private Status(IEnumerable<Specialisatie> verplichtVoor) => VerplichtVoor = verplichtVoor;
