@@ -25,7 +25,7 @@ export class ModuleSanitizePipe implements PipeTransform {
       aantalEc: parseInt(unsanitizedValue.aantalEc),
       studiejaar: unsanitizedValue.studiejaar,
       moduleleider: { id: undefined, naam: unsanitizedValue.moduleleider.naam, email: unsanitizedValue.moduleleider.email, telefoonnummer: unsanitizedValue.moduleleider.telefoonnummer },
-      studiefase: { id: undefined, fase: unsanitizedValue.studiefase.fase, perioden:  unsanitizedValue.studiefase.perioden},
+      studiefase: { id: undefined, fase: unsanitizedValue.studiefase.fase, perioden:  unsanitizedValue.studiefase.periode},
       verplichtVoor: verplichtVoor,
       aanbevolenVoor: aanbevolenVoor,
       competenties: this.getMatrixWithCorrectValues(unsanitizedValue.competenties),

@@ -74,7 +74,7 @@ describe('ModuleSanitizePipe', () => {
     expect(result.aantalEc).toBe(3);
     expect(result.studiejaar).toBe("correctJaar");
     expect(result.moduleleider).toEqual({ id: undefined, naam: "correcteNaam", email: "correctEmail", telefoonnummer: "correctTelefoonnummer" });
-    expect(result.studiefase).toEqual({ id: undefined, fase: "correcteFase", periode: [4, 2] });
+    expect(result.studiefase).toEqual({ id: undefined, fase: "correcteFase", perioden: [4, 2] });
     expect(result.eindeisen[0]).toBe("correcteEindeisen");
     expect(result.eindeisen[1]).toBe("AndereEindeis");
     expect(result.competenties.cells[0][1]).toBe(3);

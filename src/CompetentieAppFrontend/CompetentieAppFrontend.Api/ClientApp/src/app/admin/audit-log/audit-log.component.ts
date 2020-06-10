@@ -30,10 +30,10 @@ export class AuditLogComponent implements OnInit {
   }
 
   checkWhatDataToUse() {
-    if (this.alternateData !== undefined){
+    if (this.alternateData !== undefined) {
       this.auditData = this.alternateData;
       this.setDataSource();
-    }else {
+    } else {
       this.getDataFromDB();
     }
   }
@@ -41,11 +41,11 @@ export class AuditLogComponent implements OnInit {
   getDataFromDB() {
     this.http.get(this.dbUrl).toPromise().then(data => {
       this.auditData = data;
+      this.setDataSource();
     }).catch(error => console.log(error));
 
     // this.auditData = auditMock;  // this is mockdata
-
-    this.setDataSource();
+    // this.setDataSource();
   }
 
   setDataSource() {
