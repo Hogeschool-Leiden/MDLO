@@ -1,6 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace ModuleDomainService.Domain
 {
-    public struct Eindeis
+    [ExcludeFromCodeCoverage]
+    public class Eindeis
     {
         public Eindeis(string omschrijving) =>
             Omschrijving = omschrijving;

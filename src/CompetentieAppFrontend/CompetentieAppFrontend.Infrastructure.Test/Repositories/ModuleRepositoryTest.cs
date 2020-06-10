@@ -181,6 +181,20 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             // Assert
             Assert.AreEqual("2018-2019",result.Cohort.CohortNaam);
         }
+        
+        [TestMethod]
+        public void GetAllModules_Should_Include_AuditLogEntries()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new ModuleRepository(context);
+
+            // Act
+            var result = repository.GetAllModules().First();
+
+            // Assert
+            Assert.IsTrue(result.AuditLogEntries.Any(entry => entry.Omschrijving == "Henk creeerde dit"));
+        }
 
         [TestMethod]
         public void CreateModule_Should_Save_Entry_To_Database()

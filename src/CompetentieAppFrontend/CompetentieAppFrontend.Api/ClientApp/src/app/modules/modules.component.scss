@@ -43,7 +43,11 @@ mat-header-row{
 }
 
 .mat-row:nth-child(odd) {
-  background-color: #f2f2f2;
+  background-color: #f7f7f7;
+}
+
+.mat-row:hover {
+  background-color: #ededed;
 }
 
 .mat-header-cell:first-of-type, .mat-cell:first-of-type {

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Miffy.MicroServices.Events;
 using ModuleDomainService.Domain.Constants;
 
 namespace ModuleDomainService.Domain.Events
 {
+    [ExcludeFromCodeCoverage]
     public class ModuleGecreeerd : DomainEvent
     {
         public ModuleGecreeerd() : base(Topics.ModuleGecreeerd)

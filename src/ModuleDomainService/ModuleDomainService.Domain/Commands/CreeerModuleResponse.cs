@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Miffy.MicroServices.Commands;
 using ModuleDomainService.Domain.Constants;
 
 namespace ModuleDomainService.Domain.Commands
 {
+    [ExcludeFromCodeCoverage]
     public class CreeerModuleResponse : DomainCommand
     {
         private CreeerModuleResponse(int statusCode)

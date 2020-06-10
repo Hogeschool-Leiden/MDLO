@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using CompetentieAppFrontend.Domain;
 using CompetentieAppFrontend.Infrastructure.Repositories;
+using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.Commands;
 
 namespace CompetentieAppFrontend.Services.Eventing
 {
@@ -20,7 +22,7 @@ namespace CompetentieAppFrontend.Services.Eventing
             _periodeRepository = periodeRepository;
         }
 
-        public void CreateStudiefasen(IStudiefaseService.CreateStudiefasenCommand command)
+        public void CreateStudiefasen(CreateStudiefasenCommand command)
         {
             var specialisatieIds = _specialisatieRepository.EnsureSpecialisatiesExist(command.Specialisaties);
             var periodeIds = _periodeRepository.EnsurePeriodenExist(command.Perioden);

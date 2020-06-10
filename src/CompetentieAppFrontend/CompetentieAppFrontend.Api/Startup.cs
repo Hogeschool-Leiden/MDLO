@@ -1,19 +1,20 @@
-using System;
+using System.Diagnostics.CodeAnalysis;
 using CompetentieAppFrontend.Infrastructure.DAL;
 using CompetentieAppFrontend.Infrastructure.Repositories;
-using CompetentieAppFrontend.Services;
+using CompetentieAppFrontend.Services.Abstractions;
 using CompetentieAppFrontend.Services.Eventing;
 using CompetentieAppFrontend.Services.Projections;
+using CompetentieAppFrontend.Services.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace CompetentieAppFrontend.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)

@@ -19,14 +19,16 @@
       <mat-cell *matCellDef="let moduleData" [ngClass]="'specCell'">
         <ul class="spec-list">
           <li class="spec-list-item"
-                         *ngFor="let specialisation of moduleData.specialisation"> {{specialisation}}</li>
+              *ngFor="let specialisation of moduleData.specialisation"> {{specialisation}}</li>
         </ul>
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="period">
       <mat-header-cell mat-sort-header *matHeaderCellDef [ngClass]="'smallCell'"> Periode</mat-header-cell>
-      <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'"> {{moduleData.period}} </mat-cell>
+      <mat-cell *matCellDef="let moduleData" [ngClass]="'smallCell'">
+        {{moduleData.period}}
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="matrix">
@@ -38,7 +40,7 @@
             <p><b>Eindeisen</b></p>
             <ul style="padding:  0">
               <li class="endRequirement-list-item"
-                             *ngFor="let requirement of moduleData.endRequirements; let i = index"><p>
+                  *ngFor="let requirement of moduleData.endRequirements; let i = index"><p>
                 &bull; {{requirement}}</p></li>
             </ul>
           </div>
@@ -58,6 +60,6 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let moduleRowData; let i = index; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let moduleRowData; let i = index; columns: displayedColumns;" (click)="openPopup(moduleRowData)"></mat-row>
   </mat-table>
 </div>

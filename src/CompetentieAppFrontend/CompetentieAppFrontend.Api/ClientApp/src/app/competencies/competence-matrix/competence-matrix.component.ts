@@ -48,29 +48,29 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
     }
   }
 
-  private showMatrixOnScreen(){
+  showMatrixOnScreen(){
     this.showMatrix = true;
 
   }
 
-  private setHeaders() {
+  setHeaders() {
     this.setActivityHeaders();
     this.setArchitectureHeaders();
   }
 
-  private setActivityHeaders() {
+  setActivityHeaders() {
     for (let i = 0; i < this.displayMatrix.length - 1; i++) {
       this.displayMatrix[i + 1][0] = this.competenceMatrix.xHeaders[i];
     }
   }
 
-  private setArchitectureHeaders() {
+  setArchitectureHeaders() {
     for (let i = 0; i < this.displayMatrix[0].length - 1; i++) {
       this.displayMatrix[0][i + 1] = this.competenceMatrix.yHeaders[i];
     }
   }
 
-  private setBody() {
+  setBody() {
     for (let y = 0; y < this.competenceMatrix.cells.length; y++) {
       for (let x = 0; x < this.competenceMatrix.cells[y].length; x++) {
         if (this.competenceMatrix.cells[y][x] != null) {
@@ -80,13 +80,13 @@ export class CompetenceMatrixComponent implements OnInit, OnChanges {
     }
   }
 
-  private setCellInfo(matrixElement, y, x) {
+  setCellInfo(matrixElement, y, x) {
     y += this.displayMatrixOffset;
     x += this.displayMatrixOffset;
-    this.displayMatrix[y][x] = CompetenceMatrixComponent.getCorrectCompetenceValue(matrixElement);
+    this.displayMatrix[y][x] = this.getCorrectCompetenceValue(matrixElement);
   }
 
-  private static getCorrectCompetenceValue(matrixElement) {
+  getCorrectCompetenceValue(matrixElement) {
     if (matrixElement.value.niveau === undefined) {
       return matrixElement.value;
     }

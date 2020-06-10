@@ -1,0 +1,17 @@
+<mat-dialog-content>
+  <div *ngIf="data.moduleData !== undefined">
+    <h1>{{data.moduleData.module}}</h1>
+    <p><B>Specialisaties: </B>{{data.moduleData.specialisation}}</p>
+    <p><B>Periode: </B>{{data.moduleData.period}}</p>
+    <p style="margin-bottom: 0.4rem"><B>Eindeisen: </B></p>
+    <ul>
+      <li *ngFor="let endRequirement of data.moduleData.endRequirements">
+        {{endRequirement}}
+      </li>
+    </ul>
+    <app-competence-matrix [competenceMatrix]="data.moduleData.matrix"></app-competence-matrix>
+    <h3>Logboek</h3>
+    <app-audit-log [alternateData]="data.moduleData.auditLog"></app-audit-log>
+  </div>
+</mat-dialog-content>
+

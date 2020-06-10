@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace ModuleDomainService.Domain.Extensions
 {
+    [ExcludeFromCodeCoverage]
     internal static class Array2DExtensions
     {
         internal static T[][] ToJaggedArray<T>(this T[,] twoDimensionalArray)

@@ -217,5 +217,27 @@ namespace CompetentieAppFrontend.Infrastructure.Test.Repositories
             // Assert
             Assert.AreEqual("2018-2019", result.Module.Cohort.CohortNaam);
         }
+
+        [TestMethod]
+        public void CreateCompetenties_Should_Create_Entries_In_Database()
+        {
+            // Arrange
+            var context = new CompetentieAppFrontendContext(_options);
+            var repository = new CompetentieRepository(context);
+            
+            repository.CreateCompetenties(new List<Competentie>
+            {
+                new Competentie
+                {
+                    ModuleId = 1,
+                    BeheersingsNiveauId = 5
+                }
+            });
+            
+            // Assert
+            Assert.IsTrue(context.Competenties
+                .Include(competentie => competentie.Module)
+                .Any(competentie => competentie.Module.ModuleCode == "IOPR"));
+        }
     }
 }
