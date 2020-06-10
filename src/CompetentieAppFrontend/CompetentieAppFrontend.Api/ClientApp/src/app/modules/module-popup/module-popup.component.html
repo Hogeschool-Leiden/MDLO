@@ -1,9 +1,9 @@
 <mat-dialog-content>
   <div *ngIf="data.moduleData !== undefined">
     <h1>{{data.moduleData.module}}</h1>
-    <p><B>Specialisaties: </B>{{data.moduleData.specialisation}}</p>
-    <p><B>Periode: </B>{{data.moduleData.period}}</p>
-    <p style="margin-bottom: 0.4rem"><B>Eindeisen: </B></p>
+    <p><strong>Specialisaties: </strong>{{data.moduleData.specialisation}}</p>
+    <p><strong>Periode: </strong>{{data.moduleData.period}}</p>
+    <p style="margin-bottom: 0.4rem"><strong>Eindeisen: </strong></p>
     <ul>
       <li *ngFor="let endRequirement of data.moduleData.endRequirements">
         {{endRequirement}}
@@ -14,4 +14,3 @@
     <app-audit-log [alternateData]="data.moduleData.auditLog"></app-audit-log>
   </div>
 </mat-dialog-content>
-
