@@ -10,8 +10,8 @@ describe('CompetenciesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CompetenciesComponent , CompetenceMatrixComponent],
-      imports:[HttpClientModule]
+      declarations: [CompetenciesComponent, CompetenceMatrixComponent],
+      imports: [HttpClientModule]
     })
       .compileComponents();
   }));
@@ -69,6 +69,37 @@ describe('CompetenciesComponent', () => {
     component.specialisation = 'Propedeuse';
     expect(component.isSpecialisationPropedeuse()).toBeTruthy();
 
+  });
+
+  it('should return the correct period based on de decimal value', function () {
+    component.updateSliderValue(1.00);
+    expect(component.period).toEqual(1);
+
+    component.updateSliderValue(1.25);
+    expect(component.period).toEqual(2);
+
+    component.updateSliderValue(2.50);
+    expect(component.period).toEqual(3);
+
+    component.updateSliderValue(3.75);
+    expect(component.period).toEqual(4);
+  });
+
+  it('should set slider min and max to 1 and 1.50 if you are in propedeuse', function () {
+    component.specialisation = 'Propedeuse';
+    component.setSliderValues();
+
+    expect(component.sliderMin).toEqual(1);
+    expect(component.sliderMax).toEqual(1.50);
+  });
+
+  it('should set the period to propedeuse period when db is requested.', function () {
+    component.specialisation = 'Propedeuse';
+    component.period = 1;
+
+    component.getMatrixDataFromDB();
+
+    expect(component.dbPeriod).toEqual(1);
   });
 
 
