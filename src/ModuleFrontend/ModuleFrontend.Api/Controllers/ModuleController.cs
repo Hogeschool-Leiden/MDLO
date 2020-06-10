@@ -3,6 +3,8 @@ using ModuleFrontend.Api.ViewModels;
 using ModuleFrontend.Api.Services;
 using System.Linq;
 using ModuleFrontend.Api.Exceptions;
+using Miffy;
+using Microsoft.AspNetCore.Http;
 
 namespace ModuleFrontend.Api.Controllers
 {
@@ -14,25 +16,9 @@ namespace ModuleFrontend.Api.Controllers
             _service = service;
         }
 
-        public IActionResult GetModule(string modulecode)
-        {
-            var module = _service.GetByModuleCode(modulecode);
-            if (module == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(module);
-        }
-
-        public IActionResult GetAll()
-        {
-            return Ok(_service.GetAllModules());
-        }
-
         [Route("module")]
         [HttpPost]
-        public IActionResult PostModule([FromBody]ModuleViewModel module) 
+        public IActionResult PostModule([FromBody]ModuleViewModel module)
         {
             if (!ModelState.IsValid)
             {
@@ -43,16 +29,21 @@ namespace ModuleFrontend.Api.Controllers
                 ModelState.AddModelError("VerplichtVoorError", "Een module moet voor minstens één specialisatie verplicht zijn, of een keuzevak zijn.");
                 return BadRequest(ModelState.Values);
             }
+
             try
             {
-                _service.AddModule(module);
+                var result = _service.SendCreeerModuleCommand(module);
+                if(result.StatusCode == 400)
+                {
+                    return BadRequest("De combinatie van modulecode en cohort bestaat al.");
+                }
+                return Ok(result.Message);
             }
-            catch (AlreadyExistsException e)
+            catch (DestinationQueueException)
             {
-                ModelState.AddModelError("BestaatAlError", e.Message);
-                return BadRequest(ModelState.Values);
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Er is een fout op de server opgetreden. Probeer het later opnieuw.");
             }
-            return Ok(module);
         }
     }
 }

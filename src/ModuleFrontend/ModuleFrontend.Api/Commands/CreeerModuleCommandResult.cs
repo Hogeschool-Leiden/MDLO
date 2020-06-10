@@ -1,9 +1,9 @@
-﻿using ModuleFrontend.Api.DTO;
-
+﻿
 namespace ModuleFrontend.Api.Commands
 {
-    public class CreeerModuleCommandResult
+    public class CreeerModuleCommandResponse
     {
-        public ModuleGecreeerdDTO Module { get; set; }
+        public string Message { get; set; }
+        public int StatusCode { get; set; }
     }
 }

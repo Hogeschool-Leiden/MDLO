@@ -8,6 +8,8 @@ namespace ModuleDomainService.Infrastructure.DAL
         {
         }
 
-        public DbSet<Event> Events { get; set; }
+        public DbSet<Event> Stream { get; set; }
+
+        public void AppendToStream(EventStream eventStream) => Stream.AppendToStream(eventStream);
     }
 }

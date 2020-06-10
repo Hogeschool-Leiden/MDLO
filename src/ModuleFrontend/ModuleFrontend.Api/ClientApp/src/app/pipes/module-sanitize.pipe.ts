@@ -25,22 +25,11 @@ export class ModuleSanitizePipe implements PipeTransform {
       aantalEc: parseInt(unsanitizedValue.aantalEc),
       studiejaar: unsanitizedValue.studiejaar,
       moduleleider: { id: undefined, naam: unsanitizedValue.moduleleider.naam, email: unsanitizedValue.moduleleider.email, telefoonnummer: unsanitizedValue.moduleleider.telefoonnummer },
-      studiefase: { id: undefined, fase: unsanitizedValue.studiefase.fase, periode: { id: undefined, periodeNummer: parseInt(unsanitizedValue.studiefase.periode) } },
+      studiefase: { id: undefined, fase: unsanitizedValue.studiefase.fase, periode:  unsanitizedValue.studiefase.periode},
       verplichtVoor: verplichtVoor,
       aanbevolenVoor: aanbevolenVoor,
       competenties: this.getMatrixWithCorrectValues(unsanitizedValue.competenties),
-      // beschrijvingLeerdoelen: unsanitizedValue.beschrijvingLeerdoelen,
-      // inhoudelijkeBeschrijving: unsanitizedValue.inhoudelijkeBeschrijving,
       eindeisen: unsanitizedValue.eindeisen,
-      // contacturenWerkvormen: unsanitizedValue.contacturenWerkvormen,
-      // toetsvorm: unsanitizedValue.toetsvorm,
-      // voorwaardenVoldoende: unsanitizedValue.voorwaardenVoldoende,
-      // letOp: unsanitizedValue.letOp,
-      // summatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.summatief),
-      // formatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.formatief),
-      // kwalitatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.kwalitatief),
-      // kwantitatief: this.checkIfToetsvormIsTrueAndReturnResult(unsanitizedValue.kwantitatief),
-      // examinatoren: unsanitizedValue.examinatoren
     };
     return module;
   }

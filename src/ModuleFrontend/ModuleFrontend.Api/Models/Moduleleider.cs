@@ -1,5 +1,8 @@
-﻿namespace ModuleFrontend.Api
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace ModuleFrontend.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Moduleleider
     {
         public long ModuleLeiderId { get; set; }

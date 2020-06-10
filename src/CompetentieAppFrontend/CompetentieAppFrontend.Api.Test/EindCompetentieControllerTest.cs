@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using CompetentieAppFrontend.Api.Controllers;
 using CompetentieAppFrontend.Infrastructure.Repositories;
-using CompetentieAppFrontend.Services;
+using CompetentieAppFrontend.Services.Abstractions;
+using CompetentieAppFrontend.Services.Projections;
+using CompetentieAppFrontend.Services.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
