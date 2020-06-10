@@ -7,7 +7,7 @@ namespace CompetentieAppFrontend.Services.Commands
     public class CreateEindeisenCommand
     {
         public long ModuleId { get; set; }
-        public IEnumerable<string> Beschrijvingen { get; set; }
+        public IEnumerable<string> Beschrijvingen { get; set; } = new List<string>();
 
         public IEnumerable<Eindeis> Eindeisen =>
             Beschrijvingen.Select(beschrijving => new Eindeis

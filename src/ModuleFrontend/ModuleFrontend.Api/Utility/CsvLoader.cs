@@ -132,7 +132,7 @@ namespace ModuleFrontend.Api.Utility
                         ModuleNaam = item.ModuleNaam,
                         AantalEc = item.Ec,
                         Studiejaar = $"{item.Jaar}",
-                        Studiefase = new Studiefase(){Fase = fase, Periode = periodes},
+                        Studiefase = new Studiefase(){Fase = fase, Perioden = periodes},
                         VerplichtVoor = verplichtVoor,
                         Competenties = mtx
                     };

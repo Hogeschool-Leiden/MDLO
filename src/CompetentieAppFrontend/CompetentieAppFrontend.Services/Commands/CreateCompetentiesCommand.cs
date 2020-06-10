@@ -1,8 +1,9 @@
-using CompetentieAppFrontend.Services.Projections;
+using System.Diagnostics.CodeAnalysis;
 using CompetentieAppFrontend.Services.ViewModels;
 
 namespace CompetentieAppFrontend.Services.Commands
 {
+    [ExcludeFromCodeCoverage]
     public class CreateCompetentiesCommand
     {
         public long ModuleId { get; set; }

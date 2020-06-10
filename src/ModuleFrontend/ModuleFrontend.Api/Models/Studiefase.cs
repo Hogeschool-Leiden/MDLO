@@ -10,6 +10,6 @@ namespace ModuleFrontend.Api.Models
         [ExcludeFromCodeCoverage]
         public long StudiefaseId { get; set; }
         public string Fase { get; set; }
-        public List<int> Periode { get; set; }
+        public List<int> Perioden { get; set; }
     }
 }

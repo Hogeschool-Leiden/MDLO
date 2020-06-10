@@ -75,6 +75,14 @@ namespace CompetentieAppFrontend.Services.Test.Projections
                         Cohort = new Cohort
                         {
                             CohortNaam = "Studiejaar 2019/2020",
+                        },
+                        AuditLogEntries = new List<AuditLogEntry>
+                        {
+                            new AuditLogEntry
+                            {
+                                Omschrijving = "afasdfa",
+                                Timestamp = new DateTime(2020, 4, 4)
+                            }
                         }
                     },
                     new Module
@@ -122,6 +130,14 @@ namespace CompetentieAppFrontend.Services.Test.Projections
                         Cohort = new Cohort
                         {
                             CohortNaam = "Studiejaar 2019/2020",
+                        },
+                        AuditLogEntries = new List<AuditLogEntry>
+                        {
+                            new AuditLogEntry
+                            {
+                                Omschrijving = "afasdfa",
+                                Timestamp = new DateTime(2020, 4, 4)
+                            }
                         }
                     }
                 });

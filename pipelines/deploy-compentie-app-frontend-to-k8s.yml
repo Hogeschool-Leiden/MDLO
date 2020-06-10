@@ -67,7 +67,7 @@ stages:
           extraProperties: |
             sonar.exclusions=**\*.js,**\bootstrap*.css,**\DataTables\**\*.css,**\roslyn\*,**\Global.asax.cs,**\Migrations\**,**.spec.**,**e2e**,**/environment.**,**app-routing.module.ts
                         sonar.typescript.tsconfigPath=$(relativeAngularProject)/tsconfig.json
-                        sonar.typescript.lcov.reportPaths=$(relativeAngularProject)/coverage/lcov.info
+                        sonar.typescript.lcov.reportPaths=$(relativeAngularProject)/coverage/lcov.info,**/coverage/**
 
       - task: DotNetCoreCLI@2
         displayName: 'dotnet build'

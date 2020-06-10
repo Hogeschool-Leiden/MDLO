@@ -10,7 +10,6 @@ namespace CompetentieAppFrontend.Services.ViewModels
         public IEnumerable<int> Perioden { get; set; }
         public Matrix<int> Matrix { get; set; }
         public IEnumerable<string> Eindeisen { get; set; }
-
-        public IEnumerator<AuditLogEntryViewModel> AuditLogEntries { get; set; }
+        public IEnumerable<AuditLogEntryViewModel> AuditLogEntries { get; set; }
     }
 }

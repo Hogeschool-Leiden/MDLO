@@ -37,6 +37,7 @@ namespace CompetentieAppFrontend.Services.Projections
                 Matrix = _matrixService.CreateCompetentieMatrix(module.Competenties),
                 Perioden = module.Studiefasen.Select(studiefase => studiefase.Periode.PeriodeNummer),
                 Eindeisen = module.Eindeisen.Select(eindeis => eindeis.EindeisBeschrijving),
+                AuditLogEntries = module.AuditLogEntries.Select(entry => new AuditLogEntryViewModel{Omschrijving = entry.Omschrijving, Timestamp = entry.Timestamp})
             });
         }
     }
