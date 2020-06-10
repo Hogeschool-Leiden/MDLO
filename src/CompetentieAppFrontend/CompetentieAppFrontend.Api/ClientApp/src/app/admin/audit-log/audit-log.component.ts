@@ -17,7 +17,7 @@ export class AuditLogComponent implements OnInit {
 
   displayedColumns = ['timeStamp', 'infoString'];
   dataSource: MatTableDataSource<any>;
-  dbUrl: string = '/api/audit-log';
+  dbUrl: string = '=api/auditlog';
   auditData: any;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @Input() alternateData;
@@ -39,12 +39,12 @@ export class AuditLogComponent implements OnInit {
   }
 
   getDataFromDB() {
-    // this.http.get(this.dbUrl).toPromise().then(data => {
-    //   this.auditData = data;
-    //   this.injectDataInTable();
-    // }).catch(error => console.log(error));
+    this.http.get(this.dbUrl).toPromise().then(data => {
+      this.auditData = data;
+    }).catch(error => console.log(error));
 
-    this.auditData = auditMock;  // this is mockdata
+    // this.auditData = auditMock;  // this is mockdata
+
     this.setDataSource();
   }
 

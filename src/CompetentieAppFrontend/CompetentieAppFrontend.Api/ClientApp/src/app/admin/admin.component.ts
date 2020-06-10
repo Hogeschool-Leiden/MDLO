@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
 
-  moduleCreatUrl:string = 'http://google.nl/'
+  moduleCreatUrl:string = 'http://modules.mdlo.nl/';
 
   constructor() { }
 

@@ -62,5 +62,9 @@ describe('CompetenciesComponent', () => {
     expect(component.getYearValue()).toEqual(currentYear);
   });
 
+  it('should see that specialisation is propedeuse or not.', function () {
+
+  });
+
 
 });
