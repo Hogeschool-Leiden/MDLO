@@ -6,7 +6,7 @@ namespace ModuleFrontend.Api.Commands
 {
     public class CreeerModuleCommand : DomainCommand
     {
-        public CreeerModuleCommand() : base("ModuleDomain.Module.CreeerModule")
+        public CreeerModuleCommand() : base("MDLO.ModuleDomainService.CreeerModule")
         {
         }
         public IEnumerable<Specialisatie> VerplichtVoor { get; set; }
