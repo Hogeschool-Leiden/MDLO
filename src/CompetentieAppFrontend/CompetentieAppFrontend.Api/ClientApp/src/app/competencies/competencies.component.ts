@@ -62,7 +62,7 @@ export class CompetenciesComponent implements OnInit {
 
     this.http.get(this.dbUrl).toPromise().then(data => {
       this.competenceMatrix = data;
-    });
+    }).catch(error => console.log(error));
 
     // this.competenceMatrix = mockJson;  // this is mockdata
   }
