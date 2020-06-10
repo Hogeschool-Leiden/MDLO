@@ -39,6 +39,7 @@ export class ModulesComponent implements OnInit {
 
   clearModuleData() {
     this.MODULE_DATA.length = 0;
+
   }
 
   getDataFromDB() {
@@ -48,8 +49,7 @@ export class ModulesComponent implements OnInit {
     }).catch(error => console.log(error));
 
     // this.moduleData = moduleMock;  // this is mockdata
-
-    this.injectDataInTable();
+    // this.injectDataInTable();
   }
 
   injectDataInTable() {
