@@ -20,24 +20,24 @@ namespace ModuleFrontend.Api.Test
             Mock<ICommandPublisher> mock = new Mock<ICommandPublisher>(MockBehavior.Strict);
             mock.Setup(publisher => publisher.PublishAsync<CreeerModuleCommandResponse>(It.IsAny<CreeerModuleCommand>())).Returns(Task.FromResult(new CreeerModuleCommandResponse(){Message = "Module toegevoegd", StatusCode = 200}));
             IModuleService sut = new ModuleService(mock.Object);
-            ModuleViewModel correctModel = new ModuleViewModel()
+            Module correctModel = new Module()
             {
                 Cohort = "2017/2018",
                 Competenties = new Matrix(),
                 Eindeisen = new List<string>(){"Eindeis1", "Eindeis2"},
-                Moduleleider = new ModuleleiderViewModel()
+                Moduleleider = new Moduleleider()
                 {
                     Email = "dirkjan@hotmail.com",
                     Naam = "dirk-jan",
                     Telefoonnummer = "06742136491"
                 },
-                Studiefase = new StudiefaseViewModel()
+                Studiefase = new Studiefase()
                 {
                     Fase = "Propedeuse",
                     Periode = new List<int>(){ 1, 3}
                 },
                 Studiejaar = "Jaar 3",
-                AanbevolenVoor = new List<SpecialisatieViewModel>(){ new SpecialisatieViewModel()
+                AanbevolenVoor = new List<Specialisatie>(){ new Specialisatie()
                 {
                     Code = "SE",
                     Naam = "Software Engineering"
@@ -45,7 +45,7 @@ namespace ModuleFrontend.Api.Test
                 AantalEc = 3,
                 ModuleCode = "iad1",
                 ModuleNaam = "Algoritmen en Datastructuren 1",
-                VerplichtVoor = new List<SpecialisatieViewModel>(){ new SpecialisatieViewModel(){Code = "SE", Naam = "Software Engineering"}}
+                VerplichtVoor = new List<Specialisatie>(){ new Specialisatie(){Code = "SE", Naam = "Software Engineering"}}
             };
             
             // Act

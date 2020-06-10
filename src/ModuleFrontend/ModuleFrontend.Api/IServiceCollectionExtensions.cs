@@ -7,6 +7,7 @@ using Miffy.MicroServices.Commands;
 using Miffy.MicroServices.Host;
 using Miffy.RabbitMQBus;
 using ModuleFrontend.Api.Services;
+using ModuleFrontend.Api.Utility;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
@@ -27,6 +28,7 @@ namespace ModuleFrontend.Api
             services.AddSingleton(context);
             services.AddTransient<IModuleService, ModuleService>();
             services.AddSingleton<ICommandPublisher, CommandPublisher>();
+            services.AddSingleton<ICsvLoader, CsvLoader>();
 
         }
 

@@ -1,33 +1,53 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using ModuleFrontend.Api.ViewModels;
 using ModuleFrontend.Api.Services;
 using System.Linq;
+using System.Reflection;
 using Miffy;
 using Microsoft.AspNetCore.Http;
+using ModuleFrontend.Api.Utility;
+using Module = ModuleFrontend.Api.Models.Module;
 
 namespace ModuleFrontend.Api.Controllers
 {
     public class ModuleController : Controller
     {
         private readonly IModuleService _service;
-        public ModuleController(IModuleService service)
+        private readonly ICsvLoader _csvLoader;
+        public ModuleController(IModuleService service, ICsvLoader loader)
         {
             _service = service;
+            _csvLoader = loader;
         }
 
         [Route("module")]
         [HttpPost]
-        public IActionResult PostModule([FromBody]ModuleViewModel module)
+        public IActionResult PostModule([FromBody]ModuleViewModel moduleViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.Values);
             }
-            if (!module.VerplichtVoor.Any())
+            if (!moduleViewModel.VerplichtVoor.Any())
             {
                 return BadRequest("Een module moest minstens voor één specialisatie verplicht zijn.");
             }
-
+            Module module = new Module()
+            {
+                Cohort = moduleViewModel.Cohort,
+                Competenties = moduleViewModel.Competenties,
+                Eindeisen = moduleViewModel.Eindeisen,
+                Moduleleider = moduleViewModel.Moduleleider,
+                Studiefase = moduleViewModel.Studiefase,
+                AanbevolenVoor = moduleViewModel.AanbevolenVoor,
+                VerplichtVoor = moduleViewModel.VerplichtVoor,
+                Studiejaar = moduleViewModel.Studiejaar,
+                AantalEc = moduleViewModel.AantalEc,
+                ModuleCode = moduleViewModel.ModuleCode,
+                ModuleNaam = moduleViewModel.ModuleNaam
+            };
+            
             try
             {
                 var result = _service.SendCreeerModuleCommand(module);
@@ -43,5 +63,27 @@ namespace ModuleFrontend.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Er is een fout op de server opgetreden. Probeer het later opnieuw.");
             }
         }
+
+        [Route("modulesinladen")]
+        [HttpPost]
+        
+        public IActionResult PostCsvFile([FromForm] CsvInlaadFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var stream = model.File.OpenReadStream();
+            IEnumerable<Module> modules = _csvLoader.ReadFromStream(stream);
+            foreach (var module in modules)
+            {
+                module.Cohort = model.Cohort;
+
+                _service.SendCreeerModuleCommand(module);
+            }
+            return Ok(modules);
+        }
+        
     }
 }

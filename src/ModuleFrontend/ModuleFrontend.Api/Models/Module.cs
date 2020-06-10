@@ -17,6 +17,6 @@ namespace ModuleFrontend.Api.Models
         public IEnumerable<Specialisatie> VerplichtVoor { get; set; }
         public Matrix Competenties { get; set; }
         public IEnumerable<Specialisatie> AanbevolenVoor { get; set; }
-        public string Eindeisen { get; set; }
+        public List<string> Eindeisen { get; set; }
     }
 }

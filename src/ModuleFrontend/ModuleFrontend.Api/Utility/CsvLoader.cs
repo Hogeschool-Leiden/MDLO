@@ -1,5 +1,4 @@
 ﻿using CsvHelper;
-using ModuleFrontend.Api.DAL;
 using ModuleFrontend.Api.Models;
 using System;
 using System.Collections.Generic;
@@ -10,8 +9,6 @@ namespace ModuleFrontend.Api.Utility
 {
     public class CsvLoader : ICsvLoader
     {
-        private readonly ModuleContext _context;
-
         public CsvLoader()
         {
         }
@@ -136,7 +133,8 @@ namespace ModuleFrontend.Api.Utility
                         AantalEc = item.Ec,
                         Studiejaar = $"{item.Jaar}",
                         Studiefase = new Studiefase(){Fase = fase, Periode = periodes},
-                        VerplichtVoor = verplichtVoor
+                        VerplichtVoor = verplichtVoor,
+                        Competenties = mtx
                     };
                     modules.Add(module);
                 }
