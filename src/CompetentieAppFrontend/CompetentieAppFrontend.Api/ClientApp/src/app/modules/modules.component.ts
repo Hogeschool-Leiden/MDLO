@@ -62,7 +62,7 @@ export class ModulesComponent implements OnInit {
           period: this.moduleData[i].perioden,
           matrix: this.moduleData[i].matrix,
           endRequirements: this.moduleData[i].eindeisen,
-          auditLog: this.moduleData[i].auditLogObject
+          auditLog: this.moduleData[i].auditLogEntries
         }
       );
     }
