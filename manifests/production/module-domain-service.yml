@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: module-domain-service-secret
+  namespace: production
+data:
+  connectionString: VXNlciBJRD1wb3N0Z3JlcztQYXNzd29yZD1jOEx5WmZzYWNwdnU7SG9zdD1wb3N0Z3JlcztQb3J0PTU0MzI7RGF0YWJhc2U9TW9kdWxlRG9tYWluU2VydmljZURiOw==
+  url: YW1xcDovL3JhYmJpdG1xLWFkbWluOm5tY25qa2xoYWk3YTNramhramxsamVhaGZAcmFiYml0bXE=
+  exchange: TURMTw==
+  queue: TW9kdWxlRG9tYWlu
+  loglevel: SU5GT1JNQVRJT04=
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: module-domain-service
+  namespace: production
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: module-domain-service
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: module-domain-service
+  namespace: production
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: module-domain-service
+    spec:
+      containers:
+        - env:
+            - name: BROKER_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: module-domain-service-secret
+                  key: url
+            - name: BROKER_EXCHANGE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: module-domain-service-secret
+                  key: exchange
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: module-domain-service-secret
+                  key: connectionString
+            - name: BROKER_QUEUE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: module-domain-service-secret
+                  key: queue
+            - name: LOG_LEVEL
+              valueFrom:
+                secretKeyRef:
+                  name: module-domain-service-secret
+                  key: loglevel
+          name: module-domain-service
+          image: hsleidenmdlo.azurecr.io/module-domain-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi

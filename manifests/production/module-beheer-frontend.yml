@@ -87,7 +87,7 @@ metadata:
     certmanager.k8s.io/issuer: "letsencrypt-production"
 spec:
   rules:
-    - host: modules.production.mdlo.nl
+    - host: modules.mdlo.nl
       http:
         paths:
           - path: /(.*)
