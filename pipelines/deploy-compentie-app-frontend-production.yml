@@ -40,6 +40,6 @@ stages:
                     action: 'deploy'
                     kubernetesServiceConnection: 'MDLO-mdlo-production-1591281497115'
                     namespace: 'production'
-                    manifests: 'manifests/production/competentie-app-frontend.yml'
-                    containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+                    manifests: 'https://github.com/Hogeschool-Leiden/MDLO/blob/master/manifests/production/competentie-app-frontend.yml'
+                    containers: '$(containerRegistry)/$(imageRepository)'
                     imagePullSecrets: '$(imagePullSecret)'
