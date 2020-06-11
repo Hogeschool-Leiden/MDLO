@@ -24,6 +24,8 @@ stages:
           runOnce:
             deploy:
                 steps:
+                - publish: 'manifests'
+                  artifact: manifests
                 - task: KubernetesManifest@0
                   displayName: Create imagePullSecret
                   inputs:
