@@ -182,6 +182,6 @@ stages:
               action: 'deploy'
               kubernetesServiceConnection: 'MDLO-mdlo-production-1591281497115'
               namespace: 'production'
-              manifests: '$(Pipeline.Workspace)/manifests/staging/competentie-app-frontend.yml'
+              manifests: '$(Pipeline.Workspace)/manifests/production/competentie-app-frontend.yml'
               containers: '$(containerRegistry)/$(imageRepository):$(tag)'
               imagePullSecrets: '$(imagePullSecret)'
