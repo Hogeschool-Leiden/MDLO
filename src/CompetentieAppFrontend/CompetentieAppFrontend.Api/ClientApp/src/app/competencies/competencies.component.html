@@ -4,7 +4,7 @@
     <mat-select [(value)]="cohort">
       <mat-option *ngFor="let coh of cohorts" [value]="coh"
                   (click)="updateSliderValue(this.sliderMin);getMatrixDataFromDB();"
-      >Cohort: {{coh}}</mat-option>
+      >cohort- {{coh}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field style="width: 225px">
